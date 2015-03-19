@@ -4,6 +4,7 @@
  $btnSubmit.click(function(){
 
    var searchTerm = $txtKeyword.val();
+   if (searchTerm == "") return;
    console.log("keyword: " + searchTerm);
 
    $.post('/twitter/', { keyword: searchTerm }, function(data){

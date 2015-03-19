@@ -30,7 +30,7 @@
 		<div>
         	<h1><%= title %></h1>
     		<p>Welcome to <%= name %>s <%= title %></p>
-         <form class="form-horizontal">          
+         <form class="form-vertical">          
             <div class="form-group">
               <label for="input-keyword">Search Term</label>
               <input  id="input-keyword" type="text" class="form-control" placeholder="Enter your desired search term!">
@@ -39,10 +39,52 @@
               <button id="submit-button" type="button" class="btn btn-lg btn-primary">Submit</button>
     	      </div>
          </form>
+        <div class="row">
+          <div class="col-lg-3" style="background-color: #eee;">         
+            <img src='./images/reddit-icon.png' class="img-thumbnail"/>
+            <a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div>
+        <div class="col-lg-1"></div>
+          <div class="col-lg-3" style="background-color: #eee;">         
+           <img src='./images/facebook-icon.png' class="img-thumbnail"/>
+           <a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div>
+        <div class="col-lg-1"></div>
+          <div class="col-lg-3" style="background-color: #eee;">
+            <img src='./images/twitter-icon.png' class="img-thumbnail"/>
+           <a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div>
       </div>
-    </div>    
+
+      <div class="grid-stack">
+        <div class="grid-stack-item" 
+            data-gs-x="0" data-gs-y="0" 
+            data-gs-width="4" data-gs-height="2">
+                <div class="grid-stack-item-content"></div>
+        </div>
+        <div class="grid-stack-item" 
+            data-gs-x="4" data-gs-y="0" 
+            data-gs-width="4" data-gs-height="4">
+                <div class="grid-stack-item-content"></div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+    
     <script rel='javascript' src="/javascripts/jquery-2.1.3.min.js"></script>
     <script rel='javascript' src="/javascripts/bootstrap.min.js"></script>
+    <script rel='javascript' src="/javascripts/jquery-ui.min.js"></script>
+    <script rel='javascript' src="/javascripts/lodash.min.js"></script>
     <script rel='javascript' src="../controllers/index.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        var options = {
+            cell_height: 80,
+            vertical_margin: 10
+        };
+        $('.grid-stack').gridstack(options);
+      });
+    </script>    
   </body>
 </html>

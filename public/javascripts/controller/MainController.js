@@ -3,7 +3,8 @@ SocialMediaAnalyzer.MainController = (function() {
 
 	init = function() {
 		console.log("init MainController");
-		SocialMediaAnalyzer.IndexController.init();		
+		SocialMediaAnalyzer.IndexController.init();	
+		SocialMediaAnalyzer.Search.init();	
 	};
 
 	that.init = init;	

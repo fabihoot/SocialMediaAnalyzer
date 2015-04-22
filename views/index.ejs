@@ -7,7 +7,7 @@
   </head>
   <body>
   	<nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+     
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -24,21 +24,112 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
-      </div>
+     
     </nav>
-    <div class="container">
+    
 		<div>
-        	<h1><%= title %></h1>
-    		<p>Welcome to <%= name %>s <%= title %></p>
+        	<h1 class="col-md-offset-4"><%= title %></h1>    		
          <form class="form-vertical">          
-            <div class="form-group">
-              <label for="input-keyword">Search Term</label>
+            <div class="form-group col-md-12">              
               <input  id="input-keyword" type="text" class="form-control" placeholder="Enter your desired search term!">
             </div>
-            <div class="form-group">            
-              <button id="submit-button" type="button" class="btn btn-lg btn-primary">Submit</button>
+            <div class="form-group col-md-6 col-md-offset-4">            
+              <button id="submit-button" type="button" class="btn btn-lg btn-primary col-md-6">Submit</button>
     	      </div>
          </form>
+
+
+         <div class="row pad-top">
+
+            <div id="result-container" class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-12 result-container">
+
+                <div class="panel-group" id="accordion">
+                    <div id="panel-heading-one" class="panel panel-primary panel-one">
+                        <div class="panel-heading">
+                            <h4 class="panel-title panel-title-adjust">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <i class="fa fa-plus"></i>General Information
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <!-- write content for general info here!-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="panel-heading-two" class="panel panel-primary panel-two">
+                        <div class="panel-heading">
+                            <h4 class="panel-title panel-title-adjust">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    <i class="fa fa-plus"></i>Posts
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+           Vivamus sagittis egestas mauris ut vehicula. Cras viverra ac orci ac aliquam.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+                            </div>
+                        </div>
+                    </div>
+                    <div id="panel-heading-three" class="panel panel-primary panel-three">
+                        <div class="panel-heading">
+                            <h4 class="panel-title panel-title-adjust">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    <i class="fa fa-plus"></i>Mapping
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+           Vivamus sagittis egestas mauris ut vehicula. Cras viverra ac orci ac aliquam.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="panel-heading-four"  class="panel panel-primary panel-four">
+                        <div class="panel-heading">
+                            <h4 class="panel-title panel-title-adjust">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapsefour">
+                                    <i class="fa fa-plus"></i>Summary
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapsefour" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+           Vivamus sagittis egestas mauris ut vehicula. Cras viverra ac orci ac aliquam.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+           Nulla eget condimentum mauris, eget tincidunt est. Quisque in luctus ligula.
+           Aenean eget ligula id nulla ornare placerat vel a nulla. 
+          Duis lobortis purus auctor eros rhoncus, sed tempor est molestie.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+         <!--
         <div class="row">
           <div class="col-lg-3" style="background-color: #eee;">         
             <img src='./images/reddit-icon.png' class="img-thumbnail"/>
@@ -55,22 +146,10 @@
            <a class="btn btn-default" href="#" role="button">View details »</a></p>
           </div>
       </div>
-
-      <div class="grid-stack">
-        <div class="grid-stack-item" 
-            data-gs-x="0" data-gs-y="0" 
-            data-gs-width="4" data-gs-height="2">
-                <div class="grid-stack-item-content"></div>
-        </div>
-        <div class="grid-stack-item" 
-            data-gs-x="4" data-gs-y="0" 
-            data-gs-width="4" data-gs-height="4">
-                <div class="grid-stack-item-content"></div>
-        </div>
-      </div>
+      !-->     
 
       </div>
-    </div>
+    
     
     <script rel='javascript' src="/javascripts/jquery-2.1.3.min.js"></script>
     <script rel='javascript' src="/javascripts/bootstrap.min.js"></script>
@@ -78,13 +157,7 @@
     <script rel='javascript' src="/javascripts/lodash.min.js"></script>
     <script rel='javascript' src="../controllers/index.js"></script>
     <script type="text/javascript">
-      $(function () {
-        var options = {
-            cell_height: 80,
-            vertical_margin: 10
-        };
-        $('.grid-stack').gridstack(options);
-      });
+    
     </script>    
   </body>
 </html>

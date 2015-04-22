@@ -6,3 +6,17 @@ body {
 a {
   color: #00B7FF;
 }
+
+.panel-one {
+	display: none;
+}
+.panel-two {
+	display: none;
+}
+.panel-three {
+	display: none;
+}
+.panel-four {
+	display: none;
+}
+

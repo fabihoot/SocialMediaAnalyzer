@@ -72,6 +72,25 @@ function storeMediaElement(mediaElement){
 	allElements.push(mediaElement);
 }
 
+function createNewMediaElement(){
+	mediaElement = {
+			id: 		"",
+			text: 		"",
+			username: 	"",
+			date: 		"",
+			source: 	"",
+			lang: {
+				tokens: "",
+				types: 	""
+			},
+			sentiment: {
+				positive: "",
+				negative: "",
+				neutral:  ""
+			}
+		}
+}
+
 function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp*1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

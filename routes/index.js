@@ -6,7 +6,7 @@ var reddit = require('../models/reddit');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Social Media Analyzer', name: 'Fabi' });
+  res.render('index', { title: 'Social Media Analyzer'});
 });
 
 router.post('/twitter/', function(req, res, next) {	

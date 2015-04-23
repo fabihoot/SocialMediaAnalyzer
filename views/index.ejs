@@ -28,17 +28,20 @@
     </nav>
     
 		<div class="col-md-12">
-        <h1 class="col-md-offset-4 top-buffer"><%= title %></h1>    		
+        <h1 class="col-md-offset-4 top-buffer-lg"><%= title %></h1>    		
         <form class="form-vertical">   
-          <div class="input-group col-md-8 col-md-offset-2">          
-            
-            <input id="input-keyword" type="text" class="form-control" placeholder="Search for...">
+          <div class="input-group col-md-8 col-md-offset-2">
+            <input id="input-keyword" type="text" class="form-control" placeholder="Enter your desired keyword!">
             <span class="input-group-btn">
                <button id="submit-button" class="btn btn-default" type="button">Submit!</button>
-            </span>
+            </span>            
+          </div>
+          <div class="form-inline col-md-6 col-md-offset-2 top-buffer-sm">
+            <label for="input-count">Number of Posts:</label>
+            <input id="input-count" class="form-control" type="number" value="100"/>
           </div>
         </form>
-        <div class="row col-md-12 top-buffer">
+        <div class="row col-md-12 top-buffer-lg">
         </div>
 
          <div class="row">

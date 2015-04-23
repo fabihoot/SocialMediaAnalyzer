@@ -19,7 +19,10 @@ a {
 .panel-four {
 	display: none;
 }
-.top-buffer {
+.top-buffer-lg {
  margin-top: 50px;
+}
+.top-buffer-sm {
+ margin-top: 25px;
 }
 

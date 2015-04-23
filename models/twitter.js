@@ -9,9 +9,10 @@ var T = new Twit({
 var serializer = require('./serializer');
 
 
-getTwitterData = function (keyword, callback){  
+getTwitterData = function (keyword, count, callback){  
   var twitterElements = {"data" : []};
-  T.get('search/tweets', { q: keyword + ' since:2014-11-11', count: 50}, function(err, data, response) {
+  var c = count;
+  T.get('search/tweets', { q: keyword + ' since:2014-11-11', count: c}, function(err, data, response) {
   
     if(err!=null){
         console.log(err)

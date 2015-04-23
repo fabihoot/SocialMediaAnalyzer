@@ -10,35 +10,50 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/twitter/', function(req, res, next) {	
-	 var val = req.body.keyword;
-	 scrapeTwitter(val, res);
-	 //res.send('Twitter Endpoint reached'); 	 	
+	var val = {
+       keyword: req.body.keyword,
+       count:   req.body.count
+    }     
+	//scrapeTwitter(val, res);
+	//res.send('Twitter Endpoint reached'); 	 	
 });
 
-router.post('/facebook/', function(req, res, next) {	
-	 var val = req.body.keyword;
-	 //scrapeFacebook(val, res);
-	 //res.send('Facebook Endpoint reached'); 	 
+router.post('/facebook/', function(req, res, next) {
+    var val = {
+       keyword: req.body.keyword,
+       count:   req.body.count
+    }	
+    //scrapeFacebook(val, res);
+	//res.send('Facebook Endpoint reached'); 	 
 });
 
 router.post('/reddit/', function(req, res, next) {	
-	 var val = req.body.keyword;
-	 scrapeReddit(val, res);
-	 //res.send('Reddit Endpoint reached'); 	 
+	var val = {
+       keyword: req.body.keyword,
+       count:   req.body.count
+    }   
+	scrapeReddit(val, res);
+	//res.send('Reddit Endpoint reached'); 	 
 });
 
-scrapeTwitter = function(search_word, res){    
-    twitter.getTwitterData(search_word, function( data ){
+scrapeTwitter = function(val, res){
+    var search_word = val.keyword;
+    var count       = val.count;    
+    twitter.getTwitterData(search_word, count, function( data ){
     	res.send(data);
     });
    
 }
-scrapeReddit = function(search_word, res){
-    reddit.getRedditData(search_word, function( data ){
+scrapeReddit = function(val, res){
+    var search_word = val.keyword;
+    var count       = val.count;
+    reddit.getRedditData(search_word, count, function( data ){
     	res.send(data);
     });
 }
-scrapeFacebook = function(search_word, res){   
+scrapeFacebook = function(val, res){
+    var search_word = val.keyword;
+    var count       = val.count;
     facebook.getFacebookData(search_word, function( data ){
     	res.send(data);
     });

@@ -6,17 +6,17 @@ var serializer = require('./serializer');
 var https = require('https');
 
 
-initSiteOptions = function(search_word){
+initSiteOptions = function(search_word, count){
+  var c = count / 10;
   optionsgetFB = {
         host :    'graph.facebook.com',
         port :    443,
-        path :    '/search?q=' + search_word + '&type=page&limit=5&access_token=' +  my_access_token,
+        path :    '/search?q=' + search_word + '&type=page&limit=' + c + '&access_token=' +  my_access_token,
         method :  'GET'
   };
 }
 
-initFeedOptions = function(page_id){
-  console.log('init feed options');
+initFeedOptions = function(page_id){  
   optionsgetFBFeed  = {
         host :    'graph.facebook.com',
         port :    443,
@@ -25,8 +25,8 @@ initFeedOptions = function(page_id){
   };
 }
 
-getFacebookData = function(search_word, callback){   
-  initSiteOptions(search_word);
+getFacebookData = function(search_word, count, callback){   
+  initSiteOptions(search_word, count);
   var reqGetFB = https.request(optionsgetFB, function(res) {
       
       var content = '';   

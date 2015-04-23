@@ -14,7 +14,7 @@ router.post('/twitter/', function(req, res, next) {
        keyword: req.body.keyword,
        count:   req.body.count
     }     
-	//scrapeTwitter(val, res);
+	scrapeTwitter(val, res);
 	//res.send('Twitter Endpoint reached'); 	 	
 });
 
@@ -23,7 +23,7 @@ router.post('/facebook/', function(req, res, next) {
        keyword: req.body.keyword,
        count:   req.body.count
     }	
-    //scrapeFacebook(val, res);
+  scrapeFacebook(val, res);
 	//res.send('Facebook Endpoint reached'); 	 
 });
 
@@ -54,7 +54,7 @@ scrapeReddit = function(val, res){
 scrapeFacebook = function(val, res){
     var search_word = val.keyword;
     var count       = val.count;
-    facebook.getFacebookData(search_word, function( data ){
+    facebook.getFacebookData(search_word, count, function( data ){
     	res.send(data);
     });
 }

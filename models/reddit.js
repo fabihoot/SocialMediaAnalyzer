@@ -32,7 +32,7 @@ getPosts = function(count, keyword, callback){
   var children = [];
 
   function handleSlice(slice) {    
-    if (children.length >= count) {
+    if (children.length > count - 1) {
       callback(children);
       return;      
     }

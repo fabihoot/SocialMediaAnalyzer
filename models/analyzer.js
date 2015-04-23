@@ -1,17 +1,32 @@
 var sentiment = require('sentiment');
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer();
+var analyze = require('Sentimental').analyze;
 
 analyzeMediaElement = function(mediaElement){
-		tokenizeText(mediaElement.text);
-		var sent = sentiment(mediaElement.text);
-		//console.log("Sentiment Score / Comparison: " + sent.score + " / " + sent.comparison);	
+		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
+		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;
+		mediaElement.sentiment = sentimentAnalysis(mediaElement);
+		
+		return mediaElement;	
+}
+
+sentimentAnalysis = function(mediaElement){
+
+	//Sentiment analysis with node module 'sentiment'
+	var sent = sentiment(mediaElement.text);
+	//console.log("Sentiment Score / Comparison: " + sent.score + " / " + sent.comparison);
+
+	//Sentiment analysis with node module 'Sentimental'
+	var an = analyze(mediaElement.text); 	
+	return an;
 }
 
 tokenizeText = function(text){
 	var tokens = [];
 	tokens = tokenizer.tokenize(text);
-	stemTokens(tokens);	
+	//stemTokens(tokens);
+	return tokens;	
 }
 
 stemTokens = function(tokens){

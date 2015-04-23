@@ -8,8 +8,7 @@ var serializer = require('./serializer');
 getRedditData = function (keyword, callback) {
   var redditElements = {"data" : []};
     reddit.raw('http://www.reddit.com/search.json?q=' + keyword).get().then(function(result) {
-      var length = result.data.children.length;
-      console.log(length);
+      var length = result.data.children.length;    
 
       for(var i = 0; i < length; i++){
         var content = result.data.children[i].data;

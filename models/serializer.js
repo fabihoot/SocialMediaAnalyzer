@@ -19,14 +19,16 @@ function twitterData(content){
 	//text: 	data.text
 	//username: data.user.name
 	//date: 	data.created_at
-	var data = content.data; 	
-	mediaElement = {
-		id: 		data.id,
-		text: 		data.text,
-		username: 	data.user.name,
-		date: 		data.created_at,
-		source: 	content.id	
-	}	
+	
+	var data = content.data;
+	var mediaElement = createNewMediaElement();
+	
+	mediaElement.id 	  =	data.id;
+	mediaElement.text	  =	data.text;
+	mediaElement.username =	data.user.name;
+	mediaElement.date 	  =	data.created_at;
+	mediaElement.source   =	content.id;
+
 	storeMediaElement(mediaElement);
 	return mediaElement;
 }
@@ -36,14 +38,15 @@ function facebookData(content){
 	//text: 	data.message
 	//username: data.from.name
 	//date: 	data.created_time
-	var data = content.data; 	
-	mediaElement = {
-		id: 		data.id,
-		text: 		data.message,
-		username: 	data.from.name,
-		date: 		data.created_time,
-		source: 	content.id
-	}	
+	var data = content.data;
+	var mediaElement = createNewMediaElement(); 	
+	
+	mediaElement.id 		= data.id;
+	mediaElement.text		= data.message;
+	mediaElement.username	= data.from.name;
+	mediaElement.date 		= data.created_time;
+	mediaElement.source		= content.id;
+	
 	storeMediaElement(mediaElement);
 	return mediaElement;
 }
@@ -56,13 +59,15 @@ function redditData(content){
 
 	var data = content.data;	
 	var time = timeConverter(data.created);
-	mediaElement = {
-		id: 		data.id,
-		text: 		data.selftext,
-		username: 	data.author,
-		date: 		time,
-		source: 	content.id
-	}		
+	var mediaElement = createNewMediaElement();
+
+	
+	mediaElement.id 		= data.id;
+	mediaElement.text		= data.selftext;
+	mediaElement.username	= data.author;
+	mediaElement.date 		= time;
+	mediaElement.source 	= content.id;
+		
 	storeMediaElement(mediaElement);
 	return mediaElement;
 }
@@ -80,15 +85,15 @@ function createNewMediaElement(){
 			date: 		"",
 			source: 	"",
 			lang: {
-				tokens: "",
-				types: 	""
+				length: "",
+				tokens: [],
+				countTokens: "",
+				types: 	[],
+				countTypes: ""
 			},
-			sentiment: {
-				positive: "",
-				negative: "",
-				neutral:  ""
-			}
+			sentiment: {}
 		}
+		return mediaElement;
 }
 
 function timeConverter(UNIX_timestamp){

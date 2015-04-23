@@ -23,23 +23,25 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
      
     </nav>
     
-		<div>
-        	<h1 class="col-md-offset-4"><%= title %></h1>    		
-         <form class="form-vertical">          
-            <div class="form-group col-md-12">              
-              <input  id="input-keyword" type="text" class="form-control" placeholder="Enter your desired search term!">
-            </div>
-            <div class="form-group col-md-6 col-md-offset-4">            
-              <button id="submit-button" type="button" class="btn btn-lg btn-primary col-md-6">Submit</button>
-    	      </div>
-         </form>
+		<div class="col-md-12">
+        <h1 class="col-md-offset-4 top-buffer"><%= title %></h1>    		
+        <form class="form-vertical">   
+          <div class="input-group col-md-8 col-md-offset-2">          
+            
+            <input id="input-keyword" type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+               <button id="submit-button" class="btn btn-default" type="button">Submit!</button>
+            </span>
+          </div>
+        </form>
+        <div class="row col-md-12 top-buffer">
+        </div>
 
-
-         <div class="row pad-top">
+         <div class="row">
 
             <div id="result-container" class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-12 result-container">
 
@@ -129,25 +131,6 @@
 
 
         </div>
-         <!--
-        <div class="row">
-          <div class="col-lg-3" style="background-color: #eee;">         
-            <img src='./images/reddit-icon.png' class="img-thumbnail"/>
-            <a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div>
-        <div class="col-lg-1"></div>
-          <div class="col-lg-3" style="background-color: #eee;">         
-           <img src='./images/facebook-icon.png' class="img-thumbnail"/>
-           <a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div>
-        <div class="col-lg-1"></div>
-          <div class="col-lg-3" style="background-color: #eee;">
-            <img src='./images/twitter-icon.png' class="img-thumbnail"/>
-           <a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div>
-      </div>
-      !-->     
-
       </div>
     
     <!--Libs-->

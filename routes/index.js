@@ -32,13 +32,13 @@ router.post('/reddit/', function(req, res, next) {
        keyword: req.body.keyword,
        count:   req.body.count
     }   
-	scrapeReddit(val, res);
+	//scrapeReddit(val, res);
 	//res.send('Reddit Endpoint reached'); 	 
 });
 
 scrapeTwitter = function(val, res){
     var search_word = val.keyword;
-    var count       = val.count;    
+    var count       = val.count;     
     twitter.getTwitterData(search_word, count, function( data ){
     	res.send(data);
     });
@@ -53,7 +53,7 @@ scrapeReddit = function(val, res){
 }
 scrapeFacebook = function(val, res){
     var search_word = val.keyword;
-    var count       = val.count;
+    var count       = val.count;    
     facebook.getFacebookData(search_word, count, function( data ){
     	res.send(data);
     });

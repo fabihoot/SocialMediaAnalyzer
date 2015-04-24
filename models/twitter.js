@@ -12,7 +12,7 @@ var serializer = require('./serializer');
 getTwitterData = function (keyword, count, callback){  
   var twitterElements = {"data" : []};
   var c = count;
-  T.get('search/tweets', { q: keyword + ' since:2014-11-11', count: c}, function(err, data, response) {
+  T.get('search/tweets', { q: keyword + ' since:2014-11-11', count: c, language: 'en'}, function(err, data, response) {
   
     if(err!=null){
         console.log(err)

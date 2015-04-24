@@ -1,4 +1,4 @@
-var my_access_token = 'CAACEdEose0cBANhyBvljbwZBURZBH7lQSg4dgf02OQHumgsjwNrEtZBBKJN6pnlL4noR96glLDZCulpbC8VNpThf9MRcV9M2ox2Lb44L67ZB7luAY9olzpeaZBm92d81CDRtyRL1wOqp5Cola2a6C0ifCuMbM8YalD4Ttu2e7pBFXXaI7INgZCmQzrZBAHh9GJ3k6PrwZANCTJyf4ZAaMSZBY6vlvprjzzxAEMZD';
+var my_access_token = '';
 var id = 'facebook';
 var optionsgetFB;
 var optionsgetFBFeed;

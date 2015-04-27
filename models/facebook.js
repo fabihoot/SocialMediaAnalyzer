@@ -1,16 +1,18 @@
-var my_access_token = '';
+var my_access_token = 'CAACEdEose0cBAEEL8YcUxZBb0UHmz0FhRmvA9VpPKbw13bdzdZCnyeOVKxcZAC4ZClsD5feYSJk5SXJXwpRI4lS16Gv1ZBlAFrZAsB8VV52nZC6RIzjlE7Pg2Ua6qZAJmAwFElYErtxRkRZASN3IBYcit1XvHKFcxkHBPuJExk8SivZBAvkrAJQAl0E8zdvtAZA8iE1F8c21JxT5c9nJHngYsyGRPN9pvelIIMZD';
 var id = 'facebook';
 var optionsgetFB;
 var optionsgetFBFeed;
 var serializer = require('./serializer');       
 var https = require('https');
+var async = require('async');
 
 
-initSiteOptions = function(search_word, count){  
+initSiteOptions = function(search_word, count){
+var c = count / 10;  
   optionsgetFB = {
         host :    'graph.facebook.com',
         port :    443,
-        path :    '/search?q=' + search_word + '&type=page&limit=10' + '&access_token=' +  my_access_token + '&locale=en_US',
+        path :    '/search?q=' + search_word + '&type=page&limit='+ c + '&access_token=' +  my_access_token + '&locale=en_US',
         method :  'GET'
   };
 }
@@ -19,7 +21,7 @@ initFeedOptions = function(page_id){
   optionsgetFBFeed  = {
         host :    'graph.facebook.com',
         port :    443,
-        path:     '/'+ page_id + '/feed?limit=5&access_token=' +  my_access_token + '&locale=en_US',
+        path:     '/'+ page_id + '/feed?limit=10&access_token=' +  my_access_token + '&locale=en_US',
         method :  'GET'
   };
 }
@@ -51,18 +53,27 @@ getFacebookData = function(search_word, count, callback){
 }
 
 getFacebookFeed = function(array, callback) {
-     var facebookFeedEntries  = {"data" : []};
+    var facebookFeedEntries  = {"data" : []};
+    
+    async.times(array.length, function(n, next){
    
-    for(var i = 0;i<array.length;i++){    
-      requestFacebookFeedEntries( array[i].id, function( data ){
-        facebookFeedEntries.data = facebookFeedEntries.data.concat(data);
-        if(i==array.length-1){
-         callback(facebookFeedEntries);
-         }  
-      });
-           
-      
-    }
+     requestFacebookFeedEntries( array[n].id, function( err, entry ){ 
+      next( err, entry );
+     })
+
+    }, function(err, entries) {
+      console.log(err);
+
+      for (var i = 0;i<entries.length;i++){
+        for(var j = 0;j<entries[i].length;j++){
+
+          facebookFeedEntries.data.push(entries[i][j]);
+          
+        }       
+      }      
+     
+      callback(facebookFeedEntries);
+    });
 
 }
 
@@ -89,9 +100,8 @@ requestFacebookFeedEntries = function(page_id, callback){
               facebookElements.push(facebookElement);
              
               
-            }
-            console.log(facebookElements.length);
-            callback(facebookElements);  
+            }           
+            callback(null, facebookElements);  
             });
         });
 

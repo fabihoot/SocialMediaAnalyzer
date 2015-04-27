@@ -1,4 +1,4 @@
-var my_access_token = 'CAACEdEose0cBAEEL8YcUxZBb0UHmz0FhRmvA9VpPKbw13bdzdZCnyeOVKxcZAC4ZClsD5feYSJk5SXJXwpRI4lS16Gv1ZBlAFrZAsB8VV52nZC6RIzjlE7Pg2Ua6qZAJmAwFElYErtxRkRZASN3IBYcit1XvHKFcxkHBPuJExk8SivZBAvkrAJQAl0E8zdvtAZA8iE1F8c21JxT5c9nJHngYsyGRPN9pvelIIMZD';
+var my_access_token = '';
 var id = 'facebook';
 var optionsgetFB;
 var optionsgetFBFeed;
@@ -94,8 +94,8 @@ requestFacebookFeedEntries = function(page_id, callback){
               var facebookElement = serializer.createMediaElement({
                                           id: 'facebook',
                                           data: array[i]
-                                      });          
-              //TODO: send response to client
+                                      });        
+             
              
               facebookElements.push(facebookElement);
              

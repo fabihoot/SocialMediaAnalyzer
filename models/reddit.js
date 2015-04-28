@@ -32,13 +32,13 @@ getPosts = function(count, keyword, callback){
   var children = [];
 
   function handleSlice(slice) {    
-    if (children.length > count - 1) {
+    if (children.length >= count - 1) {
       callback(children);
       return;      
     }
 
     for (var i = 0; i < slice.children.length;i++){
-       if (children.length <= count) {
+       if (children.length < count) {
         children = children.concat(slice.children[i]);
        }
     }    

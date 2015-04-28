@@ -32,7 +32,7 @@ router.post('/reddit/', function(req, res, next) {
        keyword: req.body.keyword,
        count:   req.body.count
     }   
-	//scrapeReddit(val, res);
+	scrapeReddit(val, res);
 	//res.send('Reddit Endpoint reached'); 	 
 });
 

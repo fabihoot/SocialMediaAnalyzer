@@ -23,15 +23,21 @@
     console.log("keyword: " + searchTerm);
  
     $.post('/twitter/', { keyword: searchTerm, count: postCount }, function(data){
-       console.log('Server responded with : ', data);
+      console.log('Server responded with : ', data);
+      var content = data.data;
+      SocialMediaAnalyzer.Search.setTwitterPosts(content);
     });
  
     $.post('/facebook/', { keyword: searchTerm, count: postCount }, function(data){
        console.log('Server responded with : ', data);
+       var content = data.data;
+       SocialMediaAnalyzer.Search.setFacebookPosts(content);
     });
  
      $.post('/reddit/', { keyword: searchTerm, count: postCount }, function(data){
        console.log('Server responded with : ', data);
+       var content = data.data;
+       SocialMediaAnalyzer.Search.setRedditPosts(content);
     });
  
   });

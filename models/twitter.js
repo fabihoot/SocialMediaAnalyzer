@@ -23,7 +23,7 @@ getTwitterData = function (keyword, count, callback){
                                               id: 'twitter',
                                               data: data.statuses[i]
                                           });
-             //TODO: send response to client
+             
              twitterElements.data[i] = twitterElement;             
         }
         callback(twitterElements); 

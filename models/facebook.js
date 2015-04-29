@@ -134,9 +134,7 @@ requestFacebookFeedEntries = function(page_id, callback){
                                           data: array[i]
                                       });        
              
-             
-              facebookElements.push(facebookElement);
-             
+              if (facebookElement != null) facebookElements.push(facebookElement);            
               
             }           
             callback(null, facebookElements);  

@@ -45,6 +45,7 @@ function facebookData(content){
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;
 	mediaElement.date 		= data.created_time;
+	mediaElement.type 		= data.type;
 	mediaElement.source		= content.id;
 	
 	storeMediaElement(mediaElement);
@@ -84,7 +85,9 @@ function createNewMediaElement(){
 			username: 	"",
 			date: 		"",
 			source: 	"",
+			type: 		"",
 			lang: {
+				probLang: "",
 				length: "",
 				tokens: [],
 				countTokens: "",

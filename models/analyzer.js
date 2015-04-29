@@ -2,17 +2,21 @@ var sentiment = require('sentiment');
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer();
 var analyze = require('Sentimental').analyze;
+var lngDetector = new (require('languagedetect'));
 
 analyzeMediaElement = function(mediaElement){
 	
-	if(mediaElement.text != "" && mediaElement.text != undefined){
-
+	if(mediaElement.hasOwnProperty('text') && mediaElement.text != "" && mediaElement.text != undefined ){
+		
 		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
 		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;
+		mediaElement.lang.probLang = checkLanguage(mediaElement.text);
 		mediaElement.sentiment = sentimentAnalysis(mediaElement);
 		
+		return mediaElement;
+	} else {
+		return null;
 	}	
-	return mediaElement;
 }
 
 sentimentAnalysis = function(mediaElement){	
@@ -26,7 +30,7 @@ sentimentAnalysis = function(mediaElement){
 }
 
 tokenizeText = function(text){
-	var tokens = [];
+	var tokens = [];	
 	tokens = tokenizer.tokenize(text);
 	//stemTokens(tokens);
 	return tokens;	
@@ -37,6 +41,11 @@ stemTokens = function(tokens){
 		tokens[i] = natural.PorterStemmer.stem(tokens[i]);		
 	}
 
+}
+
+checkLanguage = function(text){
+	var problang = lngDetector.detect(text,1);
+	return problang[0];
 }
 
 exports.analyzeMediaElement = analyzeMediaElement;

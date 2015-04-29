@@ -29,7 +29,13 @@ SocialMediaAnalyzer.Search = (function() {
          'li':{
            'content<-object':{
               'span':function(a){
-                return this.text;
+                if(this.text.length > 100){
+                  var temp = this.text.substring(0, 100);
+                  temp = temp + "...";
+                  return temp;
+                } else {
+                  return this.text;                  
+                }
               }
             }
           }

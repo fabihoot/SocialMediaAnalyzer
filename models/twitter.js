@@ -7,10 +7,42 @@ var T = new Twit({
   , access_token_secret:  'nXYrEgYtq3yBHJ9j6Oh44fgd6oEugOqih352VrNzcUkHu'
 });
 var serializer = require('./serializer');
+var async = require('async');
 
 
 getTwitterData = function (keyword, count, callback){  
   var twitterElements = {"data" : []};
+  var c = count;
+  var resultData = null;
+  async.whilst(
+    function() {    
+        if(resultData == null){          
+           return true;
+        } else {
+          for(var i = 0;i<resultData.length; i++){
+            twitterElements.data.push(resultData[i]);
+            if (twitterElements.data.length >= count){
+              return false;
+            }
+          }          
+          return true;          
+        }
+    },
+    function( next ) {
+      requestTweets(keyword, count, function( data ){
+          resultData = data;
+          next(null, data);  
+      });   
+    },
+    function( err, result ) {      
+      callback( twitterElements );      
+    }
+  );
+  
+}
+
+requestTweets = function(keyword, count, callback){
+  var tweets = [];
   var c = count;
   T.get('search/tweets', { q: keyword + ' since:2014-11-11', count: c, language: 'en'}, function(err, data, response) {
   
@@ -23,10 +55,9 @@ getTwitterData = function (keyword, count, callback){
                                               id: 'twitter',
                                               data: data.statuses[i]
                                           });
-             
-             twitterElements.data[i] = twitterElement;             
+             if (twitterElement != null) tweets.push(twitterElement);             
         }
-        callback(twitterElements); 
+        callback(tweets); 
     }      
   });
 }

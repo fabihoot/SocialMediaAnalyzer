@@ -4,13 +4,14 @@ var tokenizer = new natural.WordTokenizer();
 var analyze = require('Sentimental').analyze;
 var lngDetector = new (require('languagedetect'));
 
-analyzeMediaElement = function(mediaElement){
-	
+analyzeMediaElement = function(mediaElement){	
 
 	if(mediaElement.hasOwnProperty('text') && mediaElement.text != "" && mediaElement.text != undefined ){
+
+		//console.log("Source is " + mediaElement.source);		
+		//console.log("Text is " + mediaElement.text);
 		mediaElement.lang.probLang = checkLanguage(mediaElement.text);
-		 console.log("Language is " + mediaElement.lang.probLang);
-		//console.log("Source is " + mediaElement.source);
+		//console.log("Language is " + mediaElement.lang.probLang);
 		//console.log("Type is " + mediaElement.type);
 		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
 		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;		
@@ -48,7 +49,7 @@ stemTokens = function(tokens){
 
 }
 
-checkLanguage = function(text){
+checkLanguage = function(text){	
 	var problang = lngDetector.detect(text,1);
 	if(problang.length > 0){
 		return problang[0][0];

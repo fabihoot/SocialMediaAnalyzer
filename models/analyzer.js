@@ -6,17 +6,22 @@ var lngDetector = new (require('languagedetect'));
 
 analyzeMediaElement = function(mediaElement){
 	
+
 	if(mediaElement.hasOwnProperty('text') && mediaElement.text != "" && mediaElement.text != undefined ){
-		
-		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
-		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;
 		mediaElement.lang.probLang = checkLanguage(mediaElement.text);
+		//console.log("Language is " + mediaElement.lang.probLang);
+		//console.log("Source is " + mediaElement.source);
+		//console.log("Type is " + mediaElement.type);
+		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
+		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;		
 		mediaElement.sentiment = sentimentAnalysis(mediaElement);
-		
-		return mediaElement;
+		if(mediaElement.lang.probLang != 'english'){			
+			return null;
+		} 		
 	} else {
 		return null;
 	}	
+	return mediaElement;
 }
 
 sentimentAnalysis = function(mediaElement){	
@@ -45,7 +50,7 @@ stemTokens = function(tokens){
 
 checkLanguage = function(text){
 	var problang = lngDetector.detect(text,1);
-	return problang[0];
+	return problang[0][0];
 }
 
 exports.analyzeMediaElement = analyzeMediaElement;

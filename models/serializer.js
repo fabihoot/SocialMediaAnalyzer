@@ -1,6 +1,6 @@
 var analyzer = require('./analyzer');
 var mediaElement = {};
-var allElements = [];
+
 
 function createMediaElement(object){
 	var element = {};
@@ -27,10 +27,10 @@ function twitterData(content){
 	mediaElement.text	  =	data.text;
 	mediaElement.username =	data.user.name;
 	mediaElement.date 	  =	data.created_at;
+	mediaElement.type 	  = "text";
 	mediaElement.source   =	content.id;
-
-	storeMediaElement(mediaElement);
-	return mediaElement;
+	
+	return storeMediaElement(mediaElement);
 }
 
 function facebookData(content){
@@ -46,10 +46,9 @@ function facebookData(content){
 	mediaElement.username	= data.from.name;
 	mediaElement.date 		= data.created_time;
 	mediaElement.type 		= data.type;
-	mediaElement.source		= content.id;
+	mediaElement.source		= content.id;	
 	
-	storeMediaElement(mediaElement);
-	return mediaElement;
+	return storeMediaElement(mediaElement);
 }
 
 function redditData(content){
@@ -67,15 +66,16 @@ function redditData(content){
 	mediaElement.text		= data.selftext;
 	mediaElement.username	= data.author;
 	mediaElement.date 		= time;
+	mediaElement.type 		= "text";
 	mediaElement.source 	= content.id;
 		
-	storeMediaElement(mediaElement);
-	return mediaElement;
+	
+	return storeMediaElement(mediaElement);
 }
 
 function storeMediaElement(mediaElement){
-	analyzer.analyzeMediaElement(mediaElement);
-	allElements.push(mediaElement);
+	var analyzedMediaElement = analyzer.analyzeMediaElement(mediaElement);
+	return analyzedMediaElement;
 }
 
 function createNewMediaElement(){

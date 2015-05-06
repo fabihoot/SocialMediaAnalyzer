@@ -1,4 +1,4 @@
-var my_access_token = '';
+var my_access_token = 'CAACEdEose0cBAJXNR813zSCZCynG5XBbZAee5R4YSZB4Gqi7Kqdx26QOhwo1yJLz1tQjvBgZBQLUvLezB4ZA8f91AgBKTrcxNqrOLz9dfgwsziXC7yLZAnZCSucZB2e7e3U4HmCwCZCHE15DclEGAb4VBZBJQSPflLqTfZC79KswX5hvRilPhov5DNzQM307BIl1t1UMuUoZAllNqhoxzZCHLaZBd6p3HS2fNR2ZC0ZD';
 var id = 'facebook';
 var optionsgetFB;
 var optionsgetFBFeed;
@@ -49,8 +49,8 @@ getFacebookData = function(search_word, count, callback){
         if(resultData == null){          
            return true;
         } else {
-          for(var i = 0;i<resultData.data.length; i++){
-            facebookFeedEntries.data.push(resultData.data[i]);
+          for(var i = 0;i<resultData.length; i++){            
+            facebookFeedEntries.data.push(resultData[i]);           
             if (facebookFeedEntries.data.length >= count){
               return false;
             }
@@ -74,7 +74,7 @@ getFacebookData = function(search_word, count, callback){
   
           res.on('end', function(data) { 
 
-            var formatedJSON = JSON.parse(content);            
+            var formatedJSON = JSON.parse(content);                              
             setNextLink(formatedJSON.paging.next);
 
             getFacebookFeeds(formatedJSON.data, function( data ){
@@ -100,7 +100,7 @@ getFacebookData = function(search_word, count, callback){
 }
 
 getFacebookFeeds = function(array, callback) {
-    var facebookFeedEntries  = {"data" : []};
+    var facebookFeedEntries  = [];
     
     async.times(array.length, function(n, next){
    
@@ -108,7 +108,7 @@ getFacebookFeeds = function(array, callback) {
       next( err, entry );
      })
 
-    }, function(err, entries) {      
+    }, function(err, entries) {          
       formatMappingResponse(entries, facebookFeedEntries);     
       callback(facebookFeedEntries);
     });
@@ -134,7 +134,7 @@ requestFacebookFeedEntries = function(page_id, callback){
                                           data: array[i]
                                       });        
              
-              if (facebookElement != null) facebookElements.push(facebookElement);            
+              if (facebookElement != null) facebookElements.push(facebookElement);                   
               
             }           
             callback(null, facebookElements);  
@@ -143,8 +143,8 @@ requestFacebookFeedEntries = function(page_id, callback){
 
     reqGetFBFeed.end();
     reqGetFBFeed.on('error', function(e) {
-      callback(e, null);      
       console.error(e);
+      callback(e, null);      
     });
    
 }
@@ -153,8 +153,9 @@ formatMappingResponse = function ( array, arrayToPush ){
 
 for (var i = 0;i<array.length;i++){
         for(var j = 0;j<array[i].length;j++){
-
-          arrayToPush.data.push(array[i][j]);
+          if(array[i].length>0){
+            arrayToPush.push(array[i][j]);            
+          }
           
         }       
 }

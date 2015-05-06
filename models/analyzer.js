@@ -50,7 +50,11 @@ stemTokens = function(tokens){
 
 checkLanguage = function(text){
 	var problang = lngDetector.detect(text,1);
-	return problang[0][0];
+	if(problang.length > 0){
+		return problang[0][0];
+	} else {
+		return "Could not identify language";
+	}
 }
 
 exports.analyzeMediaElement = analyzeMediaElement;

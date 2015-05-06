@@ -38,6 +38,7 @@ router.post('/reddit/', function(req, res, next) {
 
 router.post('/facebook-login/', function(req, res, next) { 
   facebook.setAccessToken(req.body.token);
+  res.send('success');
 });
 
 scrapeTwitter = function(val, res){

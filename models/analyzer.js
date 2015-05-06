@@ -9,7 +9,7 @@ analyzeMediaElement = function(mediaElement){
 
 	if(mediaElement.hasOwnProperty('text') && mediaElement.text != "" && mediaElement.text != undefined ){
 		mediaElement.lang.probLang = checkLanguage(mediaElement.text);
-		//console.log("Language is " + mediaElement.lang.probLang);
+		 console.log("Language is " + mediaElement.lang.probLang);
 		//console.log("Source is " + mediaElement.source);
 		//console.log("Type is " + mediaElement.type);
 		mediaElement.lang.tokens = tokenizeText(mediaElement.text);

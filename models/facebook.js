@@ -167,4 +167,9 @@ setNextLink = function(link){
 getNextLink = function(){
   return nextLink;
 }
+setAccessToken = function(access_token){
+  console.log("init: access token set");
+  my_access_token = access_token;
+}
 exports.getFacebookData = getFacebookData;
+exports.setAccessToken = setAccessToken;

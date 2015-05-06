@@ -36,6 +36,10 @@ router.post('/reddit/', function(req, res, next) {
 	//res.send('Reddit Endpoint reached'); 	 
 });
 
+router.post('/facebook-login/', function(req, res, next) { 
+  facebook.setAccessToken(req.body.token);
+});
+
 scrapeTwitter = function(val, res){
     var search_word = val.keyword;
     var count       = val.count;     

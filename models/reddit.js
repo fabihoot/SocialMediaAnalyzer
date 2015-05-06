@@ -5,7 +5,7 @@ var reddit = new Snoocore({
                       });
 var serializer = require('./serializer');
 var async = require('async');
-var nextLink = ""; 
+var nextRedditLink = ""; 
 var urlChanged = false;
 
 getRedditData = function (keyword, count, callback) {
@@ -64,20 +64,20 @@ requestPosts = function(count, keyword, callback){
   if(!urlChanged){   
     var params = {limit: count}
   } else {   
-    var params = {limit: count, after: getNextLink()}; 
+    var params = {limit: count, after: getNextRedditLink()}; 
   }
   reddit.raw('http://www.reddit.com/search.json?q=' + keyword).get(params).then(function(data){
-    setNextLink(data.data.after);
+    setNextRedditLink(data.data.after);
     changeURL();
     callback(data);
   });
 }
 
-setNextLink = function(link){ 
-  nextLink = link;
+setNextRedditLink = function(link){ 
+  nextRedditLink = link;
 }
-getNextLink = function(){
-  return nextLink;
+getNextRedditLink = function(){
+  return nextRedditLink;
 }
 changeURL = function(){
   urlChanged = true;

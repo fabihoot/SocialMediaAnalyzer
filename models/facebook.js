@@ -5,10 +5,10 @@ var optionsgetFBFeed;
 var serializer = require('./serializer');       
 var https = require('https');
 var async = require('async');
-var nextLink = '';
+var nextFBLink = '';
 
 
-initSiteOptions = function(search_word, count, optionsChanged, nextLink){
+initSiteOptions = function(search_word, count, optionsChanged){
   if(!optionsChanged){
     
       optionsgetFB = {
@@ -22,10 +22,10 @@ initSiteOptions = function(search_word, count, optionsChanged, nextLink){
     optionsgetFB = {
             host :    'graph.facebook.com',              
             port :    443,
-            path :    getNextLink(),
+            path :    getNextFBLink(),
             method :  'GET'
     };
-  }
+  } 
 }
 
 initFeedOptions = function(page_id){  
@@ -62,7 +62,7 @@ getFacebookData = function(search_word, count, callback){
 
     },
     function( next ) {    
-    initSiteOptions(search_word, count, siteOptionsChanged, nextLink);
+    initSiteOptions(search_word, count, siteOptionsChanged);
     var reqGetFB = https.request(optionsgetFB, function(res) {
         
         var content = '';   
@@ -72,10 +72,9 @@ getFacebookData = function(search_word, count, callback){
                      
         });
   
-          res.on('end', function(data) { 
-
+          res.on('end', function(data) {             
             var formatedJSON = JSON.parse(content);                              
-            setNextLink(formatedJSON.paging.next);
+            setNextFBLink(formatedJSON.paging.next);
 
             getFacebookFeeds(formatedJSON.data, function( data ){
 
@@ -89,7 +88,7 @@ getFacebookData = function(search_word, count, callback){
        
       reqGetFB.end();
       reqGetFB.on('error', function(e) {
-          console.error(e);
+          console.error("Error FB Sites " + e);
       });
   
     },
@@ -128,13 +127,16 @@ requestFacebookFeedEntries = function(page_id, callback){
             res.on('end', function() {
             var entriesForOneFeed = JSON.parse(content);            
             var array = entriesForOneFeed.data;           
-            for (var i in array){                             
+            for (var i in array){
+
               var facebookElement = serializer.createMediaElement({
                                           id: 'facebook',
                                           data: array[i]
                                       });        
              
-              if (facebookElement != null) facebookElements.push(facebookElement);                   
+              if (facebookElement != null){
+                facebookElements.push(facebookElement);    
+              }                
               
             }           
             callback(null, facebookElements);  
@@ -143,7 +145,7 @@ requestFacebookFeedEntries = function(page_id, callback){
 
     reqGetFBFeed.end();
     reqGetFBFeed.on('error', function(e) {
-      console.error(e);
+      console.error("Error FB Feed " + e);
       callback(e, null);      
     });
    
@@ -155,20 +157,18 @@ for (var i = 0;i<array.length;i++){
         for(var j = 0;j<array[i].length;j++){
           if(array[i].length>0){
             arrayToPush.push(array[i][j]);            
-          }
-          
+          }          
         }       
 }
   
 }
-setNextLink = function(link){
-  nextLink = link;
+setNextFBLink = function(link){
+  nextFBLink = link;
 }
-getNextLink = function(){
-  return nextLink;
+getNextFBLink = function(){
+  return nextFBLink;
 }
-setAccessToken = function(access_token){
-  console.log("init: access token set");
+setAccessToken = function(access_token){ 
   my_access_token = access_token;
 }
 exports.getFacebookData = getFacebookData;

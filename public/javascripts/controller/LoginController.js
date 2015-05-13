@@ -4,12 +4,15 @@ SocialMediaAnalyzer.LoginController = (function() {
 	init = function() {
 		console.log("init LoginController.js");
 		if (typeof(FB) != 'undefined' && FB != null ) {
-		    fbAsyncInit();
+        $.post('/request-id/', function(data){          
+		      fbAsyncInit(data);
+        });
 		}		
 	},
-	fbAsyncInit = function() {
+  
+	fbAsyncInit = function(data) {
   		FB.init({
-    	appId      : '',
+    	appId      : data,
     	cookie     : true,  // enable cookies to allow the server to access 
     	                    // the session
     	xfbml      : true,  // parse social plugins on this page

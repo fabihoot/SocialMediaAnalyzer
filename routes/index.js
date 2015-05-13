@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var twitter = require('../models/twitter');
 var facebook = require('../models/facebook');
-var reddit = require('../models/reddit');	
+var reddit = require('../models/reddit');
+var utils = require('../models/utils');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -39,6 +40,12 @@ router.post('/reddit/', function(req, res, next) {
 router.post('/facebook-login/', function(req, res, next) { 
   facebook.setAccessToken(req.body.token);
   res.send('success');
+});
+
+router.post('/request-id/', function(req, res, next) { 
+  utils.getAppId(function( id ){
+    res.send(id);
+  })
 });
 
 scrapeTwitter = function(val, res){

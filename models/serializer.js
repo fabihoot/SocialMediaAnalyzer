@@ -29,6 +29,9 @@ function twitterData(content){
 	mediaElement.date 	  =	data.created_at;
 	mediaElement.type 	  = "text";
 	mediaElement.source   =	content.id;
+
+	mediaElement.votes.retweets = data.retweet_count;
+	mediaElement.votes.favorites = data.favorite_count;
 	
 	return storeMediaElement(mediaElement);
 }
@@ -46,7 +49,10 @@ function facebookData(content){
 	mediaElement.username	= data.from.name;
 	mediaElement.date 		= data.created_time;
 	mediaElement.type 		= data.type;
-	mediaElement.source		= content.id;	
+	mediaElement.source		= content.id;
+	
+	if(data.hasOwnProperty('likes')) mediaElement.votes.likes = data.likes.data.length;	
+	if(data.hasOwnProperty('shares')) mediaElement.votes.shares = data.shares.count;
 	
 	return storeMediaElement(mediaElement);
 }
@@ -67,8 +73,10 @@ function redditData(content){
 	mediaElement.username	= data.author;
 	mediaElement.date 		= time;
 	mediaElement.type 		= "text";
-	mediaElement.source 	= content.id;
-		
+	mediaElement.source 	= content.id;	
+	
+	mediaElement.votes.upvotes = data.ups;
+	mediaElement.votes.downvotes = data.downs;
 	
 	return storeMediaElement(mediaElement);
 }
@@ -94,7 +102,15 @@ function createNewMediaElement(){
 				types: 	[],
 				countTypes: ""
 			},
-			sentiment: {}
+			sentiment: {},
+			votes: {
+				likes: "",
+				shares: "",
+				retweets: "",
+				favorites: "",
+				upvotes: "",
+				downvotes: ""
+			}
 		}
 		return mediaElement;
 }

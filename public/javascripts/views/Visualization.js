@@ -6,7 +6,7 @@ SocialMediaAnalyzer.Visualization = (function() {
 	},
 
 	createVoteVisualization = function(dataset){
-		d3.select("body").selectAll("div")
+		d3.select("body").selectAll("chart")
     	  .data(dataset)
     	  .enter()
     	  .append("div")
@@ -17,7 +17,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     	  });
 	};
 
-
+that.createVoteVisualization = createVoteVisualization;
 that.init = init;
 return that;
 }());

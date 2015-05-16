@@ -5,7 +5,7 @@ var async = require('async');
 var graph = require('fbgraph');
 
 setAccessToken = function(access_token){ 
-  my_access_token = access_token;
+  graph.setAccessToken(access_token);
 }
 
 getFacebookData = function(search_word, count, callback){
@@ -17,7 +17,7 @@ getFacebookData = function(search_word, count, callback){
 getFBPages = function(search_word, count, callback){
   var facebookFeedEntries  = {"data" : []};
   var resultData = null;
-  var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&access_token=' +  my_access_token + '&locale=en_US';
+  var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&locale=en_US';
   var options = {
       timeout:  3000,
       pool:     { maxSockets:  Infinity },
@@ -30,8 +30,7 @@ getFBPages = function(search_word, count, callback){
   if(resultData == null){          
      return true;
   } else {
-    for(var i = 0;i<resultData.length; i++){
-    console.log(resultData[i]);            
+    for(var i = 0;i<resultData.length; i++){              
       facebookFeedEntries.data.push(resultData[i]);           
       if (facebookFeedEntries.data.length >= count){        
         return false;
@@ -44,7 +43,8 @@ getFBPages = function(search_word, count, callback){
   function( next ) {
   graph
     .setOptions(options)
-    .get(path, function(err, res) {         
+    .get(path, function(err, res) {
+      if (err) console.log(err);         
       path = res.paging.next;     
        getFBFeedEntries(res.data, function( entries ){        
          resultData = entries;
@@ -77,20 +77,20 @@ getFBFeedEntries = function(array, callback){
 }
 
 getFBFeedEntry = function(page_id, callback){
-  console.log(page_id);
-
-  graph  
-  .get('/'+ page_id + '/feed?limit=1&access_token=' +  my_access_token, function(err, res) { 
   
-  var element = res.data[0];
+  graph.get('/'+ page_id + '/feed?limit=1', function(err, res) { 
+  if (err) console.log(err);
   if(res.data.length > 0){
     var facebookElement = serializer.createMediaElement({
                                  id: 'facebook',
-                                 data: element
+                                 data: res.data[0]
                              });        
     
      if (facebookElement != null){
+      getLikes(facebookElement.id, function( likes ){
+       facebookElement.votes.likes = likes;
        callback(null, facebookElement);   
+      });
      } else {
        callback(null, null);
      }
@@ -100,9 +100,11 @@ getFBFeedEntry = function(page_id, callback){
     
            
   });
-
-
-
+}
+getLikes = function(post_id, callback){
+  graph.get('/' + post_id + '/likes?summary=true', function(err, res) { 
+    callback(res.summary.total_count);
+  }); 
 }
 exports.getFacebookData = getFacebookData;
 exports.setAccessToken = setAccessToken;

@@ -1,175 +1,108 @@
 var my_access_token = '';
-var id = 'facebook';
-var optionsgetFB;
-var optionsgetFBFeed;
 var serializer = require('./serializer');       
 var https = require('https');
 var async = require('async');
-var nextFBLink = '';
+var graph = require('fbgraph');
 
-
-initSiteOptions = function(search_word, count, optionsChanged){
-  if(!optionsChanged){
-    
-      optionsgetFB = {
-            host :    'graph.facebook.com',
-            port :    443,
-            path :    '/search?q=' + search_word + '&type=page&limit='+ count + '&access_token=' +  my_access_token + '&locale=en_US',
-            method :  'GET'
-    };
-  
-  } else {
-    optionsgetFB = {
-            host :    'graph.facebook.com',              
-            port :    443,
-            path :    getNextFBLink(),
-            method :  'GET'
-    };
-  } 
-}
-
-initFeedOptions = function(page_id){  
-  optionsgetFBFeed  = {
-        host :    'graph.facebook.com',
-        port :    443,
-        path:     '/'+ page_id + '/feed?limit=1&access_token=' +  my_access_token,
-        method :  'GET'
-  };
+setAccessToken = function(access_token){ 
+  my_access_token = access_token;
 }
 
 getFacebookData = function(search_word, count, callback){
- 
-  var facebookFeedEntries  = {"data" : []};
-  var resultData = null;
-  var siteOptionsChanged = false;
-  
-  async.whilst(
-    function() {
-    
-        if(resultData == null){          
-           return true;
-        } else {
-          for(var i = 0;i<resultData.length; i++){            
-            facebookFeedEntries.data.push(resultData[i]);           
-            if (facebookFeedEntries.data.length >= count){
-              return false;
-            }
-          }                
-          siteOptionsChanged = true;               
-          return true;
-          
-        }
-
-    },
-    function( next ) {    
-    initSiteOptions(search_word, count, siteOptionsChanged);
-    var reqGetFB = https.request(optionsgetFB, function(res) {
-        
-        var content = '';   
-        res.on('data', function(data) {
-                  
-            content += data;   
-                     
-        });
-  
-          res.on('end', function(data) {             
-            var formatedJSON = JSON.parse(content);                              
-            setNextFBLink(formatedJSON.paging.next);
-
-            getFacebookFeeds(formatedJSON.data, function( data ){
-
-              resultData = data;
-              next(null, data);
-
-            });
-          });
-  
-      });   
-       
-      reqGetFB.end();
-      reqGetFB.on('error', function(e) {
-          console.error("Error FB Sites " + e);
-      });
-  
-    },
-    function( err, result ) {
-      callback( facebookFeedEntries );      
-    }
-  );
+  getFBPages(search_word, count, function(result){    
+    callback(result);
+  });
 }
 
-getFacebookFeeds = function(array, callback) {
-    var facebookFeedEntries  = [];
+getFBPages = function(search_word, count, callback){
+  var facebookFeedEntries  = {"data" : []};
+  var resultData = null;
+  var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&access_token=' +  my_access_token + '&locale=en_US';
+  var options = {
+      timeout:  3000,
+      pool:     { maxSockets:  Infinity },
+      headers:  { connection:  "keep-alive" }
+  };   
+    
+  async.whilst(
+  function() {
+
+  if(resultData == null){          
+     return true;
+  } else {
+    for(var i = 0;i<resultData.length; i++){
+    console.log(resultData[i]);            
+      facebookFeedEntries.data.push(resultData[i]);           
+      if (facebookFeedEntries.data.length >= count){        
+        return false;
+      }
+    }      
+    return true;    
+  }
+
+  },
+  function( next ) {
+  graph
+    .setOptions(options)
+    .get(path, function(err, res) {         
+      path = res.paging.next;     
+       getFBFeedEntries(res.data, function( entries ){        
+         resultData = entries;
+         next(null, entries);
+      });
+    }); 
+
+  },
+  function( err, result ) {    
+    callback( facebookFeedEntries );      
+  }); 
+
+}
+
+getFBFeedEntries = function(array, callback){
     
     async.times(array.length, function(n, next){
    
-     requestFacebookFeedEntries( array[n].id, function( err, entry ){ 
+     getFBFeedEntry( array[n].id, function( err, entry ){ 
       next( err, entry );
      })
 
-    }, function(err, entries) {          
-      formatMappingResponse(entries, facebookFeedEntries);     
-      callback(facebookFeedEntries);
+    }, function(err, entries) {
+    var array = [];
+    for(var i = 0;i<entries.length;i++){
+      if(entries[i] != null) array.push(entries[i]);
+    }     
+      callback(array);
     });
-
 }
 
-requestFacebookFeedEntries = function(page_id, callback){
-        var facebookElements = [];             
-        initFeedOptions(page_id);
-        var reqGetFBFeed = https.request(optionsgetFBFeed, function(res) {
-            var content = ''; 
+getFBFeedEntry = function(page_id, callback){
+  console.log(page_id);
 
-            res.on('data', function(data) { 
-            content += data; 
-            });
-
-            res.on('end', function() {
-            var entriesForOneFeed = JSON.parse(content);            
-            var array = entriesForOneFeed.data;           
-            for (var i in array){
-
-              var facebookElement = serializer.createMediaElement({
-                                          id: 'facebook',
-                                          data: array[i]
-                                      });        
-             
-              if (facebookElement != null){
-                facebookElements.push(facebookElement);    
-              }                
-              
-            }           
-            callback(null, facebookElements);  
-            });
-        });
-
-    reqGetFBFeed.end();
-    reqGetFBFeed.on('error', function(e) {
-      console.error("Error FB Feed " + e);
-      callback(e, null);      
-    });
-   
-}
-
-formatMappingResponse = function ( array, arrayToPush ){
-
-for (var i = 0;i<array.length;i++){
-        for(var j = 0;j<array[i].length;j++){
-          if(array[i].length>0){
-            arrayToPush.push(array[i][j]);            
-          }          
-        }       
-}
+  graph  
+  .get('/'+ page_id + '/feed?limit=1&access_token=' +  my_access_token, function(err, res) { 
   
-}
-setNextFBLink = function(link){
-  nextFBLink = link;
-}
-getNextFBLink = function(){
-  return nextFBLink;
-}
-setAccessToken = function(access_token){ 
-  my_access_token = access_token;
+  var element = res.data[0];
+  if(res.data.length > 0){
+    var facebookElement = serializer.createMediaElement({
+                                 id: 'facebook',
+                                 data: element
+                             });        
+    
+     if (facebookElement != null){
+       callback(null, facebookElement);   
+     } else {
+       callback(null, null);
+     }
+   }  else {
+    callback(null, null);
+   }
+    
+           
+  });
+
+
+
 }
 exports.getFacebookData = getFacebookData;
 exports.setAccessToken = setAccessToken;

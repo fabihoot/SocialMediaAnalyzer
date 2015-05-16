@@ -61,8 +61,7 @@ function redditData(content){
 	//ID: 		data.id;
 	//text: 	data.selftext
 	//username: data.author
-	//date: 	data.created
-
+	//date: 	data.created	
 	var data = content.data;	
 	var time = timeConverter(data.created);
 	var mediaElement = createNewMediaElement();
@@ -77,6 +76,7 @@ function redditData(content){
 	
 	mediaElement.votes.upvotes = data.ups;
 	mediaElement.votes.downvotes = data.downs;
+	mediaElement.votes.score = data.score;
 	
 	return storeMediaElement(mediaElement);
 }
@@ -109,7 +109,8 @@ function createNewMediaElement(){
 				retweets: "",
 				favorites: "",
 				upvotes: "",
-				downvotes: ""
+				downvotes: "",
+				score: ""
 			}
 		}
 		return mediaElement;

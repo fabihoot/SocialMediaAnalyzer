@@ -13,7 +13,7 @@ redditData = null,
  	var $generalPanel = $('#panel-heading-one');
 
  	$generalPanel.click(function(){
- 		SocialMediaAnalyzer.Visualization.createVoteVisualization(returnVoteArray);
+ 		SocialMediaAnalyzer.Visualization.createVoteVisualization(returnVoteArray());
  	});
  },
 

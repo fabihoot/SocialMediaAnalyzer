@@ -19,7 +19,7 @@ getFBPages = function(search_word, count, callback){
   var resultData = null;
   var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&locale=en_US';
   var options = {
-      timeout:  3000,
+      timeout: 5000,
       pool:     { maxSockets:  Infinity },
       headers:  { connection:  "keep-alive" }
   };   
@@ -79,7 +79,7 @@ getFBFeedEntries = function(array, callback){
 getFBFeedEntry = function(page_id, callback){
   
   graph.get('/'+ page_id + '/feed?limit=1', function(err, res) { 
-  if (err) console.log(err);
+  if (err) console.log(err); 
   if(res.data.length > 0){
     var facebookElement = serializer.createMediaElement({
                                  id: 'facebook',

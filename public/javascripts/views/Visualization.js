@@ -6,15 +6,19 @@ SocialMediaAnalyzer.Visualization = (function() {
 	},
 
 	createVoteVisualization = function(dataset){
-		d3.select("body").selectAll("chart")
-    	  .data(dataset)
-    	  .enter()
-    	  .append("div")
-    	  .attr("class", "bar")
-    	  .style("height", function(d) {
-    	      var barHeight = d * 5;
-    	      return barHeight + "px";
-    	  });
+        console.log("create Visualization");        
+
+        var x = d3.scale.linear()
+            .domain([0, d3.max(dataset)])
+            .range([0, 500]);
+
+
+		d3.select(".vote-chart")
+          .selectAll("div")
+            .data(dataset)
+          .enter().append("div")
+            .style("width", function(d) { return x(d) + "px"; })
+            .text(function(d) { return d; });
 	};
 
 that.createVoteVisualization = createVoteVisualization;

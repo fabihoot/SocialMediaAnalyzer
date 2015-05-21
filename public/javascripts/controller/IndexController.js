@@ -2,16 +2,13 @@
  var that = {},
  fb,twit,rddt = false;
 
- var $btnSubmit = $('#submit-button');
- var $txtKeyword = $('#input-keyword');
- var $inputPostCount = $('#slider_input');
-
+ var $inputPostCount = $('#slider-input');
  var $inputKeyword = $('#input-keyword');
  
  init = function() {
       console.log("init IndexController");
       initListener();
-      initButton();        
+      initButton();
  },
 
  initListener = function(){
@@ -25,6 +22,7 @@
           $(this).trigger("enterKey");
       }
   });
+
   $inputKeyword.bind("enterKey", onInputEnterPressed);
   $('#input-keyword').blur(function() {
     if($('#input-keyword').val() != ""){
@@ -36,20 +34,27 @@
  },
 
  onInputEnterPressed = function(event){
-    fb,twit,rddt = false   
-    var keyword = $inputKeyword.val();   
-    startRequestQuery(keyword);
- },
+    fb,twit,rddt = false      
+    startRequestQuery();
+ }, 
 
  dropValueToInput = function(value, slider){
-    $("#slider_input").val(value);
- },
+     $("#slider-input").val(value);
+     var $warningPostCount = $('#warning-post-count');
+     if(value > 100){
+       $warningPostCount.removeClass('hidden');
+       $warningPostCount.removeClass('magictime boingOutDown');      
+       $warningPostCount.addClass('magictime boingInUp');      
+     } else {       
+       $warningPostCount.removeClass('magictime boingInUp');
+       $warningPostCount.addClass('magictime boingOutDown');
+     }
+  },
 
- startRequestQuery = function(searchTerm){   
+ startRequestQuery = function(){   
     var postCount = $inputPostCount.val();
-    var searchTerm = $txtKeyword.val();    
-
-    SocialMediaAnalyzer.Search.showPanels();
+    var searchTerm = $inputKeyword.val();
+    
     if (searchTerm == "") return;
     if (postCount == "")  return;
 
@@ -95,6 +100,7 @@ startVisualizations = function(){
    SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
    SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
    SocialMediaAnalyzer.VisualizationController.setRedditPosts();
+   $(document).trigger('onShowPanels');
 };
 that.init = init;
 return that;

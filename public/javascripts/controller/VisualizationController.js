@@ -10,9 +10,9 @@ redditData = null,
  },
 
  initButtons = function(){
- 	var $generalPanel = $('#panel-heading-one');
+ 	var $generalFrame = $('#frame-general');
 
- 	$generalPanel.click(function(){
+ 	$generalFrame.click(function(){
  		SocialMediaAnalyzer.Visualization.createVoteVisualization(returnVoteArray());
  	});
  },
@@ -37,12 +37,45 @@ redditData = null,
  	for(var i = 0;i<twitterData.length;i++) twitterVotes = twitterVotes + twitterData[i].votes.retweets;
  	for(var i = 0;i<redditData.length;i++) redditVotes = redditVotes + redditData[i].votes.score;
  	return [fbVotes, twitterVotes, redditVotes];
- }; 
+ },
 
+ setTwitterPosts = function(){        
+      $( '#twitter-post-result' ).render( twitterData, getDirective() );
+  },
+
+  setRedditPosts = function(){               
+      $( '#reddit-post-result' ).render( redditData, getDirective() );
+  },
+
+  setFacebookPosts = function(){         
+      $( '#facebook-post-result' ).render( facebookData, getDirective() );
+  },
+
+  getDirective = function(){
+    directive = {
+         '.tile':{
+           'content<-':{
+              '.tile-content':function(a){              	
+                if(this.text.length > 100){
+                  var temp = this.text.substring(0, 100);
+                  temp = temp + "...";
+                  return temp;
+                } else {
+                  return this.text;                  
+                }
+              }
+            }
+          }
+      };
+      return directive; 
+  };
 
 that.setFacebookData = setFacebookData;
 that.setTwitterData = setTwitterData;
 that.setRedditData = setRedditData;
+that.setTwitterPosts = setTwitterPosts;
+that.setFacebookPosts = setFacebookPosts;
+that.setRedditPosts = setRedditPosts;
 that.init = init;
 return that;
 }());

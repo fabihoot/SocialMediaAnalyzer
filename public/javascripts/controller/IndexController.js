@@ -1,5 +1,6 @@
  SocialMediaAnalyzer.IndexController = (function() {
- var that = {};
+ var that = {},
+ fb,twit,rddt = false;
 
  var $btnSubmit = $('#submit-button');
  var $txtKeyword = $('#input-keyword');
@@ -9,7 +10,12 @@
  
  init = function() {
       console.log("init IndexController");
+      initListener();
       initButton();        
+ },
+
+ initListener = function(){
+    $(document).on('onCheckRequest', checkRequestsFinished);    
  },
 
  initButton = function(){ 
@@ -29,7 +35,8 @@
   }); 
  },
 
- onInputEnterPressed = function(event){   
+ onInputEnterPressed = function(event){
+    fb,twit,rddt = false   
     var keyword = $inputKeyword.val();   
     startRequestQuery(keyword);
  },
@@ -40,8 +47,7 @@
 
  startRequestQuery = function(searchTerm){   
     var postCount = $inputPostCount.val();
-    var searchTerm = $txtKeyword.val();
-    console.log(postCount);
+    var searchTerm = $txtKeyword.val();    
 
     SocialMediaAnalyzer.Search.showPanels();
     if (searchTerm == "") return;
@@ -49,29 +55,46 @@
 
     $.post('/twitter/', { keyword: searchTerm, count: postCount }, function(data){
       console.log('Server responded with : ', data);
-      var content = data.data;
-      SocialMediaAnalyzer.Search.setTwitterPosts(content);
-      SocialMediaAnalyzer.VisualizationController.setTwitterData(content);
+      var content = data.data.data;
+      SocialMediaAnalyzer.VisualizationController.setTwitterData(content);     
+      $(document).trigger('onCheckRequest', data.id);
     });
  
     $.post('/facebook/', { keyword: searchTerm, count: postCount }, function(data){
        console.log('Server responded with : ', data);
-       var content = data.data;
-       SocialMediaAnalyzer.Search.setFacebookPosts(content);
-       SocialMediaAnalyzer.VisualizationController.setFacebookData(content);
+       var content = data.data.data;
+       SocialMediaAnalyzer.VisualizationController.setFacebookData(content);      
+       $(document).trigger('onCheckRequest', data.id);
     });
  
      $.post('/reddit/', { keyword: searchTerm, count: postCount }, function(data){
        console.log('Server responded with : ', data);
-       var content = data.data;
-       SocialMediaAnalyzer.Search.setRedditPosts(content);
-       SocialMediaAnalyzer.VisualizationController.setRedditData(content);
+       var content = data.data.data;
+       SocialMediaAnalyzer.VisualizationController.setRedditData(content);       
+       $(document).trigger('onCheckRequest', data.id);
     });
 
     SocialMediaAnalyzer.Visualization.init();
     SocialMediaAnalyzer.VisualizationController.init(); 
  
  
+},
+
+checkRequestsFinished = function(event, id){  
+  switch(id){
+    case('facebook'): fb = true; break;
+    case('twitter'): twit = true; break;
+    case('reddit'): rddt = true; break;
+  }
+
+  if(fb&&twit&&rddt) startVisualizations();
+},
+
+startVisualizations = function(){
+  console.log('start Visualizations');
+   SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
+   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
+   SocialMediaAnalyzer.VisualizationController.setRedditPosts();
 };
 that.init = init;
 return that;

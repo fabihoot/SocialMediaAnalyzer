@@ -1,11 +1,47 @@
-var my_access_token = '';
+var token = '';
 var serializer = require('./serializer');       
 var https = require('https');
 var async = require('async');
 var graph = require('fbgraph');
+var utils = require('../models/utils');
 
 setAccessToken = function(access_token){ 
-  graph.setAccessToken(access_token);
+  getLongLivedAccessToken(access_token);
+}
+
+getLongLivedAccessToken = function(access_token){
+  getAppData(function(appData){
+    var APP_ID = appData[0];
+    var APP_SECRET = appData[1];
+    var path = "/oauth/access_token?" +
+              "client_id=" + APP_ID + "&" + 
+              "client_secret=" + APP_SECRET + "&" + 
+              "grant_type=fb_exchange_token&" +
+              "fb_exchange_token=" + access_token + "";
+   
+    graph.get(path, function(err, res) {
+       token = res.access_token;
+       graph.setAppSecret(APP_SECRET);    
+       graph.setAccessToken(res.access_token);
+     });
+  });
+  
+}
+getAppData = function(callback){
+  async.parallel([
+    function(next){    
+    utils.getAppId(function(id){
+      next(null, id);
+    });
+  }, 
+    function(next){ 
+    utils.getAppSecret(function(secret){
+      next(null, secret);
+    });
+  }],
+    function(err, results){     
+     callback(results);
+  });
 }
 
 getFacebookData = function(search_word, count, callback){
@@ -43,6 +79,7 @@ getFBPages = function(search_word, count, callback){
   function( next ) {
   graph
     .setOptions(options)
+    .setAccessToken(token)
     .get(path, function(err, res) {
       if (err) console.log(err);         
       path = res.paging.next;     
@@ -78,7 +115,8 @@ getFBFeedEntries = function(array, callback){
 
 getFBFeedEntry = function(page_id, callback){
   
-  graph.get('/'+ page_id + '/feed?limit=1', function(err, res) { 
+  graph.setAccessToken(token)
+       .get('/'+ page_id + '/feed?limit=1', function(err, res) { 
   if (err) console.log(err); 
   if(res.data.length > 0){
     var facebookElement = serializer.createMediaElement({
@@ -102,7 +140,8 @@ getFBFeedEntry = function(page_id, callback){
   });
 }
 getLikes = function(post_id, callback){
-  graph.get('/' + post_id + '/likes?summary=true', function(err, res) { 
+  graph.setAccessToken(token)
+       .get('/' + post_id + '/likes?summary=true', function(err, res) { 
     callback(res.summary.total_count);
   }); 
 }

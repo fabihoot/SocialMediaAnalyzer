@@ -45,14 +45,14 @@ router.post('/facebook-login/', function(req, res, next) {
 router.post('/request-id/', function(req, res, next) { 
   utils.getAppId(function( id ){
     res.send(id);
-  })
+  });
 });
 
 scrapeTwitter = function(val, res){
     var search_word = val.keyword;
     var count       = val.count;     
     twitter.getTwitterData(search_word, count, function( data ){
-    	res.send(data);
+    	res.send({id: 'twitter', data: data});
     });
    
 }
@@ -60,14 +60,14 @@ scrapeReddit = function(val, res){
     var search_word = val.keyword;
     var count       = val.count;
     reddit.getRedditData(search_word, count, function( data ){
-    	res.send(data);
+    	res.send({id: 'reddit', data: data});
     });
 }
 scrapeFacebook = function(val, res){
     var search_word = val.keyword;
     var count       = val.count;    
     facebook.getFacebookData(search_word, count, function( data ){
-    	res.send(data);
+    	res.send({id: 'facebook', data: data});
     });
 }
 

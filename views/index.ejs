@@ -51,25 +51,38 @@
     <div class="row cells3"> 
         <div class="cell"></div>
         <div class="cell padding10">
-            <div class="slider large align-center"
-              data-target="#slider-input"
-              data-on-change="dropValueToInput"
-              data-role="slider"             
-              data-max-value="1000"
-              data-min-value="10"
-              data-complete-color="ribbed-orange">
-            </div>
-            <label>Number of Posts </label>
-            <div class="input-control text">
-                <input id="slider_input" value="10" id="input-count" style="width: 50px; margin-left: 5px;">                
+          <div class="slider large align-center" id="slider"
+            data-target="#slider-input"
+            data-on-change="dropValueToInput"
+            data-role="slider"             
+            data-max-value="1000"
+            data-min-value="10"
+            data-complete-color="ribbed-orange">
+          </div>
+          <label>Number of Posts </label>
+          <div class="input-control text">
+              <input id="slider-input" value="10" id="input-count" style="width: 50px; margin-left: 5px;">                
+          </div>
+        </div>
+          <div class="cell">
+            <div class="panel bg-orange hidden" data-role="panel" id="warning-post-count">
+              <div class="heading bg-orange">
+                  <span class="icon mif-hour-glass bg-orange"></span>
+                  <span class="title">Warning</span>
+              </div>
+              <div class="content">
+                  Due to the nature of some of the APIs and some limitations,
+                  a request with this size can take a long time to process.
+                  Either choose a smaller number of posts or lay back and wait
+                  some time.
+              </div>
             </div>
           </div>
-          <div class="cell"></div>
         </div>
     <div class="row cells1">
       <div class"cell">
         <div class="accordion" data-role="accordion">
-          <div class="frame bg-orange" id="frame-general">
+          <div class="frame hidden" id="frame-general">
             <div class="heading">General Information</div>
             <div class="content">
               <div id="vote-chart-general" class="vote-chart">
@@ -78,7 +91,7 @@
             </div>
           </div>
     
-          <div class="frame" id="frame-posts">
+          <div class="frame hidden" id="frame-posts">
             <div class="heading">Posts</div>
             <div class="content">
               <div class="row cells3">
@@ -100,7 +113,7 @@
               </div>                
             </div>
           </div>
-           <div class="frame" id="frame-mapping">
+           <div class="frame hidden" id="frame-mapping">
               <div class="heading">Mapping</div>
               <div class="content">Frame content</div>
           </div>

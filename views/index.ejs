@@ -4,47 +4,91 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/metro.css">
+    <link rel="stylesheet" href="/stylesheets/metro-icons.css">
   </head>
   <body>
   <script rel='javascript' src="https://connect.facebook.net/en_US/sdk.js"></script>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-     
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">SocialMediaAnalyzer</a>
+
+  <div class="app-bar bg-orange">
+      
+    <a class="app-bar-element branding bg-hover-orange"><span class="mif-rocket mif-2x" style="margin-right: 10px;"></span>Social Media Analyzer</a>
+    <span class="app-bar-divider bg-orange"></span>
+    <ul class="app-bar-menu">
+        <li class=" bg-hover-amber">Home</li>
+        <li class=" bg-hover-amber">Support</li>
+        <li class=" bg-hover-amber">Help</li>
+         <li>
+           <div class="fb-login-button no-padding-top" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
+        </li>
+    </ul>
+  </div>
+
+
+  <div class="grid block-shadow-impact padding20 margin20">
+    <div class="row cells3">
+      <div class="cell"></div>
+        <div class="cell align-center">
+           <h2 class="leader padding20" ><%= title %>
+           <small>A dynamic Web App, build to analyze and visualize content posted on Social Media Plattforms </small></h2>  
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><div class="fb-login-button" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
-          </ul>
+        <div class="cell"></div>
+    </div>
+    <div class="row cells3">
+      <div class="cell"></div>  
+      <div class="cell align-center">
+          <div class="input-control modern text iconic padding10 full-size">
+              <input type="text" id="input-keyword">
+              <span class="label">Please enter a search term we should analyze!</span>
+              <span class="informer">Press Enter to start your search</span>
+              <span class="placeholder" id="search-placeholder">Keyword</span>
+              <span class="icon mif-search"></span>                   
+          </div>
+      </div>
+      <div class="cell"></div>
+    </div>
+    <div class="row cells3"> 
+        <div class="cell"></div>
+        <div class="cell padding10">
+            <div class="slider large align-center"
+              data-target="#slider-input"
+              data-on-change="dropValueToInput"
+              data-role="slider"             
+              data-max-value="1000"
+              data-min-value="10"
+              data-complete-color="ribbed-orange">
+            </div>
+            <label>Number of Posts </label>
+            <div class="input-control text">
+                <input id="slider_input" value="10" id="input-count" style="width: 50px; margin-left: 5px;">                
+            </div>
+          </div>
+          <div class="cell"></div>
         </div>
-     
-    </nav>
+    <div class="row cells1">
+      <div class"cell">
+        <div class="accordion" data-role="accordion">
+          <div class="frame bg-orange">
+            <div class="heading">General Information</div>
+            <div class="content">Frame content</div>
+          </div>
     
-		<div class="col-md-12">
-        <h1 class="col-md-offset-4 top-buffer-lg"><%= title %></h1>    		
-        <form class="form-vertical">   
-          <div class="input-group col-md-8 col-md-offset-2">
-            <input id="input-keyword" type="text" class="form-control" placeholder="Enter your desired keyword!">
-            <span class="input-group-btn">
-               <button id="submit-button" class="btn btn-default" type="button">Submit!</button>
-            </span>            
+          <div class="frame">
+              <div class="heading">Posts</div>
+              <div class="content">Frame content</div>
           </div>
-          <div class="form-inline col-md-6 col-md-offset-2 top-buffer-sm">
-            <label for="input-count">Number of Posts:</label>
-            <input id="input-count" class="form-control" type="number" value="10" min="10"/>
+
+           <div class="frame">
+              <div class="heading">Mapping</div>
+              <div class="content">Frame content</div>
           </div>
-        </form>
-        <div class="row col-md-12 top-buffer-lg">
+
         </div>
+      </div>
+    </div>  
+  </div>
+      
+  </div>
 
          <div class="row">
 
@@ -165,6 +209,7 @@
     <script rel='javascript' src="/javascripts/libs/lodash.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/d3.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/pure.min.js"></script>
+    <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>
     
      <!--JS-Files-->
     <script src="/javascripts/SocialMediaAnalyzer.js"></script>

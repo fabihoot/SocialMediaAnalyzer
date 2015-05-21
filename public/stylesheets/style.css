@@ -28,7 +28,6 @@ a {
 .right-buffer-md{
 	margin-right: 5px;
 }
-
 .vote-chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -36,4 +35,7 @@ a {
   padding: 3px;
   margin: 2px;
   color: white;
+}
+.hidden {
+  visibility: hidden;
 }

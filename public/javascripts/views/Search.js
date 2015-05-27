@@ -17,8 +17,7 @@ SocialMediaAnalyzer.Search = (function() {
   },
   
 	showPanels = function(event){
-    event.preventDefault();
-    console.log("show Panels");
+    event.preventDefault();    
     $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft'); 
     $panelPosts.removeClass('hidden').addClass('magictime spaceInLeft'); 
     $panelMapping.removeClass('hidden').addClass('magictime spaceInLeft'); 

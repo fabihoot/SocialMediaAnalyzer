@@ -5,16 +5,12 @@ twitterData = null,
 redditData = null,
 
  init = function() {
-      console.log("init VisualizationController");
+      console.log("init VisualizationController.js");
       initButtons();           
  },
 
  initButtons = function(){
- 	var $generalFrame = $('#frame-general');
-
- 	$generalFrame.click(function(){
- 		SocialMediaAnalyzer.Visualization.createVoteVisualization(returnVoteArray());
- 	});
+ 	
  },
 
  setFacebookData = function(data){
@@ -29,14 +25,14 @@ redditData = null,
  	redditData = data;
  },
 
- returnVoteArray = function(){ 	
+ createVoteVisualization = function(){ 	
  	var fbVotes = 0;
  	var twitterVotes = 0;
  	var redditVotes = 0;
  	for(var i = 0;i<facebookData.length;i++) fbVotes = fbVotes + facebookData[i].votes.likes;
  	for(var i = 0;i<twitterData.length;i++) twitterVotes = twitterVotes + twitterData[i].votes.retweets;
  	for(var i = 0;i<redditData.length;i++) redditVotes = redditVotes + redditData[i].votes.score;
- 	return [fbVotes, twitterVotes, redditVotes];
+ 	SocialMediaAnalyzer.Visualization.createVoteBarChart([fbVotes, twitterVotes, redditVotes]);
  },
 
  setTwitterPosts = function(){        
@@ -70,6 +66,7 @@ redditData = null,
       return directive; 
   };
 
+that.createVoteVisualization = createVoteVisualization;
 that.setFacebookData = setFacebookData;
 that.setTwitterData = setTwitterData;
 that.setRedditData = setRedditData;

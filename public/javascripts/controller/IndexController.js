@@ -34,6 +34,7 @@
  },
 
  onInputEnterPressed = function(event){
+    event.preventDefault();   
     fb,twit,rddt = false      
     startRequestQuery();
  }, 
@@ -80,8 +81,8 @@
     });
 
     SocialMediaAnalyzer.Visualization.init();
-    SocialMediaAnalyzer.VisualizationController.init(); 
- 
+    SocialMediaAnalyzer.VisualizationController.init();
+    $(document).trigger('onRequestStart'); 
  
 },
 
@@ -96,11 +97,12 @@ checkRequestsFinished = function(event, id){
 },
 
 startVisualizations = function(){
-  console.log('start Visualizations');
-   SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
-   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
-   SocialMediaAnalyzer.VisualizationController.setRedditPosts();
-   $(document).trigger('onShowPanels');
+  SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
+  SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
+  SocialMediaAnalyzer.VisualizationController.setRedditPosts();
+  SocialMediaAnalyzer.VisualizationController.createVoteVisualization();
+  $(document).trigger('onRequestFinished');
+  $(document).trigger('onShowPanels');
 };
 that.init = init;
 return that;

@@ -3,25 +3,50 @@ SocialMediaAnalyzer.Visualization = (function() {
 
 	init = function() {
 		console.log("init Visualization.js");
+    initListener();
 	},
 
-	createVoteVisualization = function(dataset){
-        console.log("create Visualization");        
+  initListener = function(){
+     $(document).on('onRequestStart', onRequestStarted);
+     $(document).on('onRequestFinished', onRequestFinished);      
+  },
 
-        var x = d3.scale.linear()
-            .domain([0, d3.max(dataset)])
-            .range([0, 500]);
+  onRequestStarted = function(event){
+   event.preventDefault();   
+   $('#preloader-container').removeClass('hidden');
+   $('#preloader').removeClass('magictime vanishOut');
+   $('#preloader').addClass('magictime vanishIn');
+  },
 
+  onRequestFinished = function(event){
+    event.preventDefault();    
+    $('#preloader').removeClass('magictime vanishIn');
+    $('#preloader').addClass('magictime vanishOut'); 
+  },
 
-		d3.select(".vote-chart")
+	createVoteBarChart = function(dataset){
+    
+    var charts = ['#vote-chart-fb', '#vote-chart-twitter', '#vote-chart-reddit'];
+    var w = 10;
+    var h = 200;        
+    var x = d3.scale.linear()
+                    .domain([0, d3.max(dataset)])
+                    .range([0, 200]);
+
+    for (var i = 0; i<dataset.length;i++){
+      
+		d3.select(charts[i])
           .selectAll("div")
-            .data(dataset)
+            .data([dataset[i]]) 
           .enter().append("div")
-            .style("width", function(d) { return x(d) + "px"; })
+            .style("height", function(d) { return x(d) + "px"; })
+            .style("width", w)
+            .style("y", function(d) { return h - (d * 2) + "px"; })
             .text(function(d) { return d; });
+    }
 	};
 
-that.createVoteVisualization = createVoteVisualization;
+that.createVoteBarChart = createVoteBarChart;
 that.init = init;
 return that;
 }());

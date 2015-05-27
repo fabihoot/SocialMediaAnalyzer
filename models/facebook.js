@@ -20,9 +20,10 @@ getLongLivedAccessToken = function(access_token){
               "fb_exchange_token=" + access_token + "";
    
     graph.get(path, function(err, res) {
+       if(err) console.log(err);
        token = res.access_token;
        graph.setAppSecret(APP_SECRET);    
-       graph.setAccessToken(res.access_token);
+       graph.setAccessToken(res.access_token);      
      });
   });
   
@@ -81,7 +82,12 @@ getFBPages = function(search_word, count, callback){
     .setOptions(options)
     .setAccessToken(token)
     .get(path, function(err, res) {
-      if (err) console.log(err);         
+      if (err) {
+        console.log(err);
+        console.log("ACCESS_TOKEN " + token);
+        callback({'error': err});
+      return;
+      };         
       path = res.paging.next;     
        getFBFeedEntries(res.data, function( entries ){        
          resultData = entries;
@@ -117,7 +123,12 @@ getFBFeedEntry = function(page_id, callback){
   
   graph.setAccessToken(token)
        .get('/'+ page_id + '/feed?limit=1', function(err, res) { 
-  if (err) console.log(err); 
+  if (err) {
+        console.log(err);
+        console.log("ACCESS_TOKEN " + token);
+        callback({'error': err});
+      return;
+  };  
   if(res.data.length > 0){
     var facebookElement = serializer.createMediaElement({
                                  id: 'facebook',

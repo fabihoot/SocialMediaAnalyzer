@@ -8,6 +8,9 @@ var utils = require('../models/utils');
 setAccessToken = function(access_token){ 
   getLongLivedAccessToken(access_token);
 }
+setToken = function(t){
+  token = t;
+}
 
 getLongLivedAccessToken = function(access_token){
   getAppData(function(appData){
@@ -21,7 +24,8 @@ getLongLivedAccessToken = function(access_token){
    
     graph.get(path, function(err, res) {
        if(err) console.log(err);
-       token = res.access_token;
+       console.log('getting ACCESS_TOKEN from FB: ' + res.access_token);       
+       setToken(res.access_token);
        graph.setAppSecret(APP_SECRET);    
        graph.setAccessToken(res.access_token);      
      });
@@ -78,13 +82,14 @@ getFBPages = function(search_word, count, callback){
 
   },
   function( next ) {
+  console.log("FB CALL ACCESS_TOKEN " + token);
   graph
     .setOptions(options)
     .setAccessToken(token)
     .get(path, function(err, res) {
       if (err) {
         console.log(err);
-        console.log("ACCESS_TOKEN " + token);
+        console.log("ERROR ACCESS_TOKEN " + token);
         callback({'error': err});
       return;
       };         
@@ -125,7 +130,7 @@ getFBFeedEntry = function(page_id, callback){
        .get('/'+ page_id + '/feed?limit=1', function(err, res) { 
   if (err) {
         console.log(err);
-        console.log("ACCESS_TOKEN " + token);
+        console.log("ERROR ACCESS_TOKEN " + token);
         callback({'error': err});
       return;
   };  

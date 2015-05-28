@@ -27,23 +27,50 @@ SocialMediaAnalyzer.Visualization = (function() {
 	createVoteBarChart = function(dataset){
     
     var charts = ['#vote-chart-fb', '#vote-chart-twitter', '#vote-chart-reddit'];
-    var w = 10;
-    var h = 200;        
-    var x = d3.scale.linear()
-                    .domain([0, d3.max(dataset)])
-                    .range([0, 200]);
+    var width = 100,
+        height = 500;
+    var barWidth = 75;
 
+    var xScale = d3.scale.linear().domain([0, d3.max(dataset)]) // your data minimum and maximum
+                                  .range([0, height]);
+    var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height]);
+   
     for (var i = 0; i<dataset.length;i++){
+
+    var chart = d3.select(charts[i])
+                 .attr("width", width)
+                 .attr("height", height);
       
-		d3.select(charts[i])
-          .selectAll("div")
+		
+     chart.selectAll("svg")
             .data([dataset[i]]) 
-          .enter().append("div")
-            .style("height", function(d) { return x(d) + "px"; })
-            .style("width", w)
-            .style("y", function(d) { return h - (d * 2) + "px"; })
-            .text(function(d) { return d; });
+          .enter().append("svg:rect")
+            .attr("x", function(d, i) { return xScale(i); })
+            .attr("y", function(d) { return height - yScale(d); })
+            .attr("height", function(d) { return yScale(d); })
+            .attr("width", barWidth)
+            .attr("fill", "#2d578b")
+            .text(function(d) { return d; })
+            .attr("fill", "black");
+    chart.selectAll("text")
+              .data([dataset[i]])
+            .enter().append("svg:text")
+              .attr("x", function(d, i) { return xScale(i) + barWidth; })
+              .attr("y", function(d) {
+                var yValue = height - yScale(d);
+                  if(yValue >= 460){
+                    return 460;
+                  } else {
+                  return yValue                  
+                  }
+                 })
+              .attr("dx", - barWidth/2)
+              .attr("dy", "1.2em")
+              .attr("text-anchor", "middle")
+              .text(function(d) { return d; })
+              .attr("fill", "black");
     }
+
 	};
 
 that.createVoteBarChart = createVoteBarChart;

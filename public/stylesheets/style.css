@@ -28,13 +28,15 @@ a {
 .right-buffer-md{
 	margin-right: 5px;
 }
-.vote-chart div {
-  font: 12px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 5px;
-  margin: 6px;
-  color: white;
+
+.vote-chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
 }
 .hidden {
   visibility: hidden;

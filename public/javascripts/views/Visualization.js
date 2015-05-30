@@ -19,7 +19,8 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   onRequestFinished = function(event){
-    event.preventDefault();    
+    event.preventDefault();
+    $('#accordion-container').removeClass('hidden');    
     $('#preloader').removeClass('magictime vanishIn');
     $('#preloader').addClass('magictime vanishOut'); 
   },
@@ -28,7 +29,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     
     var charts = ['#vote-chart-fb', '#vote-chart-twitter', '#vote-chart-reddit'];
     var width = 100,
-        height = 500;
+        height = 350;
     var barWidth = 75;
 
     var xScale = d3.scale.linear().domain([0, d3.max(dataset)]) // your data minimum and maximum
@@ -47,11 +48,13 @@ SocialMediaAnalyzer.Visualization = (function() {
           .enter().append("svg:rect")
             .attr("x", function(d, i) { return xScale(i); })
             .attr("y", function(d) { return height - yScale(d); })
-            .attr("height", function(d) { return yScale(d); })
             .attr("width", barWidth)
             .attr("fill", "#2d578b")
             .text(function(d) { return d; })
-            .attr("fill", "black");
+            .attr("fill", "black")
+             .transition()
+             .duration(5000)
+             .attr("height", function(d) { return yScale(d); });
     chart.selectAll("text")
               .data([dataset[i]])
             .enter().append("svg:text")
@@ -69,7 +72,10 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("text-anchor", "middle")
               .text(function(d) { return d; })
               .attr("fill", "black");
+  
+         
     }
+    
 
 	};
 

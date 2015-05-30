@@ -18,7 +18,8 @@ SocialMediaAnalyzer.Search = (function() {
   
 	showPanels = function(event){
     event.preventDefault();    
-    $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft'); 
+    $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft');
+    $panelGeneral.addClass("active").delay(2000);
     $panelPosts.removeClass('hidden').addClass('magictime spaceInLeft'); 
     $panelMapping.removeClass('hidden').addClass('magictime spaceInLeft'); 
   };

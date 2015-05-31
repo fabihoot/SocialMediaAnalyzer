@@ -8,7 +8,9 @@ body {
 a {
   color: #00B7FF;
 }
-
+.logout-top{
+  top:-20px;
+}
 .panel-one {
 	display: none;
 }
@@ -31,8 +33,14 @@ a {
 	margin-right: 5px;
 }
 
-.vote-chart rect {
-  fill: steelblue;
+.grow
+{
+  -webkit-transform: scale(1.3);
+  -ms-transform: scale(1.3);
+  transform: scale(1.3);
+}
+.vote-chart {
+  padding: 10px;
 }
 
 .chart text {
@@ -42,4 +50,16 @@ a {
 }
 .hidden {
   visibility: hidden;
+}
+.sentiment-chart {
+
+}
+.twitter {
+  fill: #55acee;
+}
+.facebook {
+  fill: #3a5795;
+}
+.reddit {
+  fill:#faa200;
 }

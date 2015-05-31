@@ -20,7 +20,7 @@
         <li class=" bg-hover-amber">Support</li>
         <li class=" bg-hover-amber">Help</li>
          <li>
-           <div class="fb-login-button no-padding-top" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
+           <div class="fb-login-button no-padding-top logout-top" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
         </li>
     </ul>
   </div>
@@ -98,22 +98,32 @@
             <div class="heading">General Information</div>
             <div class="content">
                <div class="row cells12">
+                <div id="vote-chart-container" class="cell colspan6 padding20 row cells6">               
                 <div class="cell">
-                  <svg id="vote-chart-fb" class="vote-chart">
+                  <svg id="vote-chart-fb" class="vote-chart facebook">
                                    
                   </svg>
                 </div>
                 <div class="cell">
-                  <svg id="vote-chart-twitter" class="vote-chart">
+                  <svg id="vote-chart-twitter" class="vote-chart twitter">
                                    
                   </svg>
                </div>
                <div class="cell">
-                  <svg id="vote-chart-reddit" class="vote-chart">
+                  <svg id="vote-chart-reddit" class="vote-chart reddit">
                                    
                   </svg>
               </div>
-              <div class="cell colspan9">
+               <div class="cell colspan3">
+              </div>  
+              </div>
+                         
+              <div class="cell colspan6">
+                <div class="cell">
+                <svg id="sentiment-chart-overall" class="sentiment-chart">
+                                   
+                </svg>
+              </div>
               </div>
             </div>
             </div>
@@ -159,7 +169,7 @@
     <script rel='javascript' src="/javascripts/libs/bootstrap.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/jquery-ui.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/lodash.min.js"></script>
-    <script rel='javascript' src="/javascripts/libs/d3.min.js"></script>
+    <script rel='javascript' src="/javascripts/libs/d3.js"></script>
     <script rel='javascript' src="/javascripts/libs/pure.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>
     

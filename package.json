@@ -20,7 +20,7 @@
     "sentiment": "*",
     "Sentimental": "*",
     "serve-favicon": "~2.2.0",
-    "snoocore": "*",
+    "snoocore": "3.0.2",
     "twit": "*"
   }
 }

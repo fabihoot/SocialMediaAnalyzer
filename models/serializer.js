@@ -61,7 +61,8 @@ function redditData(content){
 	//ID: 		data.id;
 	//text: 	data.selftext
 	//username: data.author
-	//date: 	data.created	
+	//date: 	data.created
+	console.log(content);	
 	var data = content.data;	
 	var time = timeConverter(data.created);
 	var mediaElement = createNewMediaElement();
@@ -74,9 +75,25 @@ function redditData(content){
 		mediaElement.text   = data.title;
 	}	
 
+	if(data.hasOwnProperty('url')){	 
+	 if(data.hasOwnProperty('domain')){
+	 	if (data.domain == 'imgur.com' || data.domain == 'i.imgur.com'){
+	 	 mediaElement.content.type = 'image';
+	 	 mediaElement.content.thumbnail = data.thumbnail;
+	 	 mediaElement.content.url = data.url;
+	 	} else if(data.domain == 'youtube.com'){
+	 	mediaElement.content.type = 'video';
+	 	mediaElement.content.url = data.url;
+	 	} else {
+	 	mediaElement.content.type = 'text';		
+	 	}
+	 }
+
+	} 	
+
 	mediaElement.username	= data.author;
 	mediaElement.date 		= time;
-	mediaElement.type 		= "text";
+	//mediaElement.type 		= "text";
 	mediaElement.source 	= content.id;	
 	
 	mediaElement.votes.upvotes = data.ups;
@@ -108,6 +125,11 @@ function createNewMediaElement(){
 				countTypes: ""
 			},
 			sentiment: {},
+			content:{
+				type: "",
+				url: "",
+				thumbnail: ""
+			},
 			votes: {
 				likes: "",
 				shares: "",

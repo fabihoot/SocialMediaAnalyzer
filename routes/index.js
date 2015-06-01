@@ -38,12 +38,17 @@ router.post('/reddit/', function(req, res, next) {
 });
 
 router.post('/facebook-login/', function(req, res, next) { 
-  facebook.setAccessToken(req.body.token);
-  res.send('success');
+  facebook.init(req.body.token);
+  res.send('facebook-login: success');
+});
+
+router.post('/reddit-login/', function(req, res, next) { 
+  reddit.init();
+  res.send('reddit-login: success');
 });
 
 router.post('/request-id/', function(req, res, next) { 
-  utils.getAppId(function( id ){
+  utils.getFBAppId(function( id ){
     res.send(id);
   });
 });

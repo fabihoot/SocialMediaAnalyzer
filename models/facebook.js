@@ -24,7 +24,7 @@ getLongLivedAccessToken = function(access_token){
    
     graph.get(path, function(err, res) {
        if(err) console.log(err);
-       console.log('getting ACCESS_TOKEN from FB: ' + res.access_token);       
+       console.log('Facebook authentication successfull');       
        setToken(res.access_token);
        graph.setAppSecret(APP_SECRET);    
        graph.setAccessToken(res.access_token);      
@@ -81,15 +81,13 @@ getFBPages = function(search_word, count, callback){
   }
 
   },
-  function( next ) {
-  console.log("FB CALL ACCESS_TOKEN " + token);
+  function( next ) {  
   graph
     .setOptions(options)
     .setAccessToken(token)
     .get(path, function(err, res) {
       if (err) {
-        console.log(err);
-        console.log("ERROR ACCESS_TOKEN " + token);
+        console.log(err);        
         callback({'error': err});
       return;
       };         

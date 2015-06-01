@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-getAppId = function (callback){	
+getFBAppId = function (callback){	
 	fs.readFile('./config/config.json', function(err, data){
 		if (err) console.error(err);
 		var obj = JSON.parse(data);		
@@ -8,7 +8,7 @@ getAppId = function (callback){
 		callback(appId);
 	});
 }	
-getAppSecret = function (callback){	
+getFBAppSecret = function (callback){	
 	fs.readFile('./config/config.json', function(err, data){
 		if (err) console.error(err);
 		var obj = JSON.parse(data);		
@@ -16,6 +16,27 @@ getAppSecret = function (callback){
 		callback(appSecret);
 	});
 }
+getRedditLogins = function(callback){
+
+	fs.readFile('./config/config.json', function(err, data){
+		if (err) console.error(err);
+		var obj = JSON.parse(data);		
+		var data = {
+			username: "",
+			password:"",
+			client_key:"",
+			client_secret:""
+		};
+		
+		data.username = obj.reddit.username;
+		data.password = obj.reddit.password;  
+		data.client_key = obj.reddit.client_key; 
+		data.client_secret = obj.reddit.client_secret;				
+		
+		callback(data);
+	});
+}
 //exports.method = method;
-exports.getAppId = getAppId;
-exports.getAppSecret = getAppSecret;
+exports.getRedditLogins = getRedditLogins;
+exports.getFBAppId = getFBAppId;
+exports.getFBAppSecret = getFBAppSecret;

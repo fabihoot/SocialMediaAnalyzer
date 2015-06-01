@@ -1,7 +1,16 @@
 var Snoocore = require('snoocore');
 var id = "reddit";
 var reddit = new Snoocore({
-                      userAgent: 'SocialMediaAnalyzer@0.0.1 by cl4ptrap'                        
+                      userAgent: '/u/cl4ptrap SocialMediaAnalyzer@0.0.1',
+                      oauth: { 
+                                type: 'script',
+                                key: '', 
+                                secret: '',
+                                username: '',
+                                password: '',
+                                // make sure to set all the scopes you need.
+                                scope: [ 'identity', 'read', 'vote' ] 
+                              }                        
                       });
 var serializer = require('./serializer');
 var async = require('async');
@@ -32,7 +41,7 @@ getRedditData = function (keyword, count, callback) {
         next(null, data);      
       });
     },
-    function( err, result ) {        
+    function( err, result ) {              
       callback( redditElements );      
     }
   );
@@ -62,11 +71,12 @@ formatPosts = function(count, keyword, callback){
 
 requestPosts = function(count, keyword, callback){
   if(!urlChanged){   
-    var params = {limit: count}
+    var params = {limit: count, q: keyword}
   } else {   
-    var params = {limit: count, after: getNextRedditLink()}; 
+    var params = {limit: count, after: getNextRedditLink(), q: keyword}; 
   }
-  reddit.raw('http://www.reddit.com/search.json?q=' + keyword).get(params).then(function(data){
+  reddit('/search/').get(params).then(function(data){
+    console.log(data);
     setNextRedditLink(data.data.after);
     changeURL();
     callback(data);

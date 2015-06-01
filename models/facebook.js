@@ -5,7 +5,7 @@ var async = require('async');
 var graph = require('fbgraph');
 var utils = require('../models/utils');
 
-setAccessToken = function(access_token){ 
+init = function(access_token){ 
   getLongLivedAccessToken(access_token);
 }
 setToken = function(t){
@@ -35,12 +35,12 @@ getLongLivedAccessToken = function(access_token){
 getAppData = function(callback){
   async.parallel([
     function(next){    
-    utils.getAppId(function(id){
+    utils.getFBAppId(function(id){
       next(null, id);
     });
   }, 
     function(next){ 
-    utils.getAppSecret(function(secret){
+    utils.getFBAppSecret(function(secret){
       next(null, secret);
     });
   }],
@@ -162,4 +162,4 @@ getLikes = function(post_id, callback){
   }); 
 }
 exports.getFacebookData = getFacebookData;
-exports.setAccessToken = setAccessToken;
+exports.init = init;

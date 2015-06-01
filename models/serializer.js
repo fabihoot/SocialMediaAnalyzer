@@ -68,7 +68,12 @@ function redditData(content){
 
 	
 	mediaElement.id 		= data.id;
-	mediaElement.text		= data.selftext;
+	if (data.selftext == null){
+		mediaElement.text	= data.selftext;
+	} else {
+		mediaElement.text   = data.title;
+	}	
+
 	mediaElement.username	= data.author;
 	mediaElement.date 		= time;
 	mediaElement.type 		= "text";

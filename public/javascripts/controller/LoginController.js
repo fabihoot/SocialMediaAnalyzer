@@ -7,9 +7,14 @@ SocialMediaAnalyzer.LoginController = (function() {
         $.post('/request-id/', function(data){          
 		      fbAsyncInit(data);
         });
-		}		
+		}
+    initReddit();		
 	},
-  
+
+  initReddit = function(){
+    $.post('/reddit-login/');
+  },
+
 	fbAsyncInit = function(data) {
   		FB.init({
     	appId      : data,

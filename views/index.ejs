@@ -100,17 +100,17 @@
                <div class="row cells12">
                 <div id="vote-chart-container" class="cell colspan6 padding20 row cells6">               
                 <div class="cell">
-                  <svg id="vote-chart-fb" class="vote-chart facebook">
+                  <svg id="vote-chart-fb" class="vote-chart facebook-color">
                                    
                   </svg>
                 </div>
                 <div class="cell">
-                  <svg id="vote-chart-twitter" class="vote-chart twitter">
+                  <svg id="vote-chart-twitter" class="vote-chart twitter-color">
                                    
                   </svg>
                </div>
                <div class="cell">
-                  <svg id="vote-chart-reddit" class="vote-chart reddit">
+                  <svg id="vote-chart-reddit" class="vote-chart reddit-color">
                                    
                   </svg>
               </div>
@@ -131,6 +131,17 @@
           <div class="frame hidden" id="frame-posts">
             <div class="heading">Posts</div>
             <div class="content">
+              <div class="row cells3">
+                <div class="cell twit-banner" id="twitter-banner">
+                  <img src="/images/twitter-banner.png" style="width:27%;"></img>
+                </div>
+                 <div class="cell fb-banner" id="facebook-banner">
+                  <img src="/images/facebook-banner.png" style="width:27%;"></img>
+                </div>
+                 <div class="cell rdt-banner" id="reddit-banner">
+                  <img src="/images/reddit-banner.png" style="width:27%;"></img>
+                </div>
+              </div>
               <div class="row cells3">
                 <div class="cell">
                 <div id="twitter-post-result">
@@ -171,6 +182,7 @@
     <script rel='javascript' src="/javascripts/libs/lodash.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/d3.js"></script>    
     <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>
+    <script rel='javascript' src="/javascripts/libs/spectra.min.js"></script>    
     
      <!--JS-Files-->
     <script src="/javascripts/SocialMediaAnalyzer.js"></script>

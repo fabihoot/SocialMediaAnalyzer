@@ -74,36 +74,76 @@ $redditPostResultContainer = null,
   },
 
   createTiles = function(data, container){
-    addTiles(data, container);
-    addText(data);
+    var maxVal = getMaxValue(data);
+    addTiles(data, container, maxVal);      
   },
 
-  addTiles = function(data, container){
+  addTiles = function(data, container, maxVal){
     for (var i = 0; i<data.length;i++){
+      var source = data[i].source;
+      var text = data[i].text;
+      var url = data[i].content.url;
+      var type = data[i].content.type;
+      var comparative = data[i].sentiment.comparative;
+      var numb  = Math.round(comparative * 100) / 100
+      //console.log("Type:",type, "Source", source);    
+      var divToAppend = '<div class="tile-image color-'+ source +'""><img id="tile-img-entry-'+ source +'-'+ i + '"></img></div>';
+      
       var $tile = '<div class="tile" data-role="tile">' + 
                    '<div class="tile-content slide-right-2">' + 
-                    '<div class="slide">' + 
-                       '<div class="tile-text text-small padding10" id="tile-text-entry-'+ data[i].source +'-'+ i + '"></div>' + 
+                    '<div class="slide slide-height-top">' + 
+                       '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
+                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment comp.: '+ numb + '</div>' + 
                     '</div>' + 
-                    '<div class="slide-over op-amber">' +
-                       '<div class="tile-image"><img id="tile-img-entry-'+ data[i].source +'-'+ i + '"></img></div>' +                        
+                    '<div class="slide-over slide-height-bottom>' +
+                       divToAppend +                        
                     '</div>' + 
                    '</div>' + 
                  '</div>';
       $( container ).append($tile);
-      var text = data[i].text;
-      var url = data[i].content.url;    
 
       var $txtContainer = $('#tile-text-entry-'+ data[i].source +'-'+ i);
       var $imgContainer = $('#tile-img-entry-'+ data[i].source +'-'+ i);
+      var $sentimentContainer = $('#tile-sentiment-entry-'+ data[i].source +'-'+ i);
       
+      if(text.length > 140){
+        text = text.substring(0,140) + '...';
+      }
       $txtContainer.text(text);
-      $imgContainer.attr("src",  url);  
+      var color = getColor(comparative, maxVal);
+      $sentimentContainer.css('background',color);
+      if(type == 'image'){
+        $imgContainer.attr("src",  url);
+      } else if (type == 'link') { 
+        $imgContainer.attr("src", "/images/link-icon.png");
+      } else {
+        $imgContainer.attr("src", "/images/text-icon.png");        
+      }  
     }    
   },
 
-  addText = function(data){
-   
+  getColor = function(score, maxVal){
+
+   var value = Math.abs(score / maxVal);  
+   var hue=((1-value)*120).toString(10);
+   var hsl= ["hsl(",hue,",100%,50%)"].join("")
+   var rgb = d3.hsl(hsl).rgb();
+   var color = Spectra(rgb);
+   var lighter = color.lighten(10);
+   return lighter;
+
+  },
+
+  getMaxValue = function(data){
+    var compValues = [];
+    data.forEach(function(entry){
+      compValues.push(entry.sentiment.comparative);
+    });
+    return Math.max.apply(Math,compValues);
+  }
+
+  calcBackgroundColor = function(number){
+    //.css('background','#8ec252')
   };
 
 that.createVoteVisualization = createVoteVisualization;

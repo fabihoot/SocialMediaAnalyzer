@@ -101,6 +101,8 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
   SocialMediaAnalyzer.VisualizationController.setRedditPosts();
   SocialMediaAnalyzer.VisualizationController.createVoteVisualization();
+  SocialMediaAnalyzer.VisualizationController.createSentimentVisualization();
+  SocialMediaAnalyzer.VisualizationController.createTokenVisualization();
   $(document).trigger('onRequestFinished');
   $(document).trigger('onShowPanels');
 };

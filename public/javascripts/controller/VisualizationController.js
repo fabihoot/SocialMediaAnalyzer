@@ -41,6 +41,39 @@ $redditPostResultContainer = null,
  	SocialMediaAnalyzer.Visualization.createVoteBarChart([fbVotes, twitterVotes, redditVotes]);
  },
 
+ createSentimentVisualization = function(){
+  var data = [];
+  var allData = [facebookData, twitterData, redditData];
+  allData.forEach(function(entry){
+    var pos = 0;
+    var neg = 0;
+    var neut = 0;
+    entry.forEach(function(element){     
+      pos =  pos + element.sentiment.positive.score;
+      neg = neg + element.sentiment.negative.score;
+      //neut = neut + element.sentiment.neutral.score;
+    });
+    data.push([pos, neg]);
+  });
+  SocialMediaAnalyzer.Visualization.createSentimentChart(data);
+ },
+
+ createTokenVisualization = function(){
+  var tokenFB = 0;
+  var tokenTwit = 0;
+  var tokenRddt = 0;
+
+  for(var i = 0;i<facebookData.length;i++) tokenFB = tokenFB + facebookData[i].lang.tokens.length;
+  for(var i = 0;i<twitterData.length;i++) tokenTwit = tokenTwit + twitterData[i].lang.tokens.length;
+  for(var i = 0;i<redditData.length;i++) tokenRddt = tokenRddt + redditData[i].lang.tokens.length;
+
+  tokenFB = Math.round(tokenFB / facebookData.length);
+  tokenTwit =  Math.round(tokenTwit / twitterData.length);
+  tokenRddt = Math.round(tokenRddt / redditData.length);
+
+  SocialMediaAnalyzer.Visualization.createTokenChart([tokenFB, tokenTwit, tokenRddt]);
+ },
+
  setTwitterPosts = function(){ 
       createTiles(twitterData, $twitterPostResultContainer);     
       //$( '#twitter-post-result' ).render( twitterData, getDirective() );
@@ -54,23 +87,6 @@ $redditPostResultContainer = null,
   setFacebookPosts = function(){
        createTiles(facebookData, $facebookPostResultContainer);        
       //$( '#facebook-post-result' ).render( facebookData, getDirective() );
-  },
-
-  getDirectiveImage = function(){
-    directive = {
-         '.tile-content':{
-           'content<-':{
-              '.tile-image':function(a){
-                console.log("A:", a);
-                console.log("this", this);
-                 $('.tile-image').css('background-image', this.content.url);
-                  return this.text;                  
-                }
-              }
-            }
-          
-      };
-      return directive; 
   },
 
   createTiles = function(data, container){
@@ -146,6 +162,8 @@ $redditPostResultContainer = null,
     //.css('background','#8ec252')
   };
 
+that.createTokenVisualization = createTokenVisualization
+that.createSentimentVisualization = createSentimentVisualization;
 that.createVoteVisualization = createVoteVisualization;
 that.setFacebookData = setFacebookData;
 that.setTwitterData = setTwitterData;

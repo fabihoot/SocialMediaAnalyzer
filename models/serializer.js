@@ -32,7 +32,7 @@ function twitterData(content){
 	mediaElement.lang.hashtags = formatHashtagArray(data.entities.hashtags);
 	if(data.entities.urls.length > 0){
 		var tempURL = data.entities.urls[0].expanded_url;
-		console.log(tempURL);	
+		
 		if(getFileExtension(tempURL) == "jpg" || getFileExtension(tempURL) == "jpeg" || getFileExtension(tempURL) == "png" ){
 			mediaElement.content.type = 'image';
 	 	 	mediaElement.content.url = tempURL;	 	 	
@@ -135,6 +135,7 @@ function createNewMediaElement(){
 				probLang: "",
 				length: "",
 				tokens: [],
+				tokensStopword: [],
 				countTokens: "",
 				types: 	[],
 				countTypes: "",

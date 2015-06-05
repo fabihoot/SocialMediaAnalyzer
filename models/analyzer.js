@@ -3,6 +3,7 @@ var natural = require('natural');
 var tokenizer = new natural.WordTokenizer();
 var analyze = require('Sentimental').analyze;
 var lngDetector = new (require('languagedetect'));
+var stopwordsEng = require('stopwords').english;
 
 analyzeMediaElement = function(mediaElement){	
 
@@ -13,12 +14,13 @@ analyzeMediaElement = function(mediaElement){
 		//console.log("Language is " + mediaElement.lang.probLang);
 		//console.log("Type is " + mediaElement.type);
 		mediaElement.lang.probLang = checkLanguage(mediaElement.text);
-		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
-		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;		
-		mediaElement.sentiment = sentimentAnalysis(mediaElement);		
 		if(mediaElement.lang.probLang != 'english'){			
 			return null;
 		}
+		mediaElement.lang.tokens = tokenizeText(mediaElement.text);
+		mediaElement.lang.tokensStopword = getTokensAfterStopword(mediaElement.lang.tokens);
+		mediaElement.lang.countTokens = mediaElement.lang.tokens.length;		
+		mediaElement.sentiment = sentimentAnalysis(mediaElement);		
 		if(mediaElement.source != 'twitter'){
 			mediaElement.lang.hashtags = getHashtags(mediaElement.text);
 		} 		
@@ -71,5 +73,18 @@ getHashtags = function(str){
 	}
 	return arr;
 }
+
+getTokensAfterStopword = function(tokens){
+	var stopwordTokens = [];
+	
+	tokens.forEach(function(token){		
+		if(!(stopwordsEng.indexOf(token.toLowerCase()) > -1)){			
+		 stopwordTokens.push(token);
+		}
+	});	
+	return stopwordTokens;
+}
+
+
 
 exports.analyzeMediaElement = analyzeMediaElement;

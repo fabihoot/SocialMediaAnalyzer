@@ -74,6 +74,37 @@ $redditPostResultContainer = null,
   SocialMediaAnalyzer.Visualization.createTokenChart([tokenFB, tokenTwit, tokenRddt]);
  },
 
+ createCloudVisualization = function(){
+  var words = [];
+  var allData = [facebookData, twitterData, redditData];
+  allData.forEach(function(entry){
+     entry.forEach(function(element){     
+      element.lang.tokensStopword.forEach(function(token){
+        words.push(token.toLowerCase());        
+      });
+     });         
+  });
+
+  SocialMediaAnalyzer.Visualization.createCloudChart(sortTokens(words));   
+ },
+
+ sortTokens = function(tokens) {
+    var a = [], b = [], prev;
+
+    tokens.sort();
+    for ( var i = 0; i < tokens.length; i++ ) {
+        if ( tokens[i] !== prev ) {
+            a.push(tokens[i]);
+            b.push(1);
+        } else {
+            b[b.length-1]++;
+        }
+        prev = tokens[i];
+    }
+    var max_of_array = Math.max.apply(Math, b);    
+    return {words: a, frequencies: b};
+ },
+
  setTwitterPosts = function(){ 
       createTiles(twitterData, $twitterPostResultContainer);     
       //$( '#twitter-post-result' ).render( twitterData, getDirective() );
@@ -162,7 +193,8 @@ $redditPostResultContainer = null,
     //.css('background','#8ec252')
   };
 
-that.createTokenVisualization = createTokenVisualization
+that.createCloudVisualization = createCloudVisualization;
+that.createTokenVisualization = createTokenVisualization;
 that.createSentimentVisualization = createSentimentVisualization;
 that.createVoteVisualization = createVoteVisualization;
 that.setFacebookData = setFacebookData;

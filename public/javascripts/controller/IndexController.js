@@ -103,6 +103,7 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.createVoteVisualization();
   SocialMediaAnalyzer.VisualizationController.createSentimentVisualization();
   SocialMediaAnalyzer.VisualizationController.createTokenVisualization();
+  SocialMediaAnalyzer.VisualizationController.createCloudVisualization();
   $(document).trigger('onRequestFinished');
   $(document).trigger('onShowPanels');
 };

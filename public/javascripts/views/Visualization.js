@@ -46,13 +46,17 @@ SocialMediaAnalyzer.Visualization = (function() {
           .data(dataset) 
         .enter().append("svg:rect")
           .attr("class", "vote-chart")
-          .attr("height", function(d) { return yScale(d); })
+          .attr("height", function(d) { 
+            if(yScale(d)<=0) return 1;
+            return yScale(d); })
           .attr("x", function(d, i) { return xScale(i); })
           .attr("y", height)
           .attr("width", barWidth)
           .attr("class", function(d,i){ return colorClasses[i]; })          
           .transition()
-            .attr("y", function(d) { return height - yScale(d); })
+            .attr("y", function(d) {
+             if(yScale(d)<=0) return 1; 
+             return height - yScale(d); })
             .duration(duration)
             .delay(1500)
             .ease("linear");
@@ -102,9 +106,6 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("width", "75")
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
-                                
-         
-    
 
 	},
 
@@ -192,8 +193,50 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("fill", "white");
 
 
+  },
+
+  createCloudChart = function(dataset){
+    var width = 600;
+    var height = 300;
+    var data = dataset.words;
+    var frequencies = dataset.frequencies;
+    var max =  Math.max.apply(Math, dataset.frequencies);
+    var fill = d3.scale.category20();
+    d3.layout.cloud().size([width, height])
+        .words(data.map(function(d, i) {
+         var frequency = frequencies[i];        
+          return {text: d, size: 10 + (frequency / max) * 50};
+        }))
+        .padding(5)
+        .rotate(function() { return ~~(Math.random() * 2) * 90; })
+        .font("Impact")
+        .fontSize(function(d) { return d.size; })
+        .on("end", drawWords)
+        .start();    
+  },
+
+  drawWords = function (words) {
+    var width = 600,
+    height = 300;
+      d3.select("#wordcloud-container").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+        .append("g")
+          .attr("transform", "translate("+ width / 2 +","+ height / 2+")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .attr("fill", "black")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text.toLowerCase(); });
   };
 
+that.createCloudChart = createCloudChart;
 that.createTokenChart = createTokenChart;
 that.createSentimentChart = createSentimentChart;
 that.createVoteBarChart = createVoteBarChart;

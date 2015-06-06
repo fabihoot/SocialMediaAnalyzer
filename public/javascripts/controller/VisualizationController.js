@@ -88,6 +88,28 @@ $redditPostResultContainer = null,
   SocialMediaAnalyzer.Visualization.createCloudChart(sortTokens(words));   
  },
 
+ createContentVisualization = function(){  
+  var allData = [facebookData, twitterData, redditData];
+  var sumLink = 0;
+  var sumText = 0;
+  var sumVideo = 0;
+  var sumImage = 0;
+  allData.forEach(function(entry){
+    entry.forEach(function(element){
+
+      switch(element.content.type){
+        case 'link': sumLink++; break;
+        case 'text': sumText++; break;
+        case 'video': sumVideo++; break;
+        case 'image': sumImage++; break;
+        default: break;
+      }
+
+    });
+  });
+  SocialMediaAnalyzer.Visualization.createContentChart([sumLink,sumText,sumVideo,sumImage]);
+ },
+
  sortTokens = function(tokens) {
     var a = [], b = [], prev;
 
@@ -106,20 +128,18 @@ $redditPostResultContainer = null,
  },
 
  setTwitterPosts = function(){ 
-      SocialMediaAnalyzer.Visualization.createTiles(twitterData, $twitterPostResultContainer);     
-      //$( '#twitter-post-result' ).render( twitterData, getDirective() );
+      SocialMediaAnalyzer.Visualization.createTiles(twitterData, $twitterPostResultContainer);    
   },
 
   setRedditPosts = function(){
-      SocialMediaAnalyzer.Visualization.createTiles(redditData, $redditPostResultContainer);               
-      //$( '#reddit-post-result' ).render( redditData, getDirectiveText() );
+      SocialMediaAnalyzer.Visualization.createTiles(redditData, $redditPostResultContainer);      
   },
 
   setFacebookPosts = function(){
-       SocialMediaAnalyzer.Visualization.createTiles(facebookData, $facebookPostResultContainer);        
-      //$( '#facebook-post-result' ).render( facebookData, getDirective() );
+       SocialMediaAnalyzer.Visualization.createTiles(facebookData, $facebookPostResultContainer);   
   };
 
+that.createContentVisualization = createContentVisualization;
 that.createCloudVisualization = createCloudVisualization;
 that.createTokenVisualization = createTokenVisualization;
 that.createSentimentVisualization = createSentimentVisualization;

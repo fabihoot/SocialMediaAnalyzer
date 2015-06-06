@@ -104,6 +104,7 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.createSentimentVisualization();
   SocialMediaAnalyzer.VisualizationController.createTokenVisualization();
   SocialMediaAnalyzer.VisualizationController.createCloudVisualization();
+  SocialMediaAnalyzer.VisualizationController.createContentVisualization();
   $(document).trigger('onRequestFinished');
   $(document).trigger('onShowPanels');
 };

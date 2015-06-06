@@ -98,62 +98,72 @@
             <div class="heading">General Information</div>
             <div class="content">
               <div class="row cells12">
-                <div id="vote-chart-row" class="cell colspan6 padding20 row cells1">               
+                <div id="vote-chart-row" class="cell colspan6 padding20 row cells1">
+                  <h4>Votes</h4>               
                   <div id="vote-chart-container" class="cell colspan6 padding20">
                  
                   </div>              
                 </div>
                          
                 <div id="sentiment-chart-overall-row" class="cell colspan6 row cells1">
+                  <h4 class="padding20">Sentiment Analysis</h4>
                   <div id="sentiment-chart-container" class="cell colspan6 padding20">
                  
                   </div>              
                 </div>
               </div>
               <div class="row cells12">
-                <div id="token-chart-row" class="cell colspan6 row cells1">
-                 <div id="token-chart-container" class="cell colspan6 padding20">
-                 
-                 </div> 
-                </div>
-                <div id="wordcloud-chart-row" class="cell colspan6 row cells1">
+                <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells1">
+                  <h4>Word Cloud</h4>
                   <div id="wordcloud-container" class="cell colspan6 padding20">
                  
                  </div>
-                </div> 
+                </div>
+                <div id="token-chart-row" class="cell colspan6 padding20 row cells1">
+                  <h4>Tokens</h4>
+                 <div id="token-chart-container" class="cell colspan6 padding20">                 
+                 </div> 
+                </div>
+                 
               </div>
+              <div class="row cells12">
+                 <div id="content-chart-row" class="cell colspan6 padding20 row cells1">
+                   <div id="content-chart-container" class="cell colspan6 padding20">   
 
+                   </div> 
+                 </div>
+              </div>
             </div>
           </div>         
           <div class="frame hidden" id="frame-posts">
             <div class="heading">Posts</div>
             <div class="content">
               <div class="row cells3">
+                <div class="cell fb-banner" id="facebook-banner">
+                  <img src="/images/facebook-banner.png" style="width:27%;"></img>
+                </div>
                 <div class="cell twit-banner" id="twitter-banner">
                   <img src="/images/twitter-banner.png" style="width:27%;"></img>
-                </div>
-                 <div class="cell fb-banner" id="facebook-banner">
-                  <img src="/images/facebook-banner.png" style="width:27%;"></img>
                 </div>
                  <div class="cell rdt-banner" id="reddit-banner">
                   <img src="/images/reddit-banner.png" style="width:27%;"></img>
                 </div>
               </div>
-              <div class="row cells3">
+              <div class="row cells3">                
                 <div class="cell">
-                <div id="twitter-post-result">
-                 
-                </div>
-                </div>
-                <div class="cell">
-                <div id="facebook-post-result">
-                  
-                </div>
+                  <div id="facebook-post-result">
+                    
+                  </div>
                 </div>
                 <div class="cell">
-                <div id="reddit-post-result">                 
-                  
+                  <div id="twitter-post-result">
+                   
+                  </div>
                 </div>
+                <div class="cell">
+                  <div id="reddit-post-result">                 
+                    
+                  </div>
                 </div>
               </div>                
             </div>

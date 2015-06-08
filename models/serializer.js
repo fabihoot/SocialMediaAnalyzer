@@ -61,8 +61,7 @@ function facebookData(content){
 	mediaElement.id 		= data.id;
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;
-	mediaElement.date 		= data.created_time;
-	//mediaElement.type 		= data.type;
+	mediaElement.date 		= data.created_time;	
 	mediaElement.source		= content.id;	
 
 	if(data.hasOwnProperty('type')){
@@ -79,8 +78,17 @@ function facebookData(content){
 			mediaElement.content.url = data.picture;
 		}
 	}
-	if(data.hasOwnProperty('likes')) mediaElement.votes.likes = data.likes.data.length;	
-	if(data.hasOwnProperty('shares')) mediaElement.votes.shares = data.shares.count;
+	var likes = 0
+	if(data.hasOwnProperty('likes')){
+	  likes = data.likes.data.length;
+	} 	
+	mediaElement.votes.likes = likes;  
+
+	var shares = 0;
+	if(data.hasOwnProperty('shares')){
+	  shares = data.shares.count;
+	} 
+	mediaElement.votes.shares = shares;  
 	
 	return storeMediaElement(mediaElement);
 }

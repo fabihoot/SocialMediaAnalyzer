@@ -21,7 +21,7 @@
     "Sentimental": "*",
     "serve-favicon": "~2.2.0",
     "snoocore": "3.0.2",
-    "stopwords": "2.5.1",
+    "stopwords": "1.4.28",
     "twit": "*"
   }
 }

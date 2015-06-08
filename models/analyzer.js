@@ -24,7 +24,7 @@ analyzeMediaElement = function(mediaElement){
 		if(mediaElement.source != 'twitter'){
 			mediaElement.lang.hashtags = getHashtags(mediaElement.text);
 		} 		
-	} else {
+	} else {		
 		return null;
 	}	
 	return mediaElement;

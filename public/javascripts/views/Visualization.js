@@ -328,9 +328,11 @@ SocialMediaAnalyzer.Visualization = (function() {
         $imgContainer.attr("src",  url);
       } else if (type == 'link') { 
         $imgContainer.attr("src", "/images/link-icon.png");
-      } else {
+      } else if (type == 'text') {
         $imgContainer.attr("src", "/images/text-icon.png");        
-      }  
+      } else if(type == 'video') {
+        $imgContainer.attr("src", "/images/video-icon.png");        
+      } 
     }    
   },
 

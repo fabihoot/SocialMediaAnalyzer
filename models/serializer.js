@@ -62,9 +62,23 @@ function facebookData(content){
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;
 	mediaElement.date 		= data.created_time;
-	mediaElement.type 		= data.type;
+	//mediaElement.type 		= data.type;
 	mediaElement.source		= content.id;	
 
+	if(data.hasOwnProperty('type')){
+		if(data.type == 'photo'){
+			mediaElement.content.type = 'image';
+		} else if(data.type == 'status'){
+			mediaElement.content.type = 'text';
+		} else if(data.type == 'video'){
+			mediaElement.content.type = 'video';
+		} else if(data.type == 'link'){
+			mediaElement.content.type = 'link';
+		}
+		if(data.hasOwnProperty('picture')){
+			mediaElement.content.url = data.picture;
+		}
+	}
 	if(data.hasOwnProperty('likes')) mediaElement.votes.likes = data.likes.data.length;	
 	if(data.hasOwnProperty('shares')) mediaElement.votes.shares = data.shares.count;
 	
@@ -83,10 +97,10 @@ function redditData(content){
 
 	
 	mediaElement.id 		= data.id;
-	if (data.selftext == null){
-		mediaElement.text	= data.selftext;
+	if (data.selftext == ""){
+		mediaElement.text	= data.title;
 	} else {
-		mediaElement.text   = data.title;
+		mediaElement.text   = data.selftext;
 	}	
 
 	if(data.hasOwnProperty('url')){	 
@@ -119,7 +133,7 @@ function redditData(content){
 }
 
 function storeMediaElement(mediaElement){
-	var analyzedMediaElement = analyzer.analyzeMediaElement(mediaElement);
+	var analyzedMediaElement = analyzer.analyzeMediaElement(mediaElement);	
 	return analyzedMediaElement;
 }
 

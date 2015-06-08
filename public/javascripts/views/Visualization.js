@@ -37,10 +37,20 @@ SocialMediaAnalyzer.Visualization = (function() {
     var xScale = d3.scale.linear().domain([0, dataset.length]).range([0, width]);
     var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height-50]);
    
+    var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d) {
+                  return "<strong>Frequency:</strong> <span style='color:red'>" + d + "</span>";
+                });
+
     var chart = d3.select("#vote-chart-container")
                  .append("svg:svg")
                  .attr("width", width)
-                 .attr("height", height);      
+                 .attr("height", height)   
+                 
+    chart.call(tip);     
+   
   
     var bars = chart.selectAll("rect")
           .data(dataset) 
@@ -60,6 +70,11 @@ SocialMediaAnalyzer.Visualization = (function() {
             .duration(duration)
             .delay(1500)
             .ease("linear");
+
+    chart.on('mouseover', tip.show)
+         .on('mouseout', tip.hide);   
+
+     
           /*bars.on("mouseover", function(d) {     
             d3.select(this).transition()
                    .attr("width", function(){ return barWidth + 10; })

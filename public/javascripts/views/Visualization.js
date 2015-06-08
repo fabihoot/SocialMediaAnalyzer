@@ -25,8 +25,9 @@ SocialMediaAnalyzer.Visualization = (function() {
     $('#preloader').addClass('magictime vanishOut'); 
   },
 
-	createVoteBarChart = function(dataset){
-    
+	createVoteBarChart = function(data){
+
+    var dataset = data.allVotes;
     
     var colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'];
     var imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png']
@@ -35,22 +36,13 @@ SocialMediaAnalyzer.Visualization = (function() {
     var height = 400;
     var duration = 2000;
     var xScale = d3.scale.linear().domain([0, dataset.length]).range([0, width]);
-    var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height-50]);
-   
-    var tip = d3.tip()
-                .attr('class', 'd3-tip')
-                .offset([-10, 0])
-                .html(function(d) {
-                  return "<strong>Frequency:</strong> <span style='color:red'>" + d + "</span>";
-                });
-
+    var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height-50]);     
+                
     var chart = d3.select("#vote-chart-container")
+                .data(dataset) 
                  .append("svg:svg")
                  .attr("width", width)
-                 .attr("height", height)   
-                 
-    chart.call(tip);     
-   
+                 .attr("height", height); 
   
     var bars = chart.selectAll("rect")
           .data(dataset) 
@@ -71,23 +63,30 @@ SocialMediaAnalyzer.Visualization = (function() {
             .delay(1500)
             .ease("linear");
 
-    chart.on('mouseover', tip.show)
-         .on('mouseout', tip.hide);   
+    var tip = d3.tip()                
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d,i) {
+                var text = "<strong>All Votes: </strong> <span style='color:#d1d1d1'>" + d + "</span>";
+                if(i==0){
+                  text = text +
+                  "<br/><strong>Likes: </strong><span style='color:#d1d1d1'>" + data.fbVotes.likes + "</span><br/>" +
+                  "<strong>Shares: </strong><span style='color:#d1d1d1'>" + data.fbVotes.shares + "</span>"
+                } else if(i==1) {
+                  text = text +
+                  "<br/><strong>Retweets: </strong><span style='color:#d1d1d1'>" + data.twitterVotes.retweets + "</span><br/>" +
+                  "<strong>Favorites: </strong><span style='color:#d1d1d1'>" + data.twitterVotes.favorites + "</span>"
+                } else {
 
+                }                 
+                  return text;
+                });    
+
+    chart.selectAll('rect').call(tip);     
+
+    chart.selectAll('rect').on('mouseover', tip.show)
+                           .on('mouseout', tip.hide);
      
-          /*bars.on("mouseover", function(d) {     
-            d3.select(this).transition()
-                   .attr("width", function(){ return barWidth + 10; })
-                   .attr("x", function(d, i) { return xScale(i) - 5 ; })
-                   .duration(500);     
-          });
-          bars.on("mouseout", function(d) {
-            
-            d3.select(this).transition()
-                           .attr("width", function(){ return barWidth - 10; })
-                           .attr("x", function(d, i) { return xScale(i) + 5 ; })
-                           .duration(500);
-          });*/
     chart.selectAll("text")
               .data(dataset)
             .enter().append("svg:text")
@@ -139,14 +138,14 @@ SocialMediaAnalyzer.Visualization = (function() {
                   .attr("transform", "translate(" + (r + m) + "," + (r + m) + ")");
     var arc = d3.svg.arc()
           .innerRadius(r / 2)
-          .outerRadius(r);
+          .outerRadius(r);          
 
      svg.selectAll("path")
           .data(d3.layout.pie())
         .enter().append("svg:path")
           .attr("d", arc)
-          .style("fill", function(d, i) { return z(i); });
-      
+          .style("fill", function(d, i) { return z(i); });          
+
       //Labels
       svg.selectAll("g")
          .data(d3.layout.pie())
@@ -157,7 +156,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                             arc.centroid(d) + ")"; })         
           .attr("text-anchor", "middle")
           .text(function(d) { return d.value; })
-          .attr("fill", "black");
+          .attr("fill", "white");
   },
 
   createTokenChart = function(dataset){
@@ -231,7 +230,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   createContentChart = function(dataset){
-    console.log(dataset);
+   
     //Width and height
       var w = 300;
       var h = 300;      

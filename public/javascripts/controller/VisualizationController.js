@@ -32,13 +32,38 @@ $redditPostResultContainer = null,
  },
 
  createVoteVisualization = function(){ 	
- 	var fbVotes = 0;
- 	var twitterVotes = 0;
- 	var redditVotes = 0;
- 	for(var i = 0;i<facebookData.length;i++) fbVotes = fbVotes + facebookData[i].votes.likes;
- 	for(var i = 0;i<twitterData.length;i++) twitterVotes = twitterVotes + twitterData[i].votes.retweets;
- 	for(var i = 0;i<redditData.length;i++) redditVotes = redditVotes + redditData[i].votes.score;
- 	SocialMediaAnalyzer.Visualization.createVoteBarChart([fbVotes, twitterVotes, redditVotes]);
+ 	var allFBVotes = 0;
+  var likes = 0;
+  var shares = 0;
+
+ 	var allTwitterVotes = 0;
+  var retweets = 0;
+  var favorites = 0;
+
+ 	var allRedditVotes = 0;
+
+ 	for(var i = 0;i<facebookData.length;i++){    
+    allFBVotes = allFBVotes + facebookData[i].votes.likes + facebookData[i].votes.shares; 
+    likes = likes + facebookData[i].votes.likes;
+    shares = shares + facebookData[i].votes.shares;
+  } 
+ 	for(var i = 0;i<twitterData.length;i++){
+    allTwitterVotes = allTwitterVotes + twitterData[i].votes.retweets + twitterData[i].votes.favorites;
+    retweets = retweets + twitterData[i].votes.retweets;
+    favorites = favorites + twitterData[i].votes.favorites;
+  } 
+ 	for(var i = 0;i<redditData.length;i++) allRedditVotes = allRedditVotes + redditData[i].votes.score;
+ 	SocialMediaAnalyzer.Visualization.createVoteBarChart({ allVotes: [allFBVotes, allTwitterVotes, allRedditVotes],
+                                                         fbVotes: {
+                                                          likes: likes,
+                                                          shares: shares
+                                                         },
+                                                         twitterVotes: {
+                                                          retweets: retweets,
+                                                          favorites: favorites
+                                                         },
+                                                         redditVotes: { score: ""}
+                                                       });
  },
 
  createSentimentVisualization = function(){

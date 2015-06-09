@@ -1,5 +1,7 @@
 SocialMediaAnalyzer.Visualization = (function() {
 	var that = {},
+  colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'],
+  imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png'],
 
 	init = function() {
 		console.log("init Visualization.js");
@@ -29,8 +31,7 @@ SocialMediaAnalyzer.Visualization = (function() {
 
     var dataset = data.allVotes;
     
-    var colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'];
-    var imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png']
+    
     var barWidth = 75;
     var width = (barWidth + 10) * dataset.length;
     var height = 400;
@@ -160,7 +161,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   createTokenChart = function(dataset){
-    var colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'];
+   
     var barWidth = 75;
     var width = (barWidth + 10) * dataset.length;
     var height = 400;
@@ -187,6 +188,19 @@ SocialMediaAnalyzer.Visualization = (function() {
             .delay(1500)
             .ease("linear");
 
+    var tip = d3.tip()                
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d,i) {
+                var text = "<strong>&#216; Tokens per Post: </strong> <span style='color:#d1d1d1'>" + d + "</span>";
+                  return text;
+                });
+
+    chart.selectAll('rect').call(tip);     
+
+    chart.selectAll('rect').on('mouseover', tip.show)
+                           .on('mouseout', tip.hide);  
+
 
     chart.selectAll("text")
               .data(dataset)
@@ -205,6 +219,22 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("text-anchor", "middle")
               .text(function(d) { return d; })
               .attr("fill", "white");
+
+    chart.selectAll("image")
+              .data(dataset)
+            .enter().append("svg:image")
+              .attr("x", function(d, i) { return xScale(i); })
+              .attr("y", function(d) {
+                var yValue = height - yScale(d) - 45;
+                  if(yValue >= 325){
+                    return 325;
+                  } else {
+                  return yValue                  
+                  }                  
+                 })
+              .attr("width", "75")
+              .attr("height", "40px")
+              .attr("xlink:href", function(d,i){ return imgSource[i]; });
 
 
   },
@@ -341,7 +371,9 @@ SocialMediaAnalyzer.Visualization = (function() {
       if(type == 'image'){
         $imgContainer.attr("src",  url);
       } else if (type == 'link') { 
-        $imgContainer.attr("src", "/images/link-icon.png");
+        //$imgContainer.attr("src", "/images/link-icon.png");
+        $imgContainer.attr("src", url);
+
       } else if (type == 'text') {
         $imgContainer.attr("src", "/images/text-icon.png");        
       } else if(type == 'video') {

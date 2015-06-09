@@ -87,7 +87,8 @@ getFBPages = function(search_word, count, callback){
     .setAccessToken(token)
     .get(path, function(err, res) {
       if (err) {
-        console.log(err);        
+        console.log(err);
+        console.log("path: " + path);        
         callback({'error': err});
       return;
       };         

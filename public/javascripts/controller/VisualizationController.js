@@ -72,13 +72,13 @@ $redditPostResultContainer = null,
   allData.forEach(function(entry){
     var pos = 0;
     var neg = 0;
-    var neut = 0;
+    
     entry.forEach(function(element){     
       pos =  pos + element.sentiment.positive.score;
-      neg = neg + element.sentiment.negative.score;
-      //neut = neut + element.sentiment.neutral.score;
+      neg = neg + element.sentiment.negative.score;      
     });
-    data.push([pos, neg]);
+    var src = entry[0].source;   
+    data.push({source: src, value: [pos, neg], score: pos - neg});
   });
   SocialMediaAnalyzer.Visualization.createSentimentChart(data);
  },

@@ -104,3 +104,24 @@ a {
   top: 100%;
   left: 0;
 }
+
+.sentiment-icon{
+  width: 30px;
+  height: 30px;
+}
+
+.sentiment-description-facebook{
+  padding-left: 55px; 
+}
+.sentiment-description-twitter{
+  padding-left: 40px; 
+}
+.sentiment-description-reddit{
+  padding-left: 20px; 
+}
+.sentiment-description-text{  
+  padding: 4px;
+  padding-right: 10px;
+  font-weight: bold;
+  color: #5a5a5a;
+}

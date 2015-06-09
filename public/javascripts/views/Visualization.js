@@ -125,30 +125,32 @@ SocialMediaAnalyzer.Visualization = (function() {
 	},
 
   createSentimentChart = function(dataset){
+    var width = 260;
+    var height = 220;
     var m = 10,
     r = 100,
-    z = d3.scale.category20c(),
-    labelr = 150;
+    z = d3.scale.category20c();
 
     var svg = d3.select("#sentiment-chart-container").selectAll("svg")
                   .data(dataset)
                 .enter().append("svg:svg")
-                  .attr("width", 220)
-                  .attr("height", 300)
+                  .attr("width", width)
+                  .attr("height", height)                 
                 .append("svg:g")
-                  .attr("transform", "translate(" + (r + m) + "," + (r + m) + ")");
+                  .attr("transform", "translate(" + (r + m) + "," + (r + m) + ")");               
+
     var arc = d3.svg.arc()
           .innerRadius(r / 2)
           .outerRadius(r);          
 
-     svg.selectAll("path")
+    svg.selectAll("path")
           .data(d3.layout.pie())
         .enter().append("svg:path")
           .attr("d", arc)
           .style("fill", function(d, i) { return z(i); });          
 
       //Labels
-      svg.selectAll("g")
+    svg.selectAll("g")
          .data(d3.layout.pie())
             .enter().append("g:text")
           .attr("x", function(d, i) { return 0; })
@@ -158,6 +160,14 @@ SocialMediaAnalyzer.Visualization = (function() {
           .attr("text-anchor", "middle")
           .text(function(d) { return d.value; })
           .attr("fill", "white");
+
+    var id = ['facebook', 'twitter', 'reddit'];
+    for (var i = 0; i<dataset.length;i++){
+      var $text = "<div class='cell sentiment-description-"+ id[i] +"'><image src='images/circle_plus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i][0] + "</text>" + 
+                 "<image src='images/circle_minus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i][1] + "</text></div>";
+       $("#sentiment-chart-single-description").append($text);                
+    }
+     
   },
 
   createTokenChart = function(dataset){
@@ -235,8 +245,6 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("width", "75")
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
-
-
   },
 
   createCloudChart = function(dataset){
@@ -246,17 +254,50 @@ SocialMediaAnalyzer.Visualization = (function() {
     var frequencies = dataset.frequencies;
     var max =  Math.max.apply(Math, dataset.frequencies);
     var fill = d3.scale.category20();
+
     d3.layout.cloud().size([width, height])
         .words(data.map(function(d, i) {
          var frequency = frequencies[i];        
-          return {text: d, size: 10 + (frequency / max) * 50};
+          return {text: d, size: 10 + (frequency / max) * 75};
         }))
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
         .fontSize(function(d) { return d.size; })
         .on("end", drawWords)
-        .start();    
+        .start();
+
+    var tip = d3.tip()                
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d,i) {                                
+                 return "<span style='color:#d1d1d1'>" + frequencies[i] + "</span>";                 
+                });    
+    var text = d3.select("#wordcloud-container").select('g').selectAll('text').call(tip);     
+    
+    text.on('mouseover', tip.show)
+         .on('mouseout', tip.hide);    
+  },
+
+  drawWords = function (words) {
+    var width = 600, height = 300;
+    d3.select("#wordcloud-container").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+        .append("g")
+          .attr("transform", "translate("+ width / 2 +","+ height / 2+")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .attr("fill", "black")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text.toLowerCase(); });
+
   },
 
   createContentChart = function(dataset){
@@ -305,28 +346,8 @@ SocialMediaAnalyzer.Visualization = (function() {
           .attr("text-anchor", "middle")
           .text(function(d) {
             return d.value;
-          });
-  },
-
-  drawWords = function (words) {
-    var width = 600,
-    height = 300;
-      d3.select("#wordcloud-container").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-        .append("g")
-          .attr("transform", "translate("+ width / 2 +","+ height / 2+")")
-        .selectAll("text")
-          .data(words)
-        .enter().append("text")
-          .style("font-size", function(d) { return d.size + "px"; })
-          .style("font-family", "Impact")
-          .attr("fill", "black")
-          .attr("text-anchor", "middle")
-          .attr("transform", function(d) {
-            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
           })
-          .text(function(d) { return d.text.toLowerCase(); });
+          .attr("fill", "white");
   },
 
   createTiles = function(data, container){
@@ -361,6 +382,7 @@ SocialMediaAnalyzer.Visualization = (function() {
       var $txtContainer = $('#tile-text-entry-'+ data[i].source +'-'+ i);
       var $imgContainer = $('#tile-img-entry-'+ data[i].source +'-'+ i);
       var $sentimentContainer = $('#tile-sentiment-entry-'+ data[i].source +'-'+ i);
+
       
       if(text.length > 140){
         text = text.substring(0,140) + '...';
@@ -369,10 +391,16 @@ SocialMediaAnalyzer.Visualization = (function() {
       var color = getColor(comparative, maxVal);
       $sentimentContainer.css('background',color);
       if(type == 'image'){
-        $imgContainer.attr("src",  url);
+        $imgContainer.bind('error', function(e){
+            //error has been thrown
+            $(this).attr('src','/images/no-image-icon.png');
+        }).attr('src', url);
       } else if (type == 'link') { 
         //$imgContainer.attr("src", "/images/link-icon.png");
-        $imgContainer.attr("src", url);
+        $imgContainer.bind('error', function(e){
+            //error has been thrown
+            $(this).attr('src','/images/no-image-icon.png');
+        }).attr('src', url);
 
       } else if (type == 'text') {
         $imgContainer.attr("src", "/images/text-icon.png");        

@@ -109,8 +109,9 @@ $redditPostResultContainer = null,
       });
      });         
   });
-
-  SocialMediaAnalyzer.Visualization.createCloudChart(sortTokens(words));   
+  var calcFrequncies = sortTokens(words);
+  console.log("frequncies: ", calcFrequncies);
+  SocialMediaAnalyzer.Visualization.createCloudChart(calcFrequncies);   
  },
 
  createContentVisualization = function(){  
@@ -147,8 +148,7 @@ $redditPostResultContainer = null,
             b[b.length-1]++;
         }
         prev = tokens[i];
-    }
-    var max_of_array = Math.max.apply(Math, b);    
+    }      
     return {words: a, frequencies: b};
  },
 

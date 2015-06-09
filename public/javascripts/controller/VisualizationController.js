@@ -133,7 +133,7 @@ $redditPostResultContainer = null,
 
     });
   });
-  SocialMediaAnalyzer.Visualization.createContentChart([sumLink,sumText,sumVideo,sumImage]);
+  SocialMediaAnalyzer.Visualization.createContentChart({type: ['link', 'text', 'video', 'image'], value: [sumLink, sumText, sumVideo, sumImage]});
  },
 
  sortTokens = function(tokens) {

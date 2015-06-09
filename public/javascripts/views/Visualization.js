@@ -129,7 +129,8 @@ SocialMediaAnalyzer.Visualization = (function() {
     var height = 220;
     var m = 10,
     r = 100,
-    z = d3.scale.category20c();
+    //colors = d3.scale.category10().domain(d3.range(0,10))
+    colors = d3.scale.linear().domain([0, 1]).range(["#00C333", "#FF1E00"]);
 
     var svg = d3.select("#sentiment-chart-container").selectAll("svg")
                   .data(dataset)
@@ -147,9 +148,9 @@ SocialMediaAnalyzer.Visualization = (function() {
           .data(d3.layout.pie())
         .enter().append("svg:path")
           .attr("d", arc)
-          .style("fill", function(d, i) { return z(i); });          
+          .style("fill", function(d, i) { return colors(i); });          
 
-      //Labels
+    /*   //Labels
     svg.selectAll("g")
          .data(d3.layout.pie())
             .enter().append("g:text")
@@ -159,7 +160,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                             arc.centroid(d) + ")"; })         
           .attr("text-anchor", "middle")
           .text(function(d) { return d.value; })
-          .attr("fill", "white");
+          .attr("fill", "white");*/
 
     var id = ['facebook', 'twitter', 'reddit'];
     for (var i = 0; i<dataset.length;i++){
@@ -325,7 +326,7 @@ SocialMediaAnalyzer.Visualization = (function() {
       
       //Set up groups
       var arcs = svg.selectAll("g.arc")
-              .data(pie(dataset))
+              .data(pie(dataset.value))
               .enter()
               .append("g")
               .attr("class", "arc")
@@ -348,21 +349,44 @@ SocialMediaAnalyzer.Visualization = (function() {
             return d.value;
           })
           .attr("fill", "white");
+
+      var legend = d3.select("#content-chart-container").append("svg")
+          .attr("class", "legend")
+          .attr("width", outerRadius)
+          .attr("height", outerRadius * 2)
+          .selectAll("g")
+          .data(dataset.type)
+          .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      
+      legend.append("rect")
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", function(d, i) { return color(i); });
+      
+      legend.append("text")          
+          .attr("x", 24)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .text(function(d) { return d; });      
   },
 
   createTiles = function(data, container){
-    var maxVal = getMaxValue(data);
-    addTiles(data, container, maxVal);      
+   
+    addTiles(data, container);      
   },
 
-  addTiles = function(data, container, maxVal){
+  addTiles = function(data, container){
+    var maxVal = getMaxValue(data);
+    var minVal = getMinValue(data);
+
     for (var i = 0; i<data.length;i++){
       var source = data[i].source;
       var text = data[i].text;
       var url = data[i].content.url;
       var type = data[i].content.type;
-      var comparative = data[i].sentiment.comparative;
-      var numb  = Math.round(comparative * 100) / 100
+      var score = data[i].sentiment.score;
+
       //console.log("Type:",type, "Source", source);    
       var divToAppend = '<div class="tile-image color-'+ source +'""><img id="tile-img-entry-'+ source +'-'+ i + '"></img></div>';
       
@@ -370,7 +394,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
                        '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
-                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment comp.: '+ numb + '</div>' + 
+                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment comp.: '+ score + '</div>' + 
                     '</div>' + 
                     '<div class="slide-over slide-height-bottom>' +
                        divToAppend +                        
@@ -388,8 +412,9 @@ SocialMediaAnalyzer.Visualization = (function() {
         text = text.substring(0,140) + '...';
       }
       $txtContainer.text(text);
-      var color = getColor(comparative, maxVal);
-      $sentimentContainer.css('background',color);
+      
+      var color = getColor(score, maxVal, minVal);
+      $sentimentContainer.css('background', color);
       if(type == 'image'){
         $imgContainer.bind('error', function(e){
             //error has been thrown
@@ -410,24 +435,34 @@ SocialMediaAnalyzer.Visualization = (function() {
     }    
   },
 
-  getColor = function(score, maxVal){
-
-   var value = Math.abs(score / maxVal);  
+  getColor = function(score, maxVal, minVal){
+   var colors = d3.scale.linear().domain([minVal, maxVal]).range(["#FF1E00", "#00C333"]);
+   
+  /* var value = Math.abs(score / maxVal);  
    var hue=((1-value)*120).toString(10);
    var hsl= ["hsl(",hue,",100%,50%)"].join("")
    var rgb = d3.hsl(hsl).rgb();
    var color = Spectra(rgb);
-   var lighter = color.lighten(10);
-   return lighter;
+   var lighter = color.lighten(10);*/
+
+   return colors(score);
 
   },
 
   getMaxValue = function(data){
     var compValues = [];
     data.forEach(function(entry){
-      compValues.push(entry.sentiment.comparative);
+      compValues.push(entry.sentiment.score);
     });
     return Math.max.apply(Math,compValues);
+  },
+
+  getMinValue = function(data){
+    var compValues = [];
+    data.forEach(function(entry){
+      compValues.push(entry.sentiment.score);
+    });
+    return Math.min.apply(Math,compValues);
   },
 
   calcBackgroundColor = function(number){

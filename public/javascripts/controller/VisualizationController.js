@@ -109,8 +109,7 @@ $redditPostResultContainer = null,
       });
      });         
   });
-  var calcFrequncies = sortTokens(words);
-  console.log("frequncies: ", calcFrequncies);
+  var calcFrequncies = sortTokens(words);  
   SocialMediaAnalyzer.Visualization.createCloudChart(calcFrequncies);   
  },
 

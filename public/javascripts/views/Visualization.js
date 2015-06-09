@@ -255,11 +255,12 @@ SocialMediaAnalyzer.Visualization = (function() {
     var frequencies = dataset.frequencies;
     var max =  Math.max.apply(Math, dataset.frequencies);
     var fill = d3.scale.category20();
+    var frequenciesMapped;
 
     d3.layout.cloud().size([width, height])
         .words(data.map(function(d, i) {
-         var frequency = frequencies[i];        
-          return {text: d, size: 10 + (frequency / max) * 75};
+         var frequency = frequencies[i];           
+         return {text: d, size: 10 + (frequency / max) * 75, value: frequency};
         }))
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
@@ -272,7 +273,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d,i) {                                
-                 return "<span style='color:#d1d1d1'>" + frequencies[i] + "</span>";                 
+                 return "<span style='color:#d1d1d1'>" + d.value + "</span>";                 
                 });    
     var text = d3.select("#wordcloud-container").select('g').selectAll('text').call(tip);     
     
@@ -302,73 +303,95 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   createContentChart = function(dataset){
-   
-    //Width and height
-      var w = 300;
-      var h = 300;      
+   var width = 400,
+   height = 400, 
+   radius = 180, 
+   innerR= 70,
+   color = d3.scale.category10();
 
-      var outerRadius = w / 2;
-      var innerRadius = 0;
-      var arc = d3.svg.arc()
-              .innerRadius(innerRadius)
-              .outerRadius(outerRadius);
-      
-      var pie = d3.layout.pie();
-      
-      //Easy colors accessible via a 10-step ordinal scale
-      var color = d3.scale.category10();
+   var total = d3.sum(dataset.value);
+    
+   var vis = d3.select("#content-chart-container")
+        .append("svg:svg")
+        .data(dataset.value)
+            .attr("width", width)
+            .attr("height", height)
+        .append("svg:g")
+            .attr("transform", "translate(" + radius * 1.1 + "," + radius * 1.1 + ")")
+    
+   var textTop = vis.append("text")
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .attr("class", "textTop")
+        .text( "total" )
+        .attr("y", -10),
+   textBottom = vis.append("text")
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .attr("class", "textBottom")
+        .text(total)
+        .attr("y", 10);
+    
+   var arc = d3.svg.arc()
+        .innerRadius(innerR)
+        .outerRadius(radius);
+    
+   var arcOver = d3.svg.arc()
+        .innerRadius(innerR + 5)
+        .outerRadius(radius + 5);
+     
+   var pie = d3.layout.pie()
+        .value(function(d) { return d; });
+     
+   var arcs = vis.selectAll("g.slice")
+        .data(pie(dataset.value))
+        .enter()
+            .append("svg:g")
+                .attr("class", "slice")
+                .on("mouseover", function(d) {
+                  
+                    d3.select(this).select("path").transition()
+                        .duration(200)
+                        .attr("d", arcOver)
+                    var type = dataset.type[dataset.value.indexOf(d.value)];
+                    textTop.text(type)
+                        .attr("y", -10);
+                    textBottom.text(d.value)
+                        .attr("y", 10);
+                })
+                .on("mouseout", function(d) {
+                    d3.select(this).select("path").transition()
+                    .duration(100)
+                    .attr("d", arc);
+                
+                textTop.text( "total" )
+                    .attr("y", -10);
+                textBottom.text(total);
+            });
 
-      //Create SVG element
-      var svg = d3.select("#content-chart-container")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h);
-      
-      //Set up groups
-      var arcs = svg.selectAll("g.arc")
-              .data(pie(dataset.value))
-              .enter()
-              .append("g")
-              .attr("class", "arc")
-              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
-      
-      //Draw arc paths
-      arcs.append("path")
-          .attr("fill", function(d, i) {
-            return color(i);
-          })
-          .attr("d", arc);
-      
-      //Labels
-      arcs.append("text")
-          .attr("transform", function(d) {
-            return "translate(" + arc.centroid(d) + ")";
-          })
-          .attr("text-anchor", "middle")
-          .text(function(d) {
-            return d.value;
-          })
-          .attr("fill", "white");
-
-      var legend = d3.select("#content-chart-container").append("svg")
-          .attr("class", "legend")
-          .attr("width", outerRadius)
-          .attr("height", outerRadius * 2)
-          .selectAll("g")
-          .data(dataset.type)
-          .enter().append("g")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-      
-      legend.append("rect")
-          .attr("width", 18)
-          .attr("height", 18)
-          .style("fill", function(d, i) { return color(i); });
-      
-      legend.append("text")          
-          .attr("x", 24)
-          .attr("y", 9)
-          .attr("dy", ".35em")
-          .text(function(d) { return d; });      
+    arcs.append("svg:path")
+        .attr("fill", function(d, i) { return color(i); } )
+        .attr("d", arc);
+        
+          var legend = d3.select("#content-chart-container").append("svg")
+              .attr("class", "legend")
+              .attr("width", radius)
+              .attr("height", radius * 2)
+              .selectAll("g")
+              .data(dataset.type)
+              .enter().append("g")
+              .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+          
+          legend.append("rect")
+              .attr("width", 18)
+              .attr("height", 18)
+              .style("fill", function(d, i) { return color(i); });
+          
+          legend.append("text")          
+              .attr("x", 24)
+              .attr("y", 9)
+              .attr("dy", ".35em")
+              .text(function(d) { return d; });      
   },
 
   createTiles = function(data, container){
@@ -437,12 +460,8 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   getColor = function(score, maxVal, minVal){
    var colors = d3.scale.linear().domain([minVal, maxVal]).range(["#FF1E00", "#00C333"]);
-   
-  /* var value = Math.abs(score / maxVal);  
-   var hue=((1-value)*120).toString(10);
-   var hsl= ["hsl(",hue,",100%,50%)"].join("")
-   var rgb = d3.hsl(hsl).rgb();
-   var color = Spectra(rgb);
+
+  /*var color = Spectra(rgb);
    var lighter = color.lighten(10);*/
 
    return colors(score);

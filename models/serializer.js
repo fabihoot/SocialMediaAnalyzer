@@ -101,8 +101,7 @@ function redditData(content){
 		
 	var data = content.data;	
 	var time = timeConverter(data.created);
-	var mediaElement = createNewMediaElement();
-
+	var mediaElement = createNewMediaElement();	
 	
 	mediaElement.id 		= data.id;
 	if (data.selftext == ""){
@@ -115,7 +114,7 @@ function redditData(content){
 	 if(data.hasOwnProperty('domain')){
 	 	if (data.domain == 'imgur.com' || data.domain == 'i.imgur.com'){
 	 	 mediaElement.content.type = 'image';
-	 	 mediaElement.content.thumbnail = data.thumbnail;
+	 	 mediaElement.content.url = data.thumbnail;
 	 	 if(getFileExtension(data.url) == "jpg" || getFileExtension(data.url) == "jpeg" || getFileExtension(data.url) == "png" ){
 	 	 	mediaElement.content.url = data.url;	 	 	
 	 	 } 
@@ -166,8 +165,7 @@ function createNewMediaElement(){
 			sentiment: {},
 			content:{
 				type: "",
-				url: "",
-				thumbnail: ""
+				url: ""				
 			},
 			votes: {
 				likes: "",

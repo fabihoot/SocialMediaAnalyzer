@@ -38,13 +38,21 @@ router.post('/reddit/', function(req, res, next) {
 });
 
 router.post('/facebook-login/', function(req, res, next) { 
-  facebook.init(req.body.token);
-  res.send('facebook-login: success');
+  facebook.init(req.body.token, function(result){
+     res.send(result);
+  }); 
 });
 
 router.post('/reddit-login/', function(req, res, next) { 
-  reddit.init();
-  res.send('reddit-login: success');
+  reddit.init(function(result){
+    res.send(result);
+  }); 
+});
+
+router.post('/twitter-login/', function(req, res, next) { 
+  twitter.init(function(result){
+      res.send(result);
+  });
 });
 
 router.post('/request-id/', function(req, res, next) { 

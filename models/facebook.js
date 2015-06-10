@@ -5,14 +5,16 @@ var async = require('async');
 var graph = require('fbgraph');
 var utils = require('../models/utils');
 
-init = function(access_token){ 
-  getLongLivedAccessToken(access_token);
+init = function(access_token, callback){ 
+  getLongLivedAccessToken(access_token, function(data){
+    callback(data);
+  });
 }
 setToken = function(t){
   token = t;
 }
 
-getLongLivedAccessToken = function(access_token){
+getLongLivedAccessToken = function(access_token, callback){
   getAppData(function(appData){
     var APP_ID = appData[0];
     var APP_SECRET = appData[1];
@@ -23,11 +25,12 @@ getLongLivedAccessToken = function(access_token){
               "fb_exchange_token=" + access_token + "";
    
     graph.get(path, function(err, res) {
-       if(err) console.log(err);
+       if(err){ console.log(err); callback({logged_in: false, err: err}); }
        console.log('Facebook authentication successfull');       
        setToken(res.access_token);
        graph.setAppSecret(APP_SECRET);    
-       graph.setAccessToken(res.access_token);      
+       graph.setAccessToken(res.access_token);
+       callback({logged_in: true});  
      });
   });
   

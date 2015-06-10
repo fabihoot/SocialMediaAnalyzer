@@ -7,7 +7,7 @@ var nextRedditLink = "";
 var urlChanged = false;
 var utils = require('../models/utils');
 
-init = function(){  
+init = function(callback){  
   utils.getRedditLogins(function (logins){    
     reddit = new Snoocore({
                       userAgent: '/u/cl4ptrap SocialMediaAnalyzer@0.0.1',
@@ -21,7 +21,8 @@ init = function(){
                               }                        
                       });
     reddit('/api/v1/me').get().then(function(result) {
-      console.log("Reddit authentication successfull");     
+      console.log("Reddit authentication successfull");
+      callback({logged_in: true});     
     });
   });
 }

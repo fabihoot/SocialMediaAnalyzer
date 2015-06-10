@@ -22,8 +22,8 @@ function twitterData(content){
 	
 	var data = content.data;
 	var mediaElement = createNewMediaElement();
-
-	mediaElement.id 	  =	data.id;
+		
+	mediaElement.id 	  =	data.id_str;
 	mediaElement.text	  =	data.text;
 	mediaElement.username =	data.user.name;
 	mediaElement.date 	  =	data.created_at;
@@ -42,6 +42,7 @@ function twitterData(content){
 	 	 }	 
 	} else {
 		mediaElement.content.type = 'text';
+		mediaElement.content.url = "https://twitter.com/"+ data.user.screen_name + "/status/" + data.id_str;
 	}	
 
 	mediaElement.votes.retweets = data.retweet_count;
@@ -57,7 +58,7 @@ function facebookData(content){
 	//date: 	data.created_time
 	var data = content.data;
 	var mediaElement = createNewMediaElement(); 	
-	
+	console.log(data);
 	mediaElement.id 		= data.id;
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;
@@ -74,8 +75,11 @@ function facebookData(content){
 		} else if(data.type == 'link'){
 			mediaElement.content.type = 'link';
 		}
+		if(data.hasOwnProperty('link')){
+			mediaElement.content.url = data.link;
+		}
 		if(data.hasOwnProperty('picture')){
-			mediaElement.content.url = data.picture;
+			mediaElement.content.thumbnail = data.picture;
 		}
 	}
 	var likes = 0
@@ -114,18 +118,18 @@ function redditData(content){
 	 if(data.hasOwnProperty('domain')){
 	 	if (data.domain == 'imgur.com' || data.domain == 'i.imgur.com'){
 	 	 mediaElement.content.type = 'image';
-	 	 mediaElement.content.url = data.thumbnail;
+	 	 mediaElement.content.thumbnail = data.thumbnail;
+	 	 
 	 	 if(getFileExtension(data.url) == "jpg" || getFileExtension(data.url) == "jpeg" || getFileExtension(data.url) == "png" ){
 	 	 	mediaElement.content.url = data.url;	 	 	
 	 	 } 
 	 	} else if(data.domain == 'youtube.com'){
-	 		mediaElement.content.type = 'video';
-	 		mediaElement.content.url = data.url;
+	 		mediaElement.content.type = 'video';	 		
 	 	} else {
-	 		mediaElement.content.type = 'text';		
+	 		mediaElement.content.type = 'text';	
 	 	}
 	 }
-
+	 mediaElement.content.url = data.url;
 	} 	
 
 	mediaElement.username	= data.author;
@@ -165,7 +169,8 @@ function createNewMediaElement(){
 			sentiment: {},
 			content:{
 				type: "",
-				url: ""				
+				url: "",
+				thumbnail: ""				
 			},
 			votes: {
 				likes: "",

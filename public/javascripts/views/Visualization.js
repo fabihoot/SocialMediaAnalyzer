@@ -179,7 +179,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     var height = 220;
     var radius = 100, 
     innerR = 80;
-    //colors = d3.scale.category10().domain(d3.range(0,10))
+    
     var color = d3.scale.linear().domain([0, 1]).range(["#00C333", "#FF1E00"]);
    
     
@@ -501,54 +501,83 @@ SocialMediaAnalyzer.Visualization = (function() {
       var source = data[i].source;
       var text = data[i].text;
       var url = data[i].content.url;
+      var thumbnail = data[i].content.thumbnail;
       var type = data[i].content.type;
       var score = data[i].sentiment.score;
-
-      //console.log("Type:",type, "Source", source);    
-      var divToAppend = '<div class="tile-image color-'+ source +'""><img id="tile-img-entry-'+ source +'-'+ i + '"></img></div>';
-      
-      var $tile = '<div class="tile" data-role="tile">' + 
+      var textLength = data[i].text.length;
+      var tokenCount = data[i].lang.countTokens;
+      var username = data[i].username;
+     
+      var $tile = '<div class="tile" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
+
+                       '<div class="tile-image"><img id="tile-img-entry-'+ source +'-'+ i + '"></img></div>' +
+                       '<div class="tile-sentiment text-small padding10 shadow" id="tile-sentiment-entry-'+ source +'-'+ i + '">'+ score + '</div>' + 
+                    
                        '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
-                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment Score: '+ score + '</div>' + 
+
                     '</div>' + 
-                    '<div class="slide-over slide-height-bottom>' +
-                       divToAppend +                        
+                    '<div class="slide-over slide-height-bottom">' +
+                        '<div class="tile-thumbnail"><img id="tile-img-thumb-'+ source +'-'+ i + '"></img></div>' + 
+                        '<div class="tile-text text-small padding10" id="tile-text-length-'+ source +'-'+ i + '"></div>' +                             
                     '</div>' + 
                    '</div>' + 
                  '</div>';
       $( container ).append($tile);
-
+      
       var $txtContainer = $('#tile-text-entry-'+ data[i].source +'-'+ i);
       var $imgContainer = $('#tile-img-entry-'+ data[i].source +'-'+ i);
       var $sentimentContainer = $('#tile-sentiment-entry-'+ data[i].source +'-'+ i);
 
+      var $thumbnailContainer = $('#tile-img-thumb-'+ source +'-'+ i);
+      var $txtLengthContainer = $('#tile-text-length-'+ data[i].source +'-'+ i);
+      
+
+      var $tileLink = $('#tile-'+ data[i].source +'-'+ i);
+      $tileLink.click(function(){
+        var url = $(this).attr("href");            
+        var win = window.open(url);
+        if(win){
+            //Browser has allowed it to be opened
+            win.focus();
+        }else{
+            //Broswer has blocked it
+            alert('Please allow popups for this site');
+        }
+      });
       
       if(text.length > 140){
-        text = text.substring(0,140) + '...';
+        text = text.substring(0,100) + ' [...]';
       }
-      $txtContainer.text(text);
+      $txtContainer.html("<b>" + username +"</b></br>" +text);
+
+      $txtLengthContainer.html("Length of Text: " + textLength + "<br/>" +
+                               "Tokens:         " + tokenCount);
       
       var color = getColor(score, maxVal, minVal);
       $sentimentContainer.css('background', color);
       if(type == 'image'){
-        $imgContainer.bind('error', function(e){
+        $imgContainer.attr("src", "/images/image-icon.png"); 
+        $thumbnailContainer.bind('error', function(e){
             //error has been thrown
             $(this).attr('src','/images/no-image-icon.png');
-        }).attr('src', url);
+        }).attr('src', thumbnail);
       } else if (type == 'link') { 
-        //$imgContainer.attr("src", "/images/link-icon.png");
-        $imgContainer.bind('error', function(e){
+        $imgContainer.attr("src", "/images/link-icon.png");
+        $thumbnailContainer.attr("src", '/images/no-image-icon.png');
+      } else if (type == 'text') {
+        $imgContainer.attr("src", "/images/text-icon.png");
+        $thumbnailContainer.attr("src", '/images/no-image-icon.png');     
+      } else if(type == 'video') {
+        $imgContainer.attr("src", "/images/video-icon.png");
+        $thumbnailContainer.attr("src", '/images/no-image-icon.png');   
+      }
+      //Load image src 
+       /*$imgContainer.bind('error', function(e){
             //error has been thrown
             $(this).attr('src','/images/no-image-icon.png');
-        }).attr('src', url);
-
-      } else if (type == 'text') {
-        $imgContainer.attr("src", "/images/text-icon.png");        
-      } else if(type == 'video') {
-        $imgContainer.attr("src", "/images/video-icon.png");        
-      } 
+        }).attr('src', url);*/ 
     }    
   },
 

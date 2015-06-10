@@ -121,51 +121,93 @@
     <div class="row cells1 block-shadow-impact hidden" id="accordion-container">
       <div class="cell">
         <div class="accordion" data-role="accordion">
+
           <div class="frame hidden" id="frame-general">
             <div class="heading">General Information</div>
             <div class="content">
-              <div class="row cells12">
-                <div id="vote-chart-row" class="cell colspan6 padding20 row cells1">
-                  <h4>Votes</h4>               
+              <div class="carousel chart-carousel" data-auto="false" data-role="carousel" data-control-next="<span class='mif-chevron-right'></span>" data-control-prev="<span class='mif-chevron-left'></span>" style="width: 100%;">
+
+              <div class="slide">
+                <div id="vote-chart-row" class="cell colspan6 padding20 row cells2">                             
                   <div id="vote-chart-container" class="cell colspan6 padding20">
                  
+                  </div>
+                  <div class="cell">
+                    <h5 class="no-margin-top">Vote Analysis</h5>
+                    <hr class="bg-orange">
+                    <div class="content">
+                      Description of Vote Analysis
+                    </div>
                   </div>              
                 </div>
-                         
-                <div id="sentiment-chart-overall-row" class="cell colspan6 padding20 row cells1">
-                  <h4 class="padding20">Sentiment Analysis</h4>
-                  <div id="sentiment-chart-container" class="row cell colspan6">
+              </div>
+              <div class="slide">
+                <div id="sentiment-chart-overall-row" class="cell padding20 grid">
+                <div class="row cells2">                  
+                  <div id="sentiment-chart-container" class="cell">
                  
                   </div>
+                  <div class="cell">
+                    <h5 class="no-margin-top">Sentiment Analysis</h5>
+                    <hr class="bg-orange">
+                    <div class="content">
+                      Description of Sentiment Analysis
+                    </div>
+                  </div>
+                  </div>
+                 <div class="row cells2">           
                   <div class="row cells3 cell" id="sentiment-chart-single-description">
-
-                  </div>              
+                    
+                  </div>
+                </div>
                 </div>
               </div>
-              <div class="row cells12">
-                <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells1">
-                  <h4>Word Cloud</h4>
-                  <div id="wordcloud-container" class="cell colspan6 padding20">
+              <div class="slide">
+                <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells2">                  
+                  <div id="wordcloud-container" class="cell">
                  
                  </div>
+                    <div class="cell">
+                    <h5 class="no-margin-top">Word Cloud</h5>
+                    <hr class="bg-orange">
+                    <div class="content">
+                      Description of Word Cloud
+                    </div>
+                  </div> 
                 </div>
-                <div id="token-chart-row" class="cell colspan6 padding20 row cells1">
-                  <h4>Tokens</h4>
-                 <div id="token-chart-container" class="cell colspan6 padding20">                 
-                 </div> 
-                </div>
-                 
               </div>
-              <div class="row cells12">
-                 <div id="content-chart-row" class="cell colspan6 padding20 row cells1">
-                  <h4>Content Distribution</h4>
+              <div class="slide">
+                <div id="token-chart-row" class="cell colspan6 padding20 row cells2">                  
+                 <div id="token-chart-container" class="cell colspan6 padding20">                 
+                 </div>
+                 <div class="cell">
+                    <h5 class="no-margin-top">Token Analysis</h5>
+                    <hr class="bg-orange">
+                    <div class="content">
+                      Description of Token Analysis
+                    </div>
+                  </div>  
+                </div>                 
+              </div>
+              <div class="slide">
+                 <div id="content-chart-row" class="cell colspan6 padding20 row cells2">
+                   
                    <div id="content-chart-container" class="cell colspan6 padding20">   
 
-                   </div> 
+                   </div>
+                   <div class="cell">
+                    <h5 class="no-margin-top">Content Distribution</h5>
+                    <hr class="bg-orange">
+                    <div class="content">
+                      Description of Content Distribution
+                    </div>
+                  </div> 
                  </div>
               </div>
+              </div>
             </div>
-          </div>         
+          </div>
+
           <div class="frame hidden" id="frame-posts">
             <div class="heading">Posts</div>
             <div class="content">
@@ -199,11 +241,6 @@
               </div>                
             </div>
           </div>
-           <div class="frame hidden" id="frame-mapping">
-              <div class="heading">Mapping</div>
-              <div class="content">Frame content</div>
-          </div>
-
         </div>
       </div>
     </div>  
@@ -230,8 +267,7 @@
     <script src="/javascripts/controller/MainController.js"></script>
     <script src="/javascripts/controller/IndexController.js"></script>
     <script src="/javascripts/controller/VisualizationController.js"></script>        
-    <script src="/javascripts/controller/LoginController.js"></script>    
-    <script src="/javascripts/views/Search.js"></script>
+    <script src="/javascripts/controller/LoginController.js"></script>        
     <script src="/javascripts/views/Visualization.js"></script>
     <script>
         SocialMediaAnalyzer.init();

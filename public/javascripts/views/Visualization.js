@@ -3,8 +3,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'],
   imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png'],
   $panelGeneral,
-  $panelPosts,
-  $panelMapping,
+  $panelPosts,  
 
 	init = function() {
 		console.log("init Visualization.js");
@@ -14,29 +13,45 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   initContainer = function(){
     $panelGeneral = $('#frame-general');
-    $panelPosts = $('#frame-posts');
-    $panelMapping = $('#frame-mapping'); 
+    $panelPosts = $('#frame-posts')
+    
   },
 
   initListener = function(){
      $(document).on('onRequestStart', onRequestStarted);
      $(document).on('onRequestFinished', onRequestFinished);
-     $(document).on('onShowPanels', onShowPanels);            
+     $(document).on('onShowPanels', onShowPanels);
+     $(document).on('onCheckRequest', onRequestFinishedId);            
   },  
   
   onShowPanels = function(event){
     event.preventDefault();      
     $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft');
     $panelGeneral.addClass("active").delay(2000);
-    $panelPosts.removeClass('hidden').addClass('magictime spaceInLeft'); 
-    $panelMapping.removeClass('hidden').addClass('magictime spaceInLeft'); 
+    $panelPosts.removeClass('hidden').addClass('magictime spaceInLeft');   
+    showCarousel(); 
+  },
+
+  showCarousel = function(){
+    $('.carousel').carousel({
+            auto: false,
+            period: 20000,
+            duration: 2000,
+            height: 500
+           
+        });
   },
 
   onRequestStarted = function(event){
    event.preventDefault();   
-   //$('#preloader-container').removeClass('hidden');
-   //$('#preloader').removeClass('magictime vanishOut');
-   //$('#preloader').addClass('magictime vanishIn');
+    $('#preloader-facebook').removeClass('hidden');
+    $('#preloader-ok-facebook').addClass('hidden'); 
+
+    $('#preloader-twitter').removeClass('hidden');
+    $('#preloader-ok-twitter').addClass('hidden');
+
+    $('#preloader-reddit').removeClass('hidden');
+    $('#preloader-ok-reddit').addClass('hidden');
   },
 
   onRequestFinished = function(event){
@@ -44,6 +59,11 @@ SocialMediaAnalyzer.Visualization = (function() {
     $('#accordion-container').removeClass('hidden');    
     //$('#preloader').removeClass('magictime vanishIn');
     //$('#preloader').addClass('magictime vanishOut'); 
+  },
+
+  onRequestFinishedId = function(event, id){
+    event.preventDefault();
+    showLoginSuccess(id); 
   },
 
   showLoginSuccess = function(id){    
@@ -58,8 +78,6 @@ SocialMediaAnalyzer.Visualization = (function() {
 	createVoteBarChart = function(data){
 
     var dataset = data.allVotes;
-    
-    
     var barWidth = 75;
     var width = (barWidth + 10) * dataset.length;
     var height = 400;
@@ -531,7 +549,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   getColor = function(score, maxVal, minVal){
-   var colors = d3.scale.linear().domain([minVal,0 ,maxVal]).range(["#FF1E00",'#737373' ,"#00C333"]);
+   var colors = d3.scale.linear().domain([minVal,0 ,maxVal]).range(["#FF1E00",'#EEEEEE' ,"#00C333"]);
 
   /*var color = Spectra(rgb);
    var lighter = color.lighten(10);*/

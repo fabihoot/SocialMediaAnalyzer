@@ -2,6 +2,7 @@ body {
   background-image: url("../images/background-image.jpg");
   background-size: 100% auto;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -158,4 +159,7 @@ a {
 }
 .preload-size{  
   height: 40px;
+}
+.chart-carousel{
+  height: 500px;
 }

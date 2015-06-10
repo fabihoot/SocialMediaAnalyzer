@@ -1,6 +1,6 @@
 body {
   background-image: url("../images/background-image.jpg");
-  background-size: 100% 100%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -155,4 +155,7 @@ a {
 .top:hover {
     border: 1px solid #555;
     color: #333;
+}
+.preload-size{  
+  height: 40px;
 }

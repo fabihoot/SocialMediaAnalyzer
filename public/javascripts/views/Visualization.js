@@ -15,17 +15,26 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   onRequestStarted = function(event){
    event.preventDefault();   
-   $('#preloader-container').removeClass('hidden');
-   $('#preloader').removeClass('magictime vanishOut');
-   $('#preloader').addClass('magictime vanishIn');
+   //$('#preloader-container').removeClass('hidden');
+   //$('#preloader').removeClass('magictime vanishOut');
+   //$('#preloader').addClass('magictime vanishIn');
   },
 
   onRequestFinished = function(event){
     event.preventDefault();
     $('#accordion-container').removeClass('hidden');    
-    $('#preloader').removeClass('magictime vanishIn');
-    $('#preloader').addClass('magictime vanishOut'); 
+    //$('#preloader').removeClass('magictime vanishIn');
+    //$('#preloader').addClass('magictime vanishOut'); 
   },
+
+  showLoginSuccess = function(id){    
+    $('#preloader-'+ id).addClass('hidden');
+    $('#preloader-ok-'+ id).removeClass('hidden');   
+  },
+
+  enableSearch = function(){
+    $('#input-keyword').removeAttr('disabled');
+  }, 
 
 	createVoteBarChart = function(data){
 
@@ -207,29 +216,6 @@ SocialMediaAnalyzer.Visualization = (function() {
         .attr("fill", function(d, i) { return color(i); } )
         .attr("d", arc);                
 
-    
-    /*var arc = d3.svg.arc()
-          .innerRadius(r / 2)
-          .outerRadius(r);          
-
-    svg.selectAll("path")
-          .data(d3.layout.pie())
-        .enter().append("svg:path")
-          .attr("d", arc)
-          .style("fill", function(d, i) { return colors(i); });          
-
-      //Labels
-    svg.selectAll("g")
-         .data(d3.layout.pie())
-            .enter().append("g:text")
-          .attr("x", function(d, i) { return 0; })
-          .attr("y", function(d,i) { return 0;})
-          .attr("transform", function(d) { return "translate(" + 
-                            arc.centroid(d) + ")"; })         
-          .attr("text-anchor", "middle")
-          .text(function(d) { return d.value; })
-          .attr("fill", "white");*/
-   
     for (var i = 0; i<dataset.length;i++){
       var $text = "<div class='cell sentiment-description-"+ dataset[i].source +"'><image src='images/circle_plus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i].value[0] + "</text>" + 
                  "<image src='images/circle_minus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i].value[1] + "</text></div>";
@@ -555,6 +541,8 @@ SocialMediaAnalyzer.Visualization = (function() {
     //.css('background','#8ec252')
   };
 
+that.enableSearch = enableSearch;
+that.showLoginSuccess = showLoginSuccess;
 that.createTiles = createTiles;  
 that.createContentChart = createContentChart;
 that.createCloudChart = createCloudChart;

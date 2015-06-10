@@ -6,10 +6,12 @@ redditData = null,
 $facebookPostResultContainer = null,
 $twitterPostResultContainer = null,
 $redditPostResultContainer = null,
+countLogins = 0,
 
 
  init = function() {
       console.log("init VisualizationController.js");
+      initListener();
       initContainer();           
  },
 
@@ -17,6 +19,32 @@ $redditPostResultContainer = null,
   $facebookPostResultContainer = $( '#facebook-post-result' );
   $twitterPostResultContainer = $( '#twitter-post-result' );
   $redditPostResultContainer = $( '#reddit-post-result' );
+ },
+
+ initListener = function(){
+  $(document).on('facebookLoginSuccess', onFacebookLoginSuccess);
+  $(document).on('twitterLoginSuccess', onTwitterLoginSuccess);
+  $(document).on('redditLoginSuccess', onRedditLoginSuccess);
+ },
+
+ onFacebookLoginSuccess = function(event){  
+  SocialMediaAnalyzer.Visualization.showLoginSuccess('facebook');
+  loginIsReady();
+ },
+
+ onTwitterLoginSuccess = function(event){  
+  SocialMediaAnalyzer.Visualization.showLoginSuccess('twitter');
+  loginIsReady();
+ },
+
+ onRedditLoginSuccess = function(event){  
+  SocialMediaAnalyzer.Visualization.showLoginSuccess('reddit');
+  loginIsReady();
+ },
+
+ loginIsReady = function(){
+  countLogins++;
+  if(countLogins>=3)SocialMediaAnalyzer.Visualization.enableSearch(); 
  },
 
  setFacebookData = function(data){

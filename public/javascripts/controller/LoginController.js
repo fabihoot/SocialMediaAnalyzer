@@ -13,14 +13,14 @@ SocialMediaAnalyzer.LoginController = (function() {
 	},
 
   initReddit = function(){
-    $.post('/reddit-login/', function(res){
-      console.log("RDT:", res);
+    $.post('/reddit-login/', function(res){      
+      $(document).trigger('redditLoginSuccess');
     });
   },
 
   initTwitter = function(){
-    $.post('/twitter-login/', function(res){
-      console.log("TWT:", res);
+    $.post('/twitter-login/', function(res){      
+      $(document).trigger('twitterLoginSuccess');
     });
   },
 
@@ -60,8 +60,8 @@ SocialMediaAnalyzer.LoginController = (function() {
    		// for FB.getLoginStatus().
    		if (response.status === 'connected') {
    		  // Logged into your app and Facebook.
-   		  $.post('/facebook-login/', { token: response.authResponse.accessToken}, function(res){
-          console.log("FB", res);
+   		  $.post('/facebook-login/', { token: response.authResponse.accessToken}, function(res){          
+          $(document).trigger('facebookLoginSuccess');
         });
    		} else if (response.status === 'not_authorized') {
    		  // The person is logged into Facebook, but not your app.

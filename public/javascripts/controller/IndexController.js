@@ -79,8 +79,7 @@
        SocialMediaAnalyzer.VisualizationController.setRedditData(content);       
        $(document).trigger('onCheckRequest', data.id);
     });
-
-    SocialMediaAnalyzer.Visualization.init();
+    
     SocialMediaAnalyzer.VisualizationController.init();
     $(document).trigger('onRequestStart'); 
  

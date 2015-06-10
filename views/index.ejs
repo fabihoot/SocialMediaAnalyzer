@@ -13,11 +13,10 @@
 
   <div class="app-bar bg-orange">
       
-    <a class="app-bar-element branding bg-hover-orange"><span class="mif-rocket mif-2x" style="margin-right: 10px;"></span>Social Media Analyzer</a>
+    <span class="app-bar-element branding bg-hover-orange" style="cursor:default;"><span class="mif-rocket mif-2x" style="margin-right: 10px;"></span>Social Media Analyzer</span>
     <span class="app-bar-divider bg-orange"></span>
     <ul class="app-bar-menu">
-        <li class=" bg-hover-amber">Home</li>
-        <li class=" bg-hover-amber">FAQ</li>
+        <li class=" bg-hover-amber">Home</li>       
         <li class=" bg-hover-amber">Help</li>
          <li>
            <div class="fb-login-button no-padding-top logout-top" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
@@ -40,7 +39,7 @@
       <div class="cell"></div>  
       <div class="cell align-center">
           <div class="input-control modern text iconic padding10 full-size">
-              <input type="text" id="input-keyword">
+              <input type="text" id="input-keyword" disabled>
               <span class="label">Please enter a search term we should analyze!</span>
               <span class="informer">Press Enter to start your search</span>
               <span class="placeholder" id="search-placeholder">Keyword</span>
@@ -81,13 +80,41 @@
           </div>
         </div>
     
-      <div id="preloader-container" class="row cells3 hidden padding20">
+      <div id="preloader-container" class="row cells4 padding20">
       <div class="cell">
       </div>
       <div class="cell">
-        <div id="preloader" data-role="preloader" data-type="metro" data-style="dark"></div>
+        <h5 class="no-margin-top">Logins</h5>
+        <hr class="bg-orange">
+        <div class="content">
+          To access the features of this site, its required to retrieve access tokens for each platform.
+          Login data for the networks Twitter and Reddit are provided by the author. The current state
+          of the Facebook API requires that you login with your own Facebook Account. You can find
+          the Login Button at the top of this page. The author assures that the account data is only used
+          for the intended purposes, described in the Help section.
+        </div>
       </div>
-      <div class="cell">
+      <div class="cell cells4 grid">
+        <div class="row cell">
+          
+        </div>
+        <div class="row cells2">
+          <img id="preloader-icon-facebook" src="/images/facebook-icon-circle.png" class="preload-size cell" style="width:40px; margin-right: 20px;"></img>
+          <img id="preloader-ok-facebook"src="/images/ok-icon-circle.png" class="cell preload-size hidden" style="width:40px;"></img>
+          <div id="preloader-facebook" data-role="preloader" data-type="ring" data-style="dark" class="cell preload-size"></div>
+        </div>
+        <div class="row cells2">
+          <img id="preloader-icon-twitter" src="/images/twitter-icon-circle.png.png" class="cell preload-size" style="width:40px; margin-right: 20px;"></img>
+          <img id="preloader-ok-twitter"src="/images/ok-icon-circle.png" class="cell hidden preload-size" style="width:40px;"></img>
+          <div id="preloader-twitter" data-role="preloader" data-type="ring" data-style="dark" class="cell preload-size"></div>
+        </div>
+        <div class=" row cells2">
+          <img id="preloader-icon-reddit"src="/images/reddit-icon-circle.png" class="cell preload-size" style="width:40px; margin-right: 20px;"></img>
+          <img id="preloader-ok-reddit"src="/images/ok-icon-circle.png" class="cell hidden preload-size" style="width:40px;"></img>
+          <div id="preloader-reddit" data-role="preloader" data-type="ring" data-style="dark" class="cell preload-size"></div>
+        </div>
+      </div>      
+       <div class="cell">
       </div>
       </div>
     </div>
@@ -202,8 +229,8 @@
     <script src="/javascripts/SocialMediaAnalyzer.js"></script>
     <script src="/javascripts/controller/MainController.js"></script>
     <script src="/javascripts/controller/IndexController.js"></script>
-    <script src="/javascripts/controller/LoginController.js"></script>    
     <script src="/javascripts/controller/VisualizationController.js"></script>        
+    <script src="/javascripts/controller/LoginController.js"></script>    
     <script src="/javascripts/views/Search.js"></script>
     <script src="/javascripts/views/Visualization.js"></script>
     <script>

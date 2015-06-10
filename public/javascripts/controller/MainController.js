@@ -5,8 +5,7 @@ SocialMediaAnalyzer.MainController = (function() {
 		console.log("init MainController");
 		SocialMediaAnalyzer.VisualizationController.init();
 		SocialMediaAnalyzer.LoginController.init();	
-		SocialMediaAnalyzer.IndexController.init();	
-		SocialMediaAnalyzer.Search.init();		
+		SocialMediaAnalyzer.IndexController.init();					
 	};
 
 	that.init = init;	

@@ -189,8 +189,12 @@ countLogins = 0,
 
   setFacebookPosts = function(){
        SocialMediaAnalyzer.Visualization.createTiles(facebookData, $facebookPostResultContainer);   
+  },
+  showPanels = function(){  
+    $(document).trigger('onShowPanels');
   };
 
+that.showPanels = showPanels;
 that.createContentVisualization = createContentVisualization;
 that.createCloudVisualization = createCloudVisualization;
 that.createTokenVisualization = createTokenVisualization;

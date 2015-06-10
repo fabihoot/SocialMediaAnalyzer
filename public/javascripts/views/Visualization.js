@@ -2,15 +2,34 @@ SocialMediaAnalyzer.Visualization = (function() {
 	var that = {},
   colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'],
   imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png'],
+  $panelGeneral,
+  $panelPosts,
+  $panelMapping,
 
 	init = function() {
 		console.log("init Visualization.js");
     initListener();
+    initContainer();
 	},
+
+  initContainer = function(){
+    $panelGeneral = $('#frame-general');
+    $panelPosts = $('#frame-posts');
+    $panelMapping = $('#frame-mapping'); 
+  },
 
   initListener = function(){
      $(document).on('onRequestStart', onRequestStarted);
-     $(document).on('onRequestFinished', onRequestFinished);      
+     $(document).on('onRequestFinished', onRequestFinished);
+     $(document).on('onShowPanels', onShowPanels);            
+  },  
+  
+  onShowPanels = function(event){
+    event.preventDefault();      
+    $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft');
+    $panelGeneral.addClass("active").delay(2000);
+    $panelPosts.removeClass('hidden').addClass('magictime spaceInLeft'); 
+    $panelMapping.removeClass('hidden').addClass('magictime spaceInLeft'); 
   },
 
   onRequestStarted = function(event){
@@ -535,10 +554,6 @@ SocialMediaAnalyzer.Visualization = (function() {
       compValues.push(entry.sentiment.score);
     });
     return Math.min.apply(Math,compValues);
-  },
-
-  calcBackgroundColor = function(number){
-    //.css('background','#8ec252')
   };
 
 that.enableSearch = enableSearch;

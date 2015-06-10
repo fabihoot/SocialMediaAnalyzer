@@ -80,7 +80,7 @@
        $(document).trigger('onCheckRequest', data.id);
     });
     
-    SocialMediaAnalyzer.VisualizationController.init();
+    SocialMediaAnalyzer.Visualization.init();
     $(document).trigger('onRequestStart'); 
  
 },
@@ -99,13 +99,15 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
   SocialMediaAnalyzer.VisualizationController.setRedditPosts();
+
+  SocialMediaAnalyzer.VisualizationController.showPanels();
+
   SocialMediaAnalyzer.VisualizationController.createVoteVisualization();
   SocialMediaAnalyzer.VisualizationController.createSentimentVisualization();
   SocialMediaAnalyzer.VisualizationController.createTokenVisualization();
   SocialMediaAnalyzer.VisualizationController.createCloudVisualization();
   SocialMediaAnalyzer.VisualizationController.createContentVisualization();
   $(document).trigger('onRequestFinished');
-  $(document).trigger('onShowPanels');
 };
 that.init = init;
 return that;

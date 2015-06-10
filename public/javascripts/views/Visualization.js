@@ -484,7 +484,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
                        '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
-                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment comp.: '+ score + '</div>' + 
+                       '<div class="tile-sentiment text-small padding10" id="tile-sentiment-entry-'+ source +'-'+ i + '">Sentiment Score: '+ score + '</div>' + 
                     '</div>' + 
                     '<div class="slide-over slide-height-bottom>' +
                        divToAppend +                        
@@ -526,7 +526,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   getColor = function(score, maxVal, minVal){
-   var colors = d3.scale.linear().domain([minVal, maxVal]).range(["#FF1E00", "#00C333"]);
+   var colors = d3.scale.linear().domain([minVal,0 ,maxVal]).range(["#FF1E00",'#737373' ,"#00C333"]);
 
   /*var color = Spectra(rgb);
    var lighter = color.lighten(10);*/

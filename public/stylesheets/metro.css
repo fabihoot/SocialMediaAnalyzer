@@ -9262,7 +9262,7 @@ input[type="submit"].dropdown-toggle.drop-marker-light:after {
   display: block;
   width: 100%;
   position: relative;
-  min-height: 100px;
+  min-height: 500px;
   overflow: hidden;
 }
 .carousel .slide {
@@ -9308,7 +9308,7 @@ input[type="submit"].dropdown-toggle.drop-marker-light:after {
   margin-right: 0;
 }
 .carousel .carousel-bullets .carousel-bullet.bullet-on {
-  background-color: #59cde2;
+  background-color: #fa6800;
 }
 .carousel.square-bullets .carousel-bullet {
   border-radius: 0 !important;

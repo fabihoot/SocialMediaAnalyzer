@@ -52,6 +52,10 @@ SocialMediaAnalyzer.Visualization = (function() {
 
     $('#preloader-reddit').removeClass('hidden');
     $('#preloader-ok-reddit').addClass('hidden');
+
+    $("#info-search").removeClass('hidden');
+    $("#info-login").addClass('magictime vanishOut').addClass('hidden');
+    $("#info-search").addClass('magictime vanishIn');
   },
 
   onRequestFinished = function(event){

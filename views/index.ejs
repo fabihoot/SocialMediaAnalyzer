@@ -83,7 +83,7 @@
       <div id="preloader-container" class="row cells4 padding20">
       <div class="cell">
       </div>
-      <div class="cell">
+      <div id="info-login" class="cell">
         <h5 class="no-margin-top">Logins</h5>
         <hr class="bg-orange">
         <div class="content">
@@ -94,10 +94,18 @@
           for the intended purposes, described in the Help section.
         </div>
       </div>
-      <div class="cell cells4 grid">
-        <div class="row cell">
-          
+
+      <div id="info-search" class="cell hidden">
+        <h5 class="no-margin-top">Search</h5>
+        <hr class="bg-orange">
+        <div class="content">
+          Some APIs (espacially the Facebook API) tend to use a very long time to deliver the requested data.
+          Also the server side processing may take additional time. On the right you can check the status
+          of the current search.
         </div>
+      </div>
+
+      <div class="cell cells4 grid" style="padding-top: 50px;">        
         <div class="row cells2">
           <img id="preloader-icon-facebook" src="/images/facebook-icon-circle.png" class="preload-size cell" style="width:40px; margin-right: 20px;"></img>
           <img id="preloader-ok-facebook"src="/images/ok-icon-circle.png" class="cell preload-size hidden" style="width:40px;"></img>

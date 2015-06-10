@@ -1,14 +1,28 @@
 var Twit = require('twit');
 var id = "twitter";  
-var T = new Twit({
-    consumer_key:         'jsT8x1bQpzWFvUWD10zyA'
-  , consumer_secret:      '221c0J7TFprjEAmIQSdhDWzwWtPscNb8eS6jDVlc'
-  , access_token:         '2289566022-Q13zR4GVQSO8qJZiIxc8ureuwJJwiw5BqFqMLxD'
-  , access_token_secret:  'nXYrEgYtq3yBHJ9j6Oh44fgd6oEugOqih352VrNzcUkHu'
-});
+var T = null;
 var serializer = require('./serializer');
 var async = require('async');
+var utils = require('../models/utils');
 
+init = function(callback){
+
+  utils.getTwitterLogins(function (logins){    
+    T = new Twit({
+      consumer_key:         logins.consumer_key,
+      consumer_secret:      logins.consumer_secret,
+      access_token:         logins.access_token,
+      access_token_secret:  logins.access_token_secret,
+    });
+    T.get('account/settings', function(err, data, response) {
+     
+      if(err) callback({logged_in: false, err: err});
+      console.log("Twitter authentication successfull");
+      callback({logged_in: true});
+    })
+  });
+
+}
 
 getTwitterData = function (keyword, count, callback){  
   var twitterElements = {"data" : []};
@@ -61,4 +75,6 @@ requestTweets = function(keyword, count, callback){
     }      
   });
 }
+
+exports.init = init;
 exports.getTwitterData = getTwitterData;

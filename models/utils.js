@@ -36,7 +36,29 @@ getRedditLogins = function(callback){
 		callback(data);
 	});
 }
+getTwitterLogins = function(callback){
+
+	fs.readFile('./config/config.json', function(err, data){
+		if (err) console.error(err);
+		var obj = JSON.parse(data);		
+		var data = {
+			consumer_key: "",
+			consumer_secret:"",
+			access_token:"",
+			access_token_secret:""
+		};
+		
+		data.consumer_key = obj.twitter.consumer_key;
+		data.consumer_secret = obj.twitter.consumer_secret;  
+		data.access_token = obj.twitter.access_token; 
+		data.access_token_secret = obj.twitter.access_token_secret;				
+		
+		callback(data);
+	});
+}
 //exports.method = method;
+
+exports.getTwitterLogins = getTwitterLogins;
 exports.getRedditLogins = getRedditLogins;
 exports.getFBAppId = getFBAppId;
 exports.getFBAppSecret = getFBAppSecret;

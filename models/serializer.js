@@ -58,7 +58,7 @@ function facebookData(content){
 	//date: 	data.created_time
 	var data = content.data;
 	var mediaElement = createNewMediaElement(); 	
-	console.log(data);
+	
 	mediaElement.id 		= data.id;
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;

@@ -94,8 +94,9 @@ getFBPages = function(search_word, count, callback){
         console.log("path: " + path);        
         callback({'error': err});
       return;
-      };         
+      };
       path = res.paging.next;     
+      if(path=='undefined' || path==undefined) {console.log(res); callback(facebookFeedEntries); return;}         
        getFBFeedEntries(res.data, function( entries ){        
          resultData = entries;
          next(null, entries);

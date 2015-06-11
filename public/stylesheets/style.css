@@ -129,13 +129,13 @@ a {
 }
 
 .sentiment-description-facebook{
-  padding-left: 55px; 
+  padding-left: 50px; 
 }
 .sentiment-description-twitter{
-  padding-left: 39px; 
+  padding-left: 25px; 
 }
 .sentiment-description-reddit{
-  padding-left: 18px; 
+  padding-left: 0px; 
 }
 .sentiment-description-text{  
   padding: 4px;
@@ -178,4 +178,11 @@ a {
 }
 .chart-carousel{
   height: 500px;
+}
+.description-image{
+  width: 20px;
+  height: 20px;
+}
+.description-image .share {
+  width: 40px;
 }

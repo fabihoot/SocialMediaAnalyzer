@@ -128,14 +128,14 @@
     </div>
     <div class="row cells1 block-shadow-impact hidden" id="accordion-container">
       <div class="cell">
-        <div class="accordion" data-role="accordion">
+        <div class="accordion large-heading" data-role="accordion">
 
           <div class="frame hidden" id="frame-general">
             <div class="heading">General Information</div>
             <div class="content">
               <div class="carousel chart-carousel" data-auto="false" data-role="carousel" data-control-next="<span class='mif-chevron-right'></span>" data-control-prev="<span class='mif-chevron-left'></span>" style="width: 100%;">
 
-              <div class="slide">
+              <div class="slide padding30">
                 <div id="vote-chart-row" class="cell colspan6 padding20 row cells2">                             
                   <div id="vote-chart-container" class="cell colspan6 padding20">
                  
@@ -144,12 +144,15 @@
                     <h5 class="no-margin-top">Vote Analysis</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      Description of Vote Analysis
+                      The three social Networks offer different mechanisms to rate the content posted by their users. Theres not much
+                      exisiting research compairing these mechanisms among themselves. Your search term returned <b><text id="text-votes-overall"></text></b>
+                      ratings over the three networks. In the Social Network Facebook it reached a number of <b><text id="text-fb-likes"></text></b> <img src="images/facebook-like-icon.png" class="description-image"></img> and 
+                      <b><text id="text-fb-shares"></text></b> <img src="images/facebook-share-icon.png" class="description-image share"></img>. The users of the Microblogging plattform Twitter used the <img src="images/twitter-retweet-icon.png" class="description-image"></img> feature <b><text id="text-twit-retweet"></text></b>times and set <b><text id="text-twit-favorites"></text></b> as <img src="images/twitter-favorite-icon.png" class="description-image"></img> posts concerning your search term. With the recent changes of the Reddit API its not possible to tell you the exact values of Up or Downvotes but the overall <img src="images/reddit-upvote-downvote-icon.png" class="description-image"></img> were <b><text id="text-rddt-score"></text></b>. Please consume these values with caution, as stated above, because there is not very much research in compairing these values!
                     </div>
                   </div>              
                 </div>
               </div>
-              <div class="slide">
+              <div class="slide padding30">
                 <div id="sentiment-chart-overall-row" class="cell padding20 grid">
                 <div class="row cells2">                  
                   <div id="sentiment-chart-container" class="cell">
@@ -159,7 +162,9 @@
                     <h5 class="no-margin-top">Sentiment Analysis</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      Description of Sentiment Analysis
+                      This is a method to define the subjective information found in the collected posts. Also known as opinion mining, sentiment analysis makes use of different techniques like natural language processing and text analysis. It tries to determine the attitude of the author towards the specific
+                      search term you entered. To identify the sentiment of the posts the node.js module 'sentiment' was utilized which makes use of the AFINN-111 wordlist
+                      that rates every word on a scale from -5 to 5. The users on <b><text id="text-sent-most-negative"></text></b> were the most negative as to <b><text id="text-sent-most-positive"></text></b> where the users were most positive concerning your query.
                     </div>
                   </div>
                   </div>
@@ -170,7 +175,7 @@
                 </div>
                 </div>
               </div>
-              <div class="slide">
+              <div class="slide padding30">
                 <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells2">                  
                   <div id="wordcloud-container" class="cell">
                  
@@ -179,12 +184,14 @@
                     <h5 class="no-margin-top">Word Cloud</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      Description of Word Cloud
+                      This is the graphical representation of all tokens used in the posts containing your search term. The larger the words the more often they are used
+                      across the social media platforms. The tokens are filtered by the stopwordlist, excluding words like 'I', 'a' or 'the'. In this case the most used 
+                      word was <b><text id="text-token-most"></text></b> with a <b><text id="text-token-occurence"></text></b> total occurences.
                     </div>
                   </div> 
                 </div>
               </div>
-              <div class="slide">
+              <div class="slide padding30">
                 <div id="token-chart-row" class="cell colspan6 padding20 row cells2">                  
                  <div id="token-chart-container" class="cell colspan6 padding20">                 
                  </div>
@@ -192,12 +199,15 @@
                     <h5 class="no-margin-top">Token Analysis</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      Description of Token Analysis
+                     The maximum length of a posts is very diffrent between the three networks. The least amount of characters can be used on Twitter with 140 characters
+                     maximum per post. On reddit posts the limit is up to 10.000 characters. Facebook offers you to use more than six times as many characters: 63,206 characters are possible in a single post. The average length of the posts for your query was <b><text id="text-post-length-average"></text></b> tokens.
+                     Concerning all collected posts the post with the most tokens had different <b><text id="text-post-most-tokens"></text></b> tokens. The shortest post
+                     had <b><text id="text-post-least-tokens"></text></b>. 
                     </div>
                   </div>  
                 </div>                 
               </div>
-              <div class="slide">
+              <div class="slide padding30">
                  <div id="content-chart-row" class="cell colspan6 padding20 row cells2">
                    
                    <div id="content-chart-container" class="cell colspan6 padding20">   
@@ -207,7 +217,7 @@
                     <h5 class="no-margin-top">Content Distribution</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      Description of Content Distribution
+                      A feature that all three Social Media Platforms share is the possiblity to create content in various forms. This app distinguishes between text, images, links and videos.
                     </div>
                   </div> 
                  </div>
@@ -265,9 +275,8 @@
     <script rel='javascript' src="/javascripts/libs/lodash.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/d3.js"></script>
     <script rel='javascript' src="/javascripts/libs/d3.layout.cloud.js "></script>       
-    <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>
-    <script rel='javascript' src="/javascripts/libs/spectra.min.js"></script>
     <script rel='javascript' src="/javascripts/libs/d3.tip.js"></script>
+    <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>    
      
     
      <!--JS-Files-->

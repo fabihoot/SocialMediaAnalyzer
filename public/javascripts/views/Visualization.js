@@ -172,6 +172,20 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
 
+    var allVotes = data.sumVotes;
+    var likes = data.fbVotes.likes;
+    var shares = data.fbVotes.shares;
+    var retweets = data.twitterVotes.retweets;
+    var favorites = data.twitterVotes.favorites;
+    var score = data.redditVotes.score;
+    
+    $('#text-votes-overall').html(allVotes);
+    $('#text-fb-likes').html(likes);
+    $('#text-fb-shares').html(shares);
+    $('#text-twit-retweet').html(retweets);
+    $('#text-twit-favorites').html(favorites);
+    $('#text-rddt-score').html(score);   
+
 	},
 
   createSentimentChart = function(dataset){
@@ -206,11 +220,11 @@ SocialMediaAnalyzer.Visualization = (function() {
         .text(function(d){ return d.score })
         .attr("y", 10);            
                 
-   var arc = d3.svg.arc()
+    var arc = d3.svg.arc()
         .innerRadius(innerR)
         .outerRadius(radius);
     
-   var arcOver = d3.svg.arc()
+    var arcOver = d3.svg.arc()
         .innerRadius(innerR + 5)
         .outerRadius(radius + 5);
 
@@ -218,7 +232,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .value(function(d) { return d; });
    
   
-   var arcs = svg.selectAll("g.slice")
+    var arcs = svg.selectAll("g.slice")
         .data(function(d) { return pie(d.value); })
         .enter()
             .append("svg:g")                
@@ -253,20 +267,37 @@ SocialMediaAnalyzer.Visualization = (function() {
                 textBottom.text(function(d){ return d.score });
         });  
 
-   arcs.append("svg:path")        
+    arcs.append("svg:path")        
         .attr("fill", function(d, i) { return color(i); } )
         .attr("d", arc);                
+
+    var maxPos = dataset[0].score;
+    var maxNeg = dataset[0].score;
+
+    var maxPosSrc = dataset[0].source;
+    var maxNegSrc = dataset[0].source;
 
     for (var i = 0; i<dataset.length;i++){
       var $text = "<div class='cell sentiment-description-"+ dataset[i].source +"'><image src='images/circle_plus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i].value[0] + "</text>" + 
                  "<image src='images/circle_minus_grey.png' class='sentiment-icon'></image><text class='sentiment-description-text'>" + dataset[i].value[1] + "</text></div>";
-       $("#sentiment-chart-single-description").append($text);                
+       $("#sentiment-chart-single-description").append($text);
+
+        if(dataset[i].score > maxPos){
+          maxPos = dataset[i].score;
+          maxPosSrc = dataset[i].source;
+        }
+        if(dataset[i].score < maxNeg){
+          maxNeg = dataset[i].score;
+          maxNegSrc = dataset[i].source;
+        }                  
     }
+    $("#text-sent-most-negative").html(maxNegSrc);
+    $("#text-sent-most-positive").html(maxPosSrc);      
      
   },
 
-  createTokenChart = function(dataset){
-   
+  createTokenChart = function(data){
+    var dataset = data.avgTokens;
     var barWidth = 75;
     var width = (barWidth + 10) * dataset.length;
     var height = 400;
@@ -296,17 +327,17 @@ SocialMediaAnalyzer.Visualization = (function() {
     var tip = d3.tip()                
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d,i) {
-                var text = "<strong>&#216; Tokens per Post: </strong> <span style='color:#d1d1d1'>" + d + "</span>";
+                .html(function(d,i) {               
+                var text = "<strong>&#216; Tokens per Post: </strong> <span style='color:#d1d1d1'>" + d + "</span>" +
+                           "<br/><strong>Longest: </strong><span style='color:#d1d1d1'>" + data.max[i] + " Tokens</span><br/>" +
+                           "<strong>Shortest: </strong><span style='color:#d1d1d1'>" + data.mins[i] + " Tokens</span>"
                   return text;
                 });
 
     chart.selectAll('rect').call(tip);     
 
     chart.selectAll('rect').on('mouseover', tip.show)
-                           .on('mouseout', tip.hide);  
-
-
+                           .on('mouseout', tip.hide);
     chart.selectAll("text")
               .data(dataset)
             .enter().append("svg:text")
@@ -340,6 +371,18 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("width", "75")
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
+
+    var average = 0;    
+    for(var i = 0;i<dataset.length;i++){
+      average = average + dataset[i];
+    }
+    average = Math.round(average / 3);
+    var max = Math.max.apply(Math,data.max);
+    var min = Math.min.apply(Math,data.mins);
+   
+    $("#text-post-length-average").html(average);
+    $("#text-post-most-tokens").html(max);
+    $("#text-post-least-tokens").html(min);
   },
 
   createCloudChart = function(dataset){
@@ -348,8 +391,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     var data = dataset.words;
     var frequencies = dataset.frequencies;
     var max =  Math.max.apply(Math, dataset.frequencies);
-    var fill = d3.scale.category20();
-    var frequenciesMapped;
+    var fill = d3.scale.category20();   
 
     d3.layout.cloud().size([width, height])
         .words(data.map(function(d, i) {
@@ -372,7 +414,11 @@ SocialMediaAnalyzer.Visualization = (function() {
     var text = d3.select("#wordcloud-container").select('g').selectAll('text').call(tip);     
     
     text.on('mouseover', tip.show)
-         .on('mouseout', tip.hide);    
+         .on('mouseout', tip.hide); 
+
+    var maxWord = data[frequencies.indexOf(max)];
+    $("#text-token-most").html(maxWord);
+    $("#text-token-occurence").html(max);   
   },
 
   drawWords = function (words) {
@@ -508,7 +554,7 @@ SocialMediaAnalyzer.Visualization = (function() {
       var tokenCount = data[i].lang.countTokens;
       var username = data[i].username;
      
-      var $tile = '<div class="tile" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
+      var $tile = '<div class="tile shadow" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
 
@@ -583,12 +629,7 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   getColor = function(score, maxVal, minVal){
    var colors = d3.scale.linear().domain([minVal,0 ,maxVal]).range(["#FF1E00",'#EEEEEE' ,"#00C333"]);
-
-  /*var color = Spectra(rgb);
-   var lighter = color.lighten(10);*/
-
    return colors(score);
-
   },
 
   getMaxValue = function(data){

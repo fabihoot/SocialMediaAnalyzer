@@ -81,6 +81,7 @@ countLogins = 0,
     favorites = favorites + twitterData[i].votes.favorites;
   } 
  	for(var i = 0;i<redditData.length;i++) allRedditVotes = allRedditVotes + redditData[i].votes.score;
+  var sumVotes = allFBVotes + allTwitterVotes + allRedditVotes;
  	SocialMediaAnalyzer.Visualization.createVoteBarChart({ allVotes: [allFBVotes, allTwitterVotes, allRedditVotes],
                                                          fbVotes: {
                                                           likes: likes,
@@ -90,7 +91,8 @@ countLogins = 0,
                                                           retweets: retweets,
                                                           favorites: favorites
                                                          },
-                                                         redditVotes: { score: ""}
+                                                         redditVotes: { score: allRedditVotes},
+                                                         sumVotes: sumVotes
                                                        });
  },
 
@@ -116,15 +118,38 @@ countLogins = 0,
   var tokenTwit = 0;
   var tokenRddt = 0;
 
-  for(var i = 0;i<facebookData.length;i++) tokenFB = tokenFB + facebookData[i].lang.tokens.length;
-  for(var i = 0;i<twitterData.length;i++) tokenTwit = tokenTwit + twitterData[i].lang.tokens.length;
-  for(var i = 0;i<redditData.length;i++) tokenRddt = tokenRddt + redditData[i].lang.tokens.length;
+  var minLengthFB = facebookData[0].lang.tokens.length; 
+  var minLengthTwit = twitterData[0].lang.tokens.length;
+  var minLengthRddt = redditData[0].lang.tokens.length;
+
+  var maxLengthFB = facebookData[0].lang.tokens.length
+  var maxLengthTwit = twitterData[0].lang.tokens.length;
+  var maxLengthRddt = redditData[0].lang.tokens.length;
+
+  for(var i = 0;i<facebookData.length;i++){
+   var length =  facebookData[i].lang.tokens.length;
+   tokenFB = tokenFB + length;
+   if(maxLengthFB<length) maxLengthFB = length;
+   if(minLengthFB>length) minLengthFB = length;  
+  }
+  for(var i = 0;i<twitterData.length;i++){ 
+   var length =  twitterData[i].lang.tokens.length;
+   tokenTwit = tokenTwit + length;
+   if(maxLengthTwit<length) maxLengthTwit = length;
+   if(minLengthTwit>length) minLengthTwit = length;  
+  }
+  for(var i = 0;i<redditData.length;i++){
+   var length =  redditData[i].lang.tokens.length;   
+   tokenRddt = tokenRddt + length;
+   if(maxLengthRddt<length) maxLengthRddt = length;
+   if(minLengthRddt>length) minLengthRddt = length;  
+  }
 
   tokenFB = Math.round(tokenFB / facebookData.length);
   tokenTwit =  Math.round(tokenTwit / twitterData.length);
   tokenRddt = Math.round(tokenRddt / redditData.length);
 
-  SocialMediaAnalyzer.Visualization.createTokenChart([tokenFB, tokenTwit, tokenRddt]);
+  SocialMediaAnalyzer.Visualization.createTokenChart({avgTokens:[tokenFB, tokenTwit, tokenRddt], mins:[minLengthFB,minLengthTwit,minLengthRddt], max:[maxLengthFB,maxLengthTwit,maxLengthRddt]});
  },
 
  createCloudVisualization = function(){

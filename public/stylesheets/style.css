@@ -55,8 +55,8 @@ a {
   margin-top: 10px;
 }
 .tile-thumbnail{
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin-left: 10px;
   margin-top: 10px;
 }
@@ -132,10 +132,10 @@ a {
   padding-left: 50px; 
 }
 .sentiment-description-twitter{
-  padding-left: 25px; 
+  padding-left: 40px; 
 }
 .sentiment-description-reddit{
-  padding-left: 0px; 
+  padding-left: 25px; 
 }
 .sentiment-description-text{  
   padding: 4px;
@@ -197,4 +197,17 @@ a {
 }
 .warning-padding{
   padding-left: 50px;
+}
+.main-content-margin{
+  margin-left: -100px;
+  margin-right: 100px;
+}
+.bg-tile-facebook{
+  background-color: #5671A9;
+}
+.bg-tile-twitter{
+  background-color: #7CC0F4;
+}
+.bg-tile-reddit{
+  background-color: #D7D6D6;
 }

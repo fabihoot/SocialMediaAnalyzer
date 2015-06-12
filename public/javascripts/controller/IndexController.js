@@ -4,6 +4,7 @@
 
  var $inputPostCount = $('#slider-input');
  var $inputKeyword = $('#input-keyword');
+ var pCount = 0;
  
  init = function() {
       console.log("init IndexController");
@@ -55,6 +56,7 @@
  startRequestQuery = function(){   
     var postCount = $inputPostCount.val();
     var searchTerm = $inputKeyword.val();
+    setPostCount(postCount);
     
     if (searchTerm == "") return;
     if (postCount == "")  return;
@@ -99,6 +101,7 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
   SocialMediaAnalyzer.VisualizationController.setRedditPosts();
+  SocialMediaAnalyzer.VisualizationController.checkDataSetLength(pCount);
 
   SocialMediaAnalyzer.VisualizationController.showPanels();
 
@@ -108,6 +111,10 @@ startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.createCloudVisualization();
   SocialMediaAnalyzer.VisualizationController.createContentVisualization();
   $(document).trigger('onRequestFinished');
+},
+
+setPostCount = function(count){
+  pCount = count;
 };
 that.init = init;
 return that;

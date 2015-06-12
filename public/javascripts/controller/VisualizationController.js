@@ -59,6 +59,13 @@ countLogins = 0,
  	redditData = data;
  },
 
+ checkDataSetLength = function(count){
+  var allData = [facebookData, twitterData, redditData];
+  allData.forEach(function(entry){
+    if(entry.length<count) SocialMediaAnalyzer.Visualization.notifySmallDataset(entry[1].source)
+  });
+ }
+
  createVoteVisualization = function(){ 	
  	var allFBVotes = 0;
   var likes = 0;
@@ -219,6 +226,7 @@ countLogins = 0,
     $(document).trigger('onShowPanels');
   };
 
+that.checkDataSetLength = checkDataSetLength;
 that.showPanels = showPanels;
 that.createContentVisualization = createContentVisualization;
 that.createCloudVisualization = createCloudVisualization;

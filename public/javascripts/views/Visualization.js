@@ -22,6 +22,20 @@ SocialMediaAnalyzer.Visualization = (function() {
      $(document).on('onRequestFinished', onRequestFinished);
      $(document).on('onShowPanels', onShowPanels);
      $(document).on('onCheckRequest', onRequestFinishedId);            
+  },
+
+  notifySmallDataset = function(source){
+    $.Notify({
+      caption: 'Dataset too small',
+      content: 'Unfortunately ' + source.toUpperCase() + ' was not able to deliver as much data as you wanted. ' +
+                'Be careful with the results! Adapt your keyword or try another search term!',
+      keepOpen: true,
+      type: 'alert',
+      icon: "<span class='mif-vpn-publ'></span>",
+      style:{
+        color: 'white'
+      }
+    });
   },  
   
   onShowPanels = function(event){
@@ -553,8 +567,9 @@ SocialMediaAnalyzer.Visualization = (function() {
       var textLength = data[i].text.length;
       var tokenCount = data[i].lang.countTokens;
       var username = data[i].username;
+      var hashtagCount = data[i].lang.hashtags.length;
      
-      var $tile = '<div class="tile shadow" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
+      var $tile = '<div class="tile shadow bg-tile-'+ source + '" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
 
@@ -564,9 +579,10 @@ SocialMediaAnalyzer.Visualization = (function() {
                        '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
 
                     '</div>' + 
-                    '<div class="slide-over slide-height-bottom">' +
-                        '<div class="tile-thumbnail"><img id="tile-img-thumb-'+ source +'-'+ i + '"></img></div>' + 
-                        '<div class="tile-text text-small padding10" id="tile-text-length-'+ source +'-'+ i + '"></div>' +                             
+                    '<div class="slide-over slide-height-bottom row cells2 grid">' +
+                        '<div class="cell"><img id="tile-img-thumb-'+ source +'-'+ i + '"></img></div>' + 
+                        '<div class="tile-text text-small padding10 cell" id="tile-text-length-'+ source +'-'+ i + '"></div>' +
+                        '<div class="tile-text text-small padding10" id="tile-hashtags-'+ source +'-'+ i + '"></div>' +                             
                     '</div>' + 
                    '</div>' + 
                  '</div>';
@@ -578,10 +594,12 @@ SocialMediaAnalyzer.Visualization = (function() {
 
       var $thumbnailContainer = $('#tile-img-thumb-'+ source +'-'+ i);
       var $txtLengthContainer = $('#tile-text-length-'+ data[i].source +'-'+ i);
-      
+      var $hashtagContainer = $('#tile-hashtags-'+ data[i].source +'-'+ i);
+      var hashtagClick = false;
 
       var $tileLink = $('#tile-'+ data[i].source +'-'+ i);
-      $tileLink.click(function(){
+      $tileLink.click(function(){        
+        if(hashtagClick) {hashtagClick = false; return;}
         var url = $(this).attr("href");            
         var win = window.open(url);
         if(win){
@@ -591,15 +609,27 @@ SocialMediaAnalyzer.Visualization = (function() {
             //Broswer has blocked it
             alert('Please allow popups for this site');
         }
+        hashtagClick = false
+      });
+      $hashtagContainer.click(function(){        
+        hashtagClick = true;
       });
       
-      if(text.length > 140){
-        text = text.substring(0,100) + ' [...]';
+      if(text.length > 60){
+        text = text.substring(0,60) + ' [...]';
       }
       $txtContainer.html("<b>" + username +"</b></br>" +text);
 
-      $txtLengthContainer.html("Length of Text: " + textLength + "<br/>" +
-                               "Tokens:         " + tokenCount);
+      $txtLengthContainer.html("Length: <b>" + textLength + "</b><br/>" +
+                               "Tokens:         <b>" + tokenCount+"</b>");
+
+      
+      $hashtagContainer.html("Hashtags: <b>" + hashtagCount + "</b><br/>");
+      if(hashtagCount >= 1){
+        data[i].lang.hashtags.forEach(function(tag){
+          $hashtagContainer.append("<a target='_blank' href='https://twitter.com/search?q=#"+ tag + "'>#"+ tag+"</a><br/>");
+        });
+      }
       
       var color = getColor(score, maxVal, minVal);
       $sentimentContainer.css('background', color);
@@ -619,6 +649,7 @@ SocialMediaAnalyzer.Visualization = (function() {
         $imgContainer.attr("src", "/images/video-icon.png");
         $thumbnailContainer.attr("src", '/images/no-image-icon.png');   
       }
+      $thumbnailContainer.addClass("tile-thumbnail");
       //Load image src 
        /*$imgContainer.bind('error', function(e){
             //error has been thrown
@@ -648,6 +679,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     return Math.min.apply(Math,compValues);
   };
 
+that.notifySmallDataset = notifySmallDataset;
 that.enableSearch = enableSearch;
 that.showLoginSuccess = showLoginSuccess;
 that.createTiles = createTiles;  

@@ -35,8 +35,10 @@
  },
 
  onInputEnterPressed = function(event){
-    event.preventDefault();   
-    fb,twit,rddt = false      
+    event.preventDefault();
+    SocialMediaAnalyzer.VisualizationController.reset();
+    fb = twit = rddt = false;
+    console.log(fb,twit,rddt); 
     startRequestQuery();
  }, 
 
@@ -94,7 +96,7 @@ checkRequestsFinished = function(event, id){
     case('reddit'): rddt = true; break;
   }
 
-  if(fb&&twit&&rddt) startVisualizations();
+  if(fb&&twit&&rddt) startVisualizations();   
 },
 
 startVisualizations = function(){

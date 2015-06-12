@@ -36,6 +36,15 @@ SocialMediaAnalyzer.Visualization = (function() {
         color: 'white'
       }
     });
+  },
+
+  clearVisualizations = function(){
+    $("#vote-chart-container").empty();
+    $("#sentiment-chart-container").empty();
+    $("#sentiment-chart-single-description").empty();
+    $("#wordcloud-container").empty();
+    $("#token-chart-container").empty();
+    $("#content-chart-container").empty();
   },  
   
   onShowPanels = function(event){
@@ -208,8 +217,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     var radius = 100, 
     innerR = 80;
     
-    var color = d3.scale.linear().domain([0, 1]).range(["#00C333", "#FF1E00"]);
-   
+    var color = d3.scale.linear().domain([0, 1]).range(["#00C333", "#FF1E00"]);   
     
     var svg = d3.select("#sentiment-chart-container").selectAll("svg")
                   .data(dataset)
@@ -548,8 +556,7 @@ SocialMediaAnalyzer.Visualization = (function() {
               .text(function(d) { return d; });      
   },
 
-  createTiles = function(data, container){
-   
+  createTiles = function(data, container){   
     addTiles(data, container);      
   },
 
@@ -649,12 +656,7 @@ SocialMediaAnalyzer.Visualization = (function() {
         $imgContainer.attr("src", "/images/video-icon.png");
         $thumbnailContainer.attr("src", '/images/no-image-icon.png');   
       }
-      $thumbnailContainer.addClass("tile-thumbnail");
-      //Load image src 
-       /*$imgContainer.bind('error', function(e){
-            //error has been thrown
-            $(this).attr('src','/images/no-image-icon.png');
-        }).attr('src', url);*/ 
+      $thumbnailContainer.addClass("tile-thumbnail");      
     }    
   },
 
@@ -679,6 +681,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     return Math.min.apply(Math,compValues);
   };
 
+that.clearVisualizations = clearVisualizations;
 that.notifySmallDataset = notifySmallDataset;
 that.enableSearch = enableSearch;
 that.showLoginSuccess = showLoginSuccess;

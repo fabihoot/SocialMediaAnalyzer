@@ -26,7 +26,23 @@ countLogins = 0,
   $(document).on('twitterLoginSuccess', onTwitterLoginSuccess);
   $(document).on('redditLoginSuccess', onRedditLoginSuccess);
  },
+ reset = function(){
+  resetData();
+  clearResultContainer();
+  SocialMediaAnalyzer.Visualization.clearVisualizations();
+ },
 
+ resetData = function(){
+  facebookData = null;
+  twitterData = null;
+  redditData = null;
+ },
+
+ clearResultContainer = function(){
+  $facebookPostResultContainer.empty();
+  $twitterPostResultContainer.empty();
+  $redditPostResultContainer.empty();
+ },
  onFacebookLoginSuccess = function(event){  
   SocialMediaAnalyzer.Visualization.showLoginSuccess('facebook');
   loginIsReady();
@@ -44,7 +60,7 @@ countLogins = 0,
 
  loginIsReady = function(){
   countLogins++;
-  if(countLogins>=3)SocialMediaAnalyzer.Visualization.enableSearch(); 
+  if(countLogins>=3){SocialMediaAnalyzer.Visualization.enableSearch(); countLogins = 0;} 
  },
 
  setFacebookData = function(data){
@@ -99,8 +115,7 @@ countLogins = 0,
                                                           favorites: favorites
                                                          },
                                                          redditVotes: { score: allRedditVotes},
-                                                         sumVotes: sumVotes
-                                                       });
+                                                         sumVotes: sumVotes});
  },
 
  createSentimentVisualization = function(){
@@ -156,7 +171,9 @@ countLogins = 0,
   tokenTwit =  Math.round(tokenTwit / twitterData.length);
   tokenRddt = Math.round(tokenRddt / redditData.length);
 
-  SocialMediaAnalyzer.Visualization.createTokenChart({avgTokens:[tokenFB, tokenTwit, tokenRddt], mins:[minLengthFB,minLengthTwit,minLengthRddt], max:[maxLengthFB,maxLengthTwit,maxLengthRddt]});
+  SocialMediaAnalyzer.Visualization.createTokenChart({avgTokens:[tokenFB, tokenTwit, tokenRddt],
+                                                      mins:[minLengthFB,minLengthTwit,minLengthRddt],
+                                                      max:[maxLengthFB,maxLengthTwit,maxLengthRddt]});
  },
 
  createCloudVisualization = function(){
@@ -192,7 +209,8 @@ countLogins = 0,
 
     });
   });
-  SocialMediaAnalyzer.Visualization.createContentChart({type: ['link', 'text', 'video', 'image'], value: [sumLink, sumText, sumVideo, sumImage]});
+  SocialMediaAnalyzer.Visualization.createContentChart({type: ['link', 'text', 'video', 'image'],
+                                                        value: [sumLink, sumText, sumVideo, sumImage]});
  },
 
  sortTokens = function(tokens) {
@@ -226,6 +244,7 @@ countLogins = 0,
     $(document).trigger('onShowPanels');
   };
 
+that.reset = reset;
 that.checkDataSetLength = checkDataSetLength;
 that.showPanels = showPanels;
 that.createContentVisualization = createContentVisualization;

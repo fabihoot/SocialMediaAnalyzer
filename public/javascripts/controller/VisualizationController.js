@@ -12,7 +12,8 @@ countLogins = 0,
  init = function() {
       console.log("init VisualizationController.js");
       initListener();
-      initContainer();           
+      initContainer();
+      initHelp();           
  },
 
  initContainer = function(){
@@ -26,6 +27,22 @@ countLogins = 0,
   $(document).on('twitterLoginSuccess', onTwitterLoginSuccess);
   $(document).on('redditLoginSuccess', onRedditLoginSuccess);
  },
+
+ initHelp = function(){
+  $.facebox.settings.closeImage = '/images/closelabel.png';
+  $.facebox.settings.loadingImage = '/images/loading.gif';
+
+  $('#help-link').click(function(event){
+    $.facebox('<div class="row padding20">' +
+              '<h2>Help</h2>' + 
+              '<text class="text-accent"> This web application is designed to crawl the three Social Media Sites <b>Facebook</b>, <b>Twitter</b> and ' + 
+              ' <b>Reddit</b>. This concept offers you an alternative web based tool to explore the phenomen of cross online social network' + 
+              ' user behavior.'+
+              '</text></div>')
+  });
+
+ },
+
  reset = function(){
   resetData();
   clearResultContainer();

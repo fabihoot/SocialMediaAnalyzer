@@ -37,8 +37,7 @@
  onInputEnterPressed = function(event){
     event.preventDefault();
     SocialMediaAnalyzer.VisualizationController.reset();
-    fb = twit = rddt = false;
-    console.log(fb,twit,rddt); 
+    fb = twit = rddt = false;    
     startRequestQuery();
  }, 
 
@@ -107,6 +106,7 @@ startVisualizations = function(){
 
   SocialMediaAnalyzer.VisualizationController.showPanels();
 
+  SocialMediaAnalyzer.VisualizationController.initSave();
   SocialMediaAnalyzer.VisualizationController.createVoteVisualization();
   SocialMediaAnalyzer.VisualizationController.createSentimentVisualization();
   SocialMediaAnalyzer.VisualizationController.createTokenVisualization();

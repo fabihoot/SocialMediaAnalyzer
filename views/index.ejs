@@ -136,7 +136,7 @@
             <div class="content">
               <div class="carousel chart-carousel" data-auto="false" data-role="carousel" data-control-next="<span class='mif-chevron-right'></span>" data-control-prev="<span class='mif-chevron-left'></span>" style="width: 100%;">
 
-              <div class="slide padding30">
+                <div class="slide padding30">
                 <div id="vote-chart-row" class="cell colspan6 padding20 row cells2">                             
                   <div id="vote-chart-container" class="cell colspan6 padding20">
                  
@@ -152,8 +152,8 @@
                     </div>
                   </div>              
                 </div>
-              </div>
-              <div class="slide padding30">
+                </div>
+                <div class="slide padding30">
                 <div id="sentiment-chart-overall-row" class="cell padding20 grid">
                 <div class="row cells2">                  
                   <div id="sentiment-chart-container" class="cell">
@@ -175,8 +175,8 @@
                   </div>
                 </div>
                 </div>
-              </div>
-              <div class="slide padding30">
+                </div>
+                <div class="slide padding30">
                 <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells2">                  
                   <div id="wordcloud-container" class="cell">
                  
@@ -191,8 +191,8 @@
                     </div>
                   </div> 
                 </div>
-              </div>
-              <div class="slide padding30">
+                </div>
+                <div class="slide padding30">
                 <div id="token-chart-row" class="cell colspan6 padding20 row cells2">                  
                  <div id="token-chart-container" class="cell colspan6 padding20">
 
@@ -208,8 +208,8 @@
                     </div>
                   </div>  
                 </div>                 
-              </div>
-              <div class="slide padding30">
+                </div>
+                <div class="slide padding30">
                  <div id="content-chart-row" class="cell colspan6 padding20 row cells2">                   
                    <div id="content-chart-container" class="cell colspan6 padding20">   
 
@@ -222,10 +222,62 @@
                     </div>
                   </div> 
                  </div>
-              </div>
-              </div>
+                </div>
+                <div class="slide padding30">
+                  <div id="export-row" class="cell colspan6 padding20 row cells2">
+                  <div class="cell">
+                  <h5 class="no-margin-top">Export</h5>
+                    <hr class="bg-orange">
+                    <div class="content padding10">
+                      This export option allows you to download the collected data so you can user the collection for further research.
+                      The data is stored in JSON. Below you can see the sample structure of a sample post element.
+                    </div>
+                      <code class="row padding10">
+                          element = {
+                                            "id":     "",
+                                            "text":     "",
+                                            "username":   "",
+                                            "date":     "",
+                                            "source":   "",
+                                            "type":     "",
+                                            "lang": {
+                                              "probLang": "",
+                                              "length": "",
+                                              "tokens": [],
+                                              "tokensStopword": [],
+                                              "countTokens": "",
+                                              "types":  [],
+                                              "countTypes": "",
+                                              "hashtags": []
+                                            },
+                                            "sentiment": {},
+                                            "content":{
+                                              "type": "",
+                                              "url": "",
+                                              "thumbnail": ""       
+                                            },
+                                            "votes": {
+                                              "likes": "",
+                                              "shares": "",
+                                              "retweets": "",
+                                              "favorites": "",
+                                              "upvotes": "",
+                                              "downvotes": "",
+                                              "score": ""
+                                            }
+                                          }
+                      </code>
+                      <button id="input-file" class="button loading-pulse">Download</button>
+                    </div>
+
+
+                    
+                  </div>                   
+                </div>
+
             </div>
           </div>
+        </div>
 
           <div class="frame hidden" id="frame-posts">
             <div class="heading">Posts</div>
@@ -279,6 +331,7 @@
     <script rel='javascript' src="/javascripts/libs/d3.tip.js"></script>
     <script rel='javascript' src="/javascripts/libs/metro.min.js"></script>    
     <script rel='javascript' src="/javascripts/libs/facebox.js"></script> 
+    
     
      <!--JS-Files-->
     <script src="/javascripts/SocialMediaAnalyzer.js"></script>

@@ -43,6 +43,21 @@ countLogins = 0,
 
  },
 
+ initSave = function(){
+  $inputSave = $( '#input-file' );
+ 
+  $inputSave.click(function(event){    
+       var pom = document.createElement('a');
+       var filename = 'elements.json';
+       var obj = {facebook: facebookData, twitter: twitterData, reddit: redditData};
+       var result = JSON.stringify(obj, null , '\t');
+        pom.setAttribute('href', 'data:application/json;charset=utf-8,'+ result);
+        pom.setAttribute('download', filename);
+        pom.click();
+     console.log("save");
+     });
+   },
+  
  reset = function(){
   resetData();
   clearResultContainer();
@@ -261,6 +276,7 @@ countLogins = 0,
     $(document).trigger('onShowPanels');
   };
 
+that.initSave = initSave
 that.reset = reset;
 that.checkDataSetLength = checkDataSetLength;
 that.showPanels = showPanels;

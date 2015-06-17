@@ -210,39 +210,66 @@ countLogins = 0,
 
  createCloudVisualization = function(){
   var words = [];
+  var wordsFB = [];
+  var wordsTwit = [];
+  var wordsRddt = [];
   var allData = [facebookData, twitterData, redditData];
   allData.forEach(function(entry){
-     entry.forEach(function(element){     
+     entry.forEach(function(element){
+      var source = element.source;     
       element.lang.tokensStopword.forEach(function(token){
-        words.push(token.toLowerCase());        
+        words.push(token.toLowerCase());
+        if(source == 'facebook') wordsFB.push(token.toLowerCase());
+        if(source == 'twitter') wordsTwit.push(token.toLowerCase());        
+        if(source == 'reddit') wordsRddt.push(token.toLowerCase());
       });
      });         
   });
-  var calcFrequncies = sortTokens(words);  
-  SocialMediaAnalyzer.Visualization.createCloudChart(calcFrequncies);   
+  var calcFrequnciesAll = sortTokens(words);
+  var calcFrequnciesFB = sortTokens(wordsFB);
+  var calcFrequnciesTwit = sortTokens(wordsTwit);
+  var calcFrequnciesRddt = sortTokens(wordsRddt);
+
+  SocialMediaAnalyzer.Visualization.createCloudChart([calcFrequnciesAll, calcFrequnciesFB, calcFrequnciesTwit, calcFrequnciesRddt]);   
  },
 
  createContentVisualization = function(){  
   var allData = [facebookData, twitterData, redditData];
-  var sumLink = 0;
-  var sumText = 0;
-  var sumVideo = 0;
-  var sumImage = 0;
-  allData.forEach(function(entry){
-    entry.forEach(function(element){
+  var sumLink = sumText = sumVideo = sumImage = 0;
+  
+  var sumLinkFB = sumTextFB = sumVideoFB = sumImageFB = 0;
+  var sumLinkTwit = sumTextTwit = sumVideoTwit = sumImageTwit = 0;
+  var sumLinkRddt = sumTextRddt = sumVideoRddt = sumImageRddt = 0;
 
+  var types = ['link', 'text', 'video', 'image'];
+  var sumsFB = [sumLinkFB, sumTextFB, sumVideoFB, sumImageFB];
+  var sumsTwit = [sumLinkTwit, sumTextTwit, sumVideoTwit, sumImageTwit];
+  var sumsRddt =  [sumLinkRddt, sumTextRddt, sumVideoRddt, sumImageRddt];
+  var sums = [sumsFB,sumsTwit,sumsRddt];
+  var result = [];
+  var sumAll = 0;
+
+  for (var i = 0;i<allData.length;i++){
+    var entry = allData[i];
+    var sum = 0;
+    for (var j = 0;j<allData[i].length;j++){
+      var element = allData[i][j];
       switch(element.content.type){
-        case 'link': sumLink++; break;
-        case 'text': sumText++; break;
-        case 'video': sumVideo++; break;
-        case 'image': sumImage++; break;
+        case 'link': sums[i][0]++; sumLink++; break;
+        case 'text': sums[i][1]++; sumText++; break;
+        case 'video': sums[i][2]++; sumVideo++; break;
+        case 'image': sums[i][3]++; sumImage++; break;
         default: break;
       }
-
-    });
-  });
-  SocialMediaAnalyzer.Visualization.createContentChart({type: ['link', 'text', 'video', 'image'],
-                                                        value: [sumLink, sumText, sumVideo, sumImage]});
+      sum++;
+    }
+   sumAll = sumAll + sum;
+   var src = allData[i][0].source;
+   result.push({ source: src, type: types, value: sums[i], total: sum});
+  }
+  result.push({source: "all", type: types, value: [sumLink, sumText, sumVideo, sumImage], total: sumAll});
+ 
+  SocialMediaAnalyzer.Visualization.createContentChart(result);
  },
 
  sortTokens = function(tokens) {

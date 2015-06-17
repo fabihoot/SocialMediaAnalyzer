@@ -147,14 +147,31 @@
                     <div class="content">
                       The three social Networks offer different mechanisms to rate the content posted by their users. Theres not much
                       exisiting research compairing these mechanisms among themselves. Your search term returned <b><text id="text-votes-overall"></text></b>
-                      ratings over the three networks. In the Social Network Facebook it reached a number of <b><text id="text-fb-likes"></text></b> <img src="images/facebook-like-icon.png" class="description-image"></img> and 
-                      <b><text id="text-fb-shares"></text></b> shares. The users of the Microblogging plattform Twitter used the <img src="images/twitter-retweet-icon.png" class="description-image"></img> feature <b><text id="text-twit-retweet"></text></b> times and set <b><text id="text-twit-favorites"></text></b> times as favorite posts concerning your search term. With the recent changes of the Reddit API its not possible to tell you the exact values of Up or Downvotes but the overall <img src="images/reddit-upvote-downvote-icon.png" class="description-image"></img> were <b><text id="text-rddt-score"></text></b>. Please consume these values with caution, as stated above, because there is not very much research in compairing these values!
+                      ratings over the three networks. In the Social Network Facebook it reached a number of <b><text id="text-fb-likes"></text></b> likes and 
+                      <b><text id="text-fb-shares"></text></b> shares. The users of the Microblogging plattform Twitter used the retweet feature <b><text id="text-twit-retweet"></text></b> times and set <b><text id="text-twit-favorites"></text></b> times as favorite posts concerning your search term. With the recent changes of the Reddit API its not possible to tell you the exact values of Up or Downvotes but the overall score of the posts were <b><text id="text-rddt-score"></text></b>. Please consume these values with caution, as stated above, because there is not enough existing research in compairing these values!
                     </div>
                   </div>              
                 </div>
                 </div>
                 <div class="slide padding30">
                 <div id="sentiment-chart-overall-row" class="cell padding20 grid">
+                <div class="row cells2">
+                  <div class="cell">
+                    <div class="row cells3">
+                     <div class="cell fb-banner" id="facebook-banner">
+                        <img src="/images/facebook-banner.png" style="width:50%; margin-left:40px;"></img>
+                      </div>
+                      <div class="cell twit-banner" id="twitter-banner">
+                        <img src="/images/twitter-banner.png" style="width:50%; margin-left:20px;"></img>
+                      </div>
+                       <div class="cell rdt-banner" id="reddit-banner">
+                        <img src="/images/reddit-banner.png" style="width:50%; margin-left:-10px;"></img>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cell">
+                  </div>
+                </div>
                 <div class="row cells2">                  
                   <div id="sentiment-chart-container" class="cell">
                  
@@ -178,20 +195,36 @@
                 </div>
                 <div class="slide padding30">
                 <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells2">                  
-                  <div id="wordcloud-container" class="cell">
-                 
-                 </div>
-                    <div class="cell">
+                  <div id="wordcloud-container" class="cell grid">
+                    <div class="row cells4 content-padding">
+                      <div class="cell"> <img src="/images/sum-icon.png" style="width:40%;padding-right:15px;"></div>
+                      <div id="wordcloud-all" class="cell">                         
+                      </div>
+                      <div class="cell"> <img src="/images/facebook-banner.png" style="width:50%;"></img></div>
+                      <div id="wordcloud-facebook" class="cell">                        
+                      </div>
+                    </div>
+                    <div class="row cells4 content-padding">
+                      <div class="cell"> <img src="/images/twitter-banner.png" style="width:50%;"></img></div>
+                      <div id="wordcloud-twitter" class="cell">
+                      </div>
+                      <div class="cell"><img src="/images/reddit-banner.png" style="width:50%;"></img></img></div>
+                      <div id="wordcloud-reddit" class="cell">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cell">
                     <h5 class="no-margin-top">Word Cloud</h5>
                     <hr class="bg-orange">
                     <div class="content">
                       This is the graphical representation of all tokens used in the posts containing your search term. The larger the words the more often they are used
                       across the social media platforms. The tokens are filtered by the stopwordlist, excluding words like 'I', 'a' or 'the'. In this case the most used 
-                      word was <b><text id="text-token-most"></text></b> with a <b><text id="text-token-occurence"></text></b> total occurences.
+                      word across all platforms was <b><text id="text-token-most-all"></text></b> which occured <b><text id="text-token-occurence-all"></text></b> times.
+                      On facebook the most used word was <b><text id="text-token-most-facebook"></text></b> with <b><text id="text-token-occurence-facebook"></text></b> occurences, twitter users favorite word was <b><text id="text-token-most-twitter"></text></b> which was used <b><text id="text-token-occurence-twitter"></text></b> times and redditors prefered the word <b><text id="text-token-most-reddit"></text></b> with a number of <b><text id="text-token-occurence-reddit"></text></b> times.
                     </div>
                   </div> 
                 </div>
-                </div>
+                </div>                
                 <div class="slide padding30">
                 <div id="token-chart-row" class="cell colspan6 padding20 row cells2">                  
                  <div id="token-chart-container" class="cell colspan6 padding20">
@@ -204,17 +237,32 @@
                      The maximum length of a posts is very diffrent between the three networks. The least amount of characters can be used on Twitter with 140 characters
                      maximum per post. On reddit posts the limit is up to 10.000 characters. Facebook offers you to use more than six times as many characters: 63,206 characters are possible in a single post. The average length of the posts for your query was <b><text id="text-post-length-average"></text></b> tokens.
                      Concerning all collected posts the post with the most tokens had different <b><text id="text-post-most-tokens"></text></b> tokens. The shortest post
-                     had <b><text id="text-post-least-tokens"></text></b>. 
+                     had only <b><text id="text-post-least-tokens"></text></b> tokens. 
                     </div>
                   </div>  
                 </div>                 
                 </div>
                 <div class="slide padding30">
                  <div id="content-chart-row" class="cell colspan6 padding20 row cells2">                   
-                   <div id="content-chart-container" class="cell colspan6 padding20">   
-
-                   </div>
-                   <div class="cell">
+                   <div id="content-chart-container" class="cell grid condensed">
+                    <div class="row cells4 content-padding">
+                      <div class="cell"> <img src="/images/sum-icon.png" style="width:40%; float:right; padding-right:15px;"></div>
+                      <div id="content-all" class="cell">
+                      </div>
+                      <div class="cell"> <img src="/images/facebook-banner.png" style="width:50%; float:right;"></img></div>
+                      <div id="content-facebook" class="cell">
+                      </div>
+                    </div>
+                    <div class="row cells4 content-padding">
+                      <div class="cell"> <img src="/images/twitter-banner.png" style="width:50%; float:right;"></img></div>
+                      <div id="content-twitter" class="cell">                       
+                      </div>
+                       <div class="cell"><img src="/images/reddit-banner.png" style="width:50%; float:right;"></img></img></div>
+                      <div id="content-reddit" class="cell">
+                      </div>
+                    </div>
+                  </div>
+                   <div class="cell" id="content-description">
                     <h5 class="no-margin-top">Content Distribution</h5>
                     <hr class="bg-orange">
                     <div class="content">
@@ -229,8 +277,8 @@
                   <h5 class="no-margin-top">Export</h5>
                     <hr class="bg-orange">
                     <div class="content padding10">
-                      This export option allows you to download the collected data so you can user the collection for further research.
-                      The data is stored in JSON. Below you can see the sample structure of a sample post element.
+                      This export option allows you to download the collected data so you can use the collection for further research.
+                      The data is stored in JSON. Below you can see the sample structure of a post element.
                     </div>
                       <code class="row padding10">
                           element = {

@@ -129,13 +129,13 @@ a {
 }
 
 .sentiment-description-facebook{
-  padding-left: 50px; 
+  padding-left: 60px; 
 }
 .sentiment-description-twitter{
-  padding-left: 40px; 
+  padding-left: 37px; 
 }
 .sentiment-description-reddit{
-  padding-left: 25px; 
+  padding-left: 13px; 
 }
 .sentiment-description-text{  
   padding: 4px;
@@ -210,4 +210,7 @@ a {
 }
 .bg-tile-reddit{
   background-color: #D7D6D6;
+}
+.content-padding{
+  padding-right: 50px;
 }

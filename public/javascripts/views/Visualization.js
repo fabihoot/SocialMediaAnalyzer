@@ -3,7 +3,8 @@ SocialMediaAnalyzer.Visualization = (function() {
   colorClasses = ['facebook-color', 'twitter-color', 'reddit-color'],
   imgSource = ['/images/fb-icon-temp.png', '/images/twit-icon-temp.png', '/images/rdt-icon-temp.png'],
   $panelGeneral,
-  $panelPosts,  
+  $panelPosts,
+  index = 0,  
 
 	init = function() {
 		console.log("init Visualization.js");
@@ -42,9 +43,15 @@ SocialMediaAnalyzer.Visualization = (function() {
     $("#vote-chart-container").empty();
     $("#sentiment-chart-container").empty();
     $("#sentiment-chart-single-description").empty();
-    $("#wordcloud-container").empty();
+    $("#wordcloud-all").empty();
+    $("#wordcloud-facebook").empty();
+    $("#wordcloud-twitter").empty();
+    $("#wordcloud-reddit").empty();
     $("#token-chart-container").empty();
-    $("#content-chart-container").empty();
+    $("#content-all").empty();
+    $("#content-facebook").empty();
+    $("#content-twitter").empty();
+    $("#content-reddit").empty();
   },  
   
   onShowPanels = function(event){
@@ -83,9 +90,7 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   onRequestFinished = function(event){
     event.preventDefault();
-    $('#accordion-container').removeClass('hidden');    
-    //$('#preloader').removeClass('magictime vanishIn');
-    //$('#preloader').addClass('magictime vanishOut'); 
+    $('#accordion-container').removeClass('hidden'); 
   },
 
   onRequestFinishedId = function(event, id){
@@ -116,7 +121,9 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .data(dataset) 
                  .append("svg:svg")
                  .attr("width", width)
-                 .attr("height", height); 
+                 .attr("height", height)
+                 .attr("class", "place-right")
+                 .attr("style", "margin-right:100px"); 
   
     var bars = chart.selectAll("rect")
           .data(dataset) 
@@ -329,7 +336,9 @@ SocialMediaAnalyzer.Visualization = (function() {
     var chart = d3.select("#token-chart-container")
                 .append("svg:svg")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .attr("class", "place-right")
+                .attr("style", "margin-right:100px");
 
     var bars = chart.selectAll("rect")
           .data(dataset) 
@@ -408,17 +417,21 @@ SocialMediaAnalyzer.Visualization = (function() {
   },
 
   createCloudChart = function(dataset){
-    var width = 600;
-    var height = 300;
-    var data = dataset.words;
-    var frequencies = dataset.frequencies;
-    var max =  Math.max.apply(Math, dataset.frequencies);
+    var width = 300;
+    var height = 200;
     var fill = d3.scale.category20();   
+    var source = ['all', 'facebook', 'twitter', 'reddit'];
 
+    for(var i=0;i<dataset.length;i++){
+
+    var data = dataset[i].words;
+    var frequencies = dataset[i].frequencies;
+    var max =  Math.max.apply(Math, dataset[i].frequencies);
+    index = i;
     d3.layout.cloud().size([width, height])
         .words(data.map(function(d, i) {
          var frequency = frequencies[i];           
-         return {text: d, size: 10 + (frequency / max) * 75, value: frequency};
+         return {text: d, size: 10 + (frequency / max) * 50, value: frequency};
         }))
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
@@ -433,21 +446,24 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .html(function(d,i) {                                
                  return "<span style='color:#d1d1d1'>" + d.value + "</span>";                 
                 });    
-    var text = d3.select("#wordcloud-container").select('g').selectAll('text').call(tip);     
+    var text = d3.select("#wordcloud-" + source[i]).select('g').selectAll('text').call(tip);     
     
     text.on('mouseover', tip.show)
          .on('mouseout', tip.hide); 
-
     var maxWord = data[frequencies.indexOf(max)];
-    $("#text-token-most").html(maxWord);
-    $("#text-token-occurence").html(max);   
+    $("#text-token-most-" + source[i]).html(maxWord);
+    $("#text-token-occurence-" + source[i]).html(max);   
+    }
   },
 
   drawWords = function (words) {
-    var width = 600, height = 300;
-    d3.select("#wordcloud-container").append("svg")
+    var width = 300, height = 200;
+    var source = ['all', 'facebook', 'twitter', 'reddit'];    
+   
+    d3.select("div#wordcloud-" + source[index]).append("svg")
           .attr("width", width)
           .attr("height", height)
+          .attr("style", "margin-left:-100px;")
         .append("g")
           .attr("transform", "translate("+ width / 2 +","+ height / 2+")")
         .selectAll("text")
@@ -464,34 +480,40 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   },
 
-  createContentChart = function(dataset){
-   var width = 400,
-   height = 400, 
-   radius = 180, 
-   innerR= 70,
-   color = d3.scale.category10();
+  createContentChart = function(data){
+  var width = 220,
+  height = 220, 
+  radius = 100, 
+  innerR= 40,
+  color = d3.scale.category10();
+  var source = ['facebook', 'twitter', 'reddit', 'all'];
 
+  for (var i = 0;i<data.length;i++){
+   var dataset = data[i]; 
    var total = d3.sum(dataset.value);
     
-   var vis = d3.select("#content-chart-container")
+   var vis = d3.select("#content-"+ source[i])
         .append("svg:svg")
         .data(dataset.value)
             .attr("width", width)
             .attr("height", height)
+            .attr("class", "place-right")
         .append("svg:g")
             .attr("transform", "translate(" + radius * 1.1 + "," + radius * 1.1 + ")")
     
    var textTop = vis.append("text")
         .attr("dy", ".35em")
+        .attr("id", "text-top-"+ dataset.source)
         .style("text-anchor", "middle")
-        .attr("class", "textTop")
+        .attr("class", "textTop")        
         .text( "total" )
         .attr("y", -10),
    textBottom = vis.append("text")
         .attr("dy", ".35em")
+        .attr("id", "text-bottom-"+ dataset.source)
         .style("text-anchor", "middle")
         .attr("class", "textBottom")
-        .text(total)
+        .text(dataset.total)
         .attr("y", 10);
     
    var arc = d3.svg.arc()
@@ -506,41 +528,67 @@ SocialMediaAnalyzer.Visualization = (function() {
         .value(function(d) {  return d; });
      
    var arcs = vis.selectAll("g.slice")
-        .data(pie(dataset.value))
+          .data(pie(dataset.value))        
         .enter()
-            .append("svg:g")
+            .append("svg:g")                
                 .attr("class", "slice")
                 .on("mouseover", function(d) {
+                    
+                   var txtTop = d3.select(d3.select(this.parentNode).selectAll('text')[0][0]);
+                   var txtBottom = d3.select(d3.select(this.parentNode).selectAll('text')[0][1]);
                   
-                    d3.select(this).select("path").transition()
+                   if(txtTop.attr("id") == "text-top-facebook"){
+                    var index = 0;
+                   } else if(txtTop.attr("id") == "text-top-twitter"){
+                    var index = 1;
+                   }else if(txtTop.attr("id") == "text-top-reddit"){
+                    var index = 2;
+                   }else if(txtTop.attr("id") == "text-top-all"){
+                    var index = 3;
+                   }                   
+                   var type = data[index].type[data[index].value.indexOf(d.value)];                   
+                   d3.select(this).select("path").transition()
                         .duration(200)
                         .attr("d", arcOver)
-                    var type = dataset.type[dataset.value.indexOf(d.value)];
-                    textTop.text(type)
+                    
+                    
+                    txtTop.text(type)
                         .attr("y", -10);
-                    textBottom.text(d.value)
+                    txtBottom.text(d.value)
                         .attr("y", 10);
                 })
                 .on("mouseout", function(d) {
                     d3.select(this).select("path").transition()
                     .duration(100)
                     .attr("d", arc);
-                
-                textTop.text( "total" )
+                var txtTop = d3.select(d3.select(this.parentNode).selectAll('text')[0][0]);
+                var txtBottom = d3.select(d3.select(this.parentNode).selectAll('text')[0][1]);
+
+                   if(txtBottom.attr("id") == "text-bottom-facebook"){
+                    var index = 0;
+                   } else if(txtBottom.attr("id") == "text-bottom-twitter"){
+                    var index = 1;
+                   }else if(txtBottom.attr("id") == "text-bottom-reddit"){
+                    var index = 2;
+                   }else if(txtBottom.attr("id") == "text-bottom-all"){
+                    var index = 3;
+                   }
+                var currentTotal = data[index].total; 
+                txtTop.text( "total" )
                     .attr("y", -10);
-                textBottom.text(total);
+                txtBottom.text(currentTotal);
             });
 
     arcs.append("svg:path")
         .attr("fill", function(d, i) { return color(i); } )
         .attr("d", arc);
-        
-          var legend = d3.select("#content-chart-container").append("svg")
-              .attr("class", "legend")
+    }    
+          var legend = d3.select("#content-description").append("svg")
+              .attr("class", "legend padding20")              
               .attr("width", radius)
               .attr("height", radius * 2)
               .selectAll("g")
-              .data(dataset.type)
+              .data(data[0].type)
               .enter().append("g")
               .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
           
@@ -581,7 +629,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                     '<div class="slide slide-height-top">' + 
 
                        '<div class="tile-image"><img id="tile-img-entry-'+ source +'-'+ i + '"></img></div>' +
-                       '<div class="tile-sentiment text-small padding10 shadow" id="tile-sentiment-entry-'+ source +'-'+ i + '">'+ score + '</div>' + 
+                       '<div class="tile-sentiment text-small padding10 shadow" id="tile-sentiment-entry-'+ source +'-'+ i + '"><b>'+ score + '</b></div>' + 
                     
                        '<div class="tile-text text-small padding10" id="tile-text-entry-'+ source +'-'+ i + '"></div>' +
 
@@ -609,11 +657,9 @@ SocialMediaAnalyzer.Visualization = (function() {
         if(hashtagClick) {hashtagClick = false; return;}
         var url = $(this).attr("href");            
         var win = window.open(url);
-        if(win){
-            //Browser has allowed it to be opened
+        if(win){            
             win.focus();
-        }else{
-            //Broswer has blocked it
+        }else{            
             alert('Please allow popups for this site');
         }
         hashtagClick = false

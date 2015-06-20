@@ -1,5 +1,8 @@
 var fs = require('fs');
 
+//Hilfsklasse zum Auslesen der Logindaten die in der conifg.json gespeichert sind
+
+//FB App ID auslesen
 getFBAppId = function (callback){	
 	fs.readFile('./config/config.json', function(err, data){
 		if (err) console.error(err);
@@ -7,7 +10,9 @@ getFBAppId = function (callback){
 		var appId = obj.facebook.appId;		
 		callback(appId);
 	});
-}	
+}
+
+//FB App Secret auslesen	
 getFBAppSecret = function (callback){	
 	fs.readFile('./config/config.json', function(err, data){
 		if (err) console.error(err);
@@ -16,6 +21,8 @@ getFBAppSecret = function (callback){
 		callback(appSecret);
 	});
 }
+
+//Reddit Login Daten auslesen
 getRedditLogins = function(callback){
 
 	fs.readFile('./config/config.json', function(err, data){
@@ -36,6 +43,8 @@ getRedditLogins = function(callback){
 		callback(data);
 	});
 }
+
+//Twitter Login Daten auslesen
 getTwitterLogins = function(callback){
 
 	fs.readFile('./config/config.json', function(err, data){

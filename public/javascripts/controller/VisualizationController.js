@@ -8,7 +8,7 @@ $twitterPostResultContainer = null,
 $redditPostResultContainer = null,
 countLogins = 0,
 
-
+ //ruft Initialisierung von Listener, Hilfe und Container auf
  init = function() {
       console.log("init VisualizationController.js");
       initListener();
@@ -16,18 +16,21 @@ countLogins = 0,
       initHelp();           
  },
 
+ //Initialisierung der Buttons
  initContainer = function(){
   $facebookPostResultContainer = $( '#facebook-post-result' );
   $twitterPostResultContainer = $( '#twitter-post-result' );
   $redditPostResultContainer = $( '#reddit-post-result' );
  },
 
+ //Initialisierung der Listener
  initListener = function(){
   $(document).on('facebookLoginSuccess', onFacebookLoginSuccess);
   $(document).on('twitterLoginSuccess', onTwitterLoginSuccess);
   $(document).on('redditLoginSuccess', onRedditLoginSuccess);
  },
 
+ //Initialisierung der Hilfe
  initHelp = function(){
   $.facebox.settings.closeImage = '/images/closelabel.png';
   $.facebox.settings.loadingImage = '/images/loading.gif';
@@ -43,6 +46,8 @@ countLogins = 0,
 
  },
 
+
+ //Initialisierung der Speicherungsfunktion
  initSave = function(){
   $inputSave = $( '#input-file' );
  
@@ -58,55 +63,67 @@ countLogins = 0,
      });
    },
   
+ //Reset bei erneuter Suche
  reset = function(){
   resetData();
   clearResultContainer();
   SocialMediaAnalyzer.Visualization.clearVisualizations();
  },
 
+  //Reset der gesammelten Posts bei erneuter Suche
  resetData = function(){
   facebookData = null;
   twitterData = null;
   redditData = null;
  },
 
+ //Leeren des Ergebniscontainers
  clearResultContainer = function(){
   $facebookPostResultContainer.empty();
   $twitterPostResultContainer.empty();
   $redditPostResultContainer.empty();
  },
+
+ //Anzeige des Loginerfolgs bei Facebook
  onFacebookLoginSuccess = function(event){  
   SocialMediaAnalyzer.Visualization.showLoginSuccess('facebook');
   loginIsReady();
  },
 
+ //Anzeige des Loginerfolgs bei Twitter
  onTwitterLoginSuccess = function(event){  
   SocialMediaAnalyzer.Visualization.showLoginSuccess('twitter');
   loginIsReady();
  },
 
+ //Anzeige des Loginerfolgs bei Reddit
  onRedditLoginSuccess = function(event){  
   SocialMediaAnalyzer.Visualization.showLoginSuccess('reddit');
   loginIsReady();
  },
 
+ //Alle Logins waren Erfolgreich
  loginIsReady = function(){
   countLogins++;
   if(countLogins>=3){SocialMediaAnalyzer.Visualization.enableSearch(); countLogins = 0;} 
  },
 
+//Setzen der Facebook Suchergebnisse
  setFacebookData = function(data){
  	facebookData = data;
  },
 
+//Setzen der Twitter Suchergebnisse
  setTwitterData = function(data){
  	twitterData = data;
  },
 
+//Setzen der Reddit Suchergebnisse
  setRedditData = function(data){
  	redditData = data;
  },
 
+//Überprüfeun der Länge der Ergebnisse, ob zu wenig geliefert wurden
  checkDataSetLength = function(count){
   var allData = [facebookData, twitterData, redditData];
   allData.forEach(function(entry){
@@ -114,6 +131,7 @@ countLogins = 0,
   });
  }
 
+//Zusammenstellen der notwendigen Daten für die Vote Analyse
  createVoteVisualization = function(){ 	
  	var allFBVotes = 0;
   var likes = 0;
@@ -150,6 +168,7 @@ countLogins = 0,
                                                          sumVotes: sumVotes});
  },
 
+//Zusammenstellen der notwendigen Daten für die Sentiment Analyse
  createSentimentVisualization = function(){
   var data = [];
   var allData = [facebookData, twitterData, redditData];
@@ -167,6 +186,7 @@ countLogins = 0,
   SocialMediaAnalyzer.Visualization.createSentimentChart(data);
  },
 
+//Zusammenstellen der notwendigen Daten für die Token Analyse
  createTokenVisualization = function(){
   var tokenFB = 0;
   var tokenTwit = 0;
@@ -208,6 +228,7 @@ countLogins = 0,
                                                       max:[maxLengthFB,maxLengthTwit,maxLengthRddt]});
  },
 
+//Zusammenstellen der notwendigen Daten für die Word Cloud
  createCloudVisualization = function(){
   var words = [];
   var wordsFB = [];
@@ -233,6 +254,7 @@ countLogins = 0,
   SocialMediaAnalyzer.Visualization.createCloudChart([calcFrequnciesAll, calcFrequnciesFB, calcFrequnciesTwit, calcFrequnciesRddt]);   
  },
 
+//Zusammenstellen der notwendigen Daten für die Content Analyse
  createContentVisualization = function(){  
   var allData = [facebookData, twitterData, redditData];
   var sumLink = sumText = sumVideo = sumImage = 0;
@@ -272,6 +294,7 @@ countLogins = 0,
   SocialMediaAnalyzer.Visualization.createContentChart(result);
  },
 
+//Hilfsfunktion zum Erstellen eines Objektes von Wörtern und deren Häufigkeit
  sortTokens = function(tokens) {
     var a = [], b = [], prev;
 
@@ -288,17 +311,22 @@ countLogins = 0,
     return {words: a, frequencies: b};
  },
 
+ //Setzen der notwendigen Daten für die Posts von Facebook
+  setFacebookPosts = function(){
+       SocialMediaAnalyzer.Visualization.createTiles(facebookData, $facebookPostResultContainer);   
+  },
+
+//Setzen der notwendigen Daten für die Posts von Twitter
  setTwitterPosts = function(){ 
       SocialMediaAnalyzer.Visualization.createTiles(twitterData, $twitterPostResultContainer);    
   },
 
+//Setzen der notwendigen Daten für die Posts von Reddit
   setRedditPosts = function(){
       SocialMediaAnalyzer.Visualization.createTiles(redditData, $redditPostResultContainer);      
   },
 
-  setFacebookPosts = function(){
-       SocialMediaAnalyzer.Visualization.createTiles(facebookData, $facebookPostResultContainer);   
-  },
+//Freischalten der Panels
   showPanels = function(){  
     $(document).trigger('onShowPanels');
   };

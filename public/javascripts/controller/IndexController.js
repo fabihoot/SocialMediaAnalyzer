@@ -6,16 +6,19 @@
  var $inputKeyword = $('#input-keyword');
  var pCount = 0;
  
+ //ruft Initialisierung von Listener und Buttons auf
  init = function() {
       console.log("init IndexController");
       initListener();
       initButton();
  },
 
+ //Initialisierung der Listener
  initListener = function(){
     $(document).on('onCheckRequest', checkRequestsFinished);    
  },
 
+//Initialissierung der Buttons und deren Funktion
  initButton = function(){ 
   $inputKeyword.keyup(function(e){
       if(e.keyCode == 13)
@@ -34,6 +37,7 @@
   }); 
  },
 
+//Starten eines Requests durch Drücken der Enter Taste
  onInputEnterPressed = function(event){
     event.preventDefault();
     SocialMediaAnalyzer.VisualizationController.reset();
@@ -41,6 +45,7 @@
     startRequestQuery();
  }, 
 
+//Methode zum Anpassen des Sliderwertes und Anzeige der Warnung wenn Wert 100 Posts übersteigt
  dropValueToInput = function(value, slider){
      $("#slider-input").val(value);
      var $warningPostCount = $('#warning-post-count');
@@ -54,6 +59,7 @@
      }
   },
 
+//Starten eines Requests an den node.js Server mit Suchbegriff und Post Anzahl
  startRequestQuery = function(){   
     var postCount = $inputPostCount.val();
     var searchTerm = $inputKeyword.val();
@@ -88,6 +94,7 @@
  
 },
 
+//Überprüfen ob alle 3 Requests abgeschlossen sind, erst dann kann Visualisierung erfolgen
 checkRequestsFinished = function(event, id){  
   switch(id){
     case('facebook'): fb = true; break;
@@ -98,6 +105,7 @@ checkRequestsFinished = function(event, id){
   if(fb&&twit&&rddt) startVisualizations();   
 },
 
+//starten der Visualisierungen, Anzeigen aller Panels, Erstellen der Post-Visualisierung
 startVisualizations = function(){
   SocialMediaAnalyzer.VisualizationController.setTwitterPosts();
   SocialMediaAnalyzer.VisualizationController.setFacebookPosts();
@@ -115,6 +123,7 @@ startVisualizations = function(){
   $(document).trigger('onRequestFinished');
 },
 
+//Hilfsmethode zum Setzen des Postcounts
 setPostCount = function(count){
   pCount = count;
 };

@@ -1,8 +1,8 @@
 SocialMediaAnalyzer.MainController = (function() {
 	var that = {},
 
-	init = function() {
-		console.log("init MainController");
+	//Initialisiert alle anderen notwendigen Controller 
+	init = function() {		
 		SocialMediaAnalyzer.VisualizationController.init();
 		SocialMediaAnalyzer.LoginController.init();	
 		SocialMediaAnalyzer.IndexController.init();					

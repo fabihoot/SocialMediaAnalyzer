@@ -65,7 +65,6 @@ getTwitterLogins = function(callback){
 		callback(data);
 	});
 }
-//exports.method = method;
 
 exports.getTwitterLogins = getTwitterLogins;
 exports.getRedditLogins = getRedditLogins;

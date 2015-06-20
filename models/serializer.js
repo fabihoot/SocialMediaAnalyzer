@@ -1,7 +1,9 @@
 var analyzer = require('./analyzer');
 var mediaElement = {};
 
+//Klasse zum Transformieren der unterschiedlichen Posts in ein gemeinsames Format
 
+//Erstellen eines Elements abhängig von der Plattform
 function createMediaElement(object){
 	var element = {};
 	switch(object.id){
@@ -14,15 +16,13 @@ function createMediaElement(object){
 	return element;
 }
 
-function twitterData(content){
-	//ID: 		data.id
-	//text: 	data.text
-	//username: data.user.name
-	//date: 	data.created_at	
-	
+
+//Erstellen eines Twitter Elements
+function twitterData(content){	
 	var data = content.data;
 	var mediaElement = createNewMediaElement();
-		
+	
+	//Speicherung von simplen Daten	
 	mediaElement.id 	  =	data.id_str;
 	mediaElement.text	  =	data.text;
 	mediaElement.username =	data.user.name;
@@ -30,6 +30,8 @@ function twitterData(content){
 	mediaElement.type 	  = "text";
 	mediaElement.source   =	content.id;
 	mediaElement.lang.hashtags = formatHashtagArray(data.entities.hashtags);
+
+	//Speicherung des Contents abhängig vom Typ
 	if(data.entities.urls.length > 0){
 		var tempURL = data.entities.urls[0].expanded_url;
 		
@@ -45,26 +47,27 @@ function twitterData(content){
 		mediaElement.content.url = "https://twitter.com/"+ data.user.screen_name + "/status/" + data.id_str;
 	}	
 
+	//Speicherung von Retweets und Favoriten
 	mediaElement.votes.retweets = data.retweet_count;
 	mediaElement.votes.favorites = data.favorite_count;
 	
 	return storeMediaElement(mediaElement);
 }
 
+//Erstellen eines Facebook Elements
 function facebookData(content){
-	//ID: 		data.id
-	//text: 	data.message
-	//username: data.from.name
-	//date: 	data.created_time
+	
 	var data = content.data;
 	var mediaElement = createNewMediaElement(); 	
 	
+	//Speicherung von simplen Daten	
 	mediaElement.id 		= data.id;
 	mediaElement.text		= data.message;
 	mediaElement.username	= data.from.name;
 	mediaElement.date 		= data.created_time;	
 	mediaElement.source		= content.id;	
 
+	//Speicherung des Contents abhängig vom Typ
 	if(data.hasOwnProperty('type')){
 		if(data.type == 'photo'){
 			mediaElement.content.type = 'image';
@@ -82,6 +85,8 @@ function facebookData(content){
 			mediaElement.content.thumbnail = data.picture;
 		}
 	}
+
+	//Abfragen von Likes und Shares
 	var likes = 0
 	if(data.hasOwnProperty('likes')){
 	  likes = data.likes.data.length;
@@ -97,16 +102,14 @@ function facebookData(content){
 	return storeMediaElement(mediaElement);
 }
 
+//Erstellen eines Reddit Elements
 function redditData(content){
-	//ID: 		data.id;
-	//text: 	data.selftext
-	//username: data.author
-	//date: 	data.created
-		
+	
 	var data = content.data;	
 	var time = timeConverter(data.created);
 	var mediaElement = createNewMediaElement();	
 	
+	//Überprüfen ob Text Inhalt hat oder nicht
 	mediaElement.id 		= data.id;
 	if (data.selftext == ""){
 		mediaElement.text	= data.title;
@@ -114,6 +117,7 @@ function redditData(content){
 		mediaElement.text   = data.selftext;
 	}	
 
+	//Speicherung des Contents abhängig vom Typ
 	if(data.hasOwnProperty('url')){	 
 	 if(data.hasOwnProperty('domain')){
 	 	if (data.domain == 'imgur.com' || data.domain == 'i.imgur.com'){
@@ -132,10 +136,12 @@ function redditData(content){
 	 mediaElement.content.url = data.url;
 	} 	
 
+	//Speicherung von simplen Daten	
 	mediaElement.username	= data.author;
 	mediaElement.date 		= time;	
 	mediaElement.source 	= content.id;	
 	
+	//Speichen der Votings, evtl werden zukünftigt wieder Up- und Downvotes mit der API geliefert
 	mediaElement.votes.upvotes = data.ups;
 	mediaElement.votes.downvotes = data.downs;
 	mediaElement.votes.score = data.score;
@@ -143,11 +149,14 @@ function redditData(content){
 	return storeMediaElement(mediaElement);
 }
 
+
+//Analysieren eines transformierten Elements
 function storeMediaElement(mediaElement){
 	var analyzedMediaElement = analyzer.analyzeMediaElement(mediaElement);	
 	return analyzedMediaElement;
 }
 
+//Erstellen eines neuen Objekts nach einem Schema
 function createNewMediaElement(){
 	mediaElement = {
 			id: 		"",
@@ -185,6 +194,7 @@ function createNewMediaElement(){
 		return mediaElement;
 }
 
+//Hilfsfunktion zum Konvertieren von UNIX Zeitstempeln
 function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp*1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -198,10 +208,12 @@ function timeConverter(UNIX_timestamp){
   return time;
 }
 
+//Hilfsfunktion zum Erkennen von Dateiendungen
 function getFileExtension(filename){	
 	return  filename.substr(filename.lastIndexOf('.')+1);
 }
 
+//Hilfsfunktion zum Speichern von Hashtagss
 function formatHashtagArray(array){
 	var hashtags = [];
 	array.forEach(function(entry){

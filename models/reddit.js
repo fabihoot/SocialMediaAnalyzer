@@ -7,6 +7,8 @@ var nextRedditLink = "";
 var urlChanged = false;
 var utils = require('../models/utils');
 
+
+//Initialisierung wenn Login angefordert wird
 init = function(callback){  
   utils.getRedditLogins(function (logins){    
     reddit = new Snoocore({
@@ -27,6 +29,8 @@ init = function(callback){
   });
 }
 
+//Methode zum Starten der Suche nach Querybegriff und Anzahl
+//Überprüfung ob nach jedem API-Aufruf die gewünschte Anzahl erreicht ist
 getRedditData = function (keyword, count, callback) {
   var redditElements = {"data" : [] };
   var resultData = null;
@@ -58,6 +62,8 @@ getRedditData = function (keyword, count, callback) {
   
 }
 
+//Sammeln und transformieren der einzelnen gecrawlten Elemente
+//jedes erfasste Element wird zur Transformation weiteregegeben
 formatPosts = function(count, keyword, callback){
   var posts = [];
   requestPosts(count, keyword, function( data ){
@@ -78,6 +84,8 @@ formatPosts = function(count, keyword, callback){
   });
 }
 
+//ein Reddit API Aufruf für jeden Teil des Listings
+//gefundenes Element wird mit Callback an die vorherige Methode zur Transformation weitergegeben
 requestPosts = function(count, keyword, callback){
   if(!urlChanged){   
     var params = {limit: count, q: keyword}
@@ -91,6 +99,8 @@ requestPosts = function(count, keyword, callback){
   });
 }
 
+
+//Hilfsmethoden zum Setzen des nächsten aufzurufenden Links sowie zur Überprüfung der geänderten URL
 setNextRedditLink = function(link){ 
   nextRedditLink = link;
 }

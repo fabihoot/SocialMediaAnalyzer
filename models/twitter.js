@@ -5,6 +5,7 @@ var serializer = require('./serializer');
 var async = require('async');
 var utils = require('../models/utils');
 
+//Initialisierung wenn Login angefordert wird
 init = function(callback){
 
   utils.getTwitterLogins(function (logins){    
@@ -28,6 +29,9 @@ init = function(callback){
    callback({logged_in: true});
 }
 
+
+//Methode zum Starten der Suche nach Querybegriff und Anzahl
+//Überprüfung ob nach jedem API-Aufruf die gewünschte Anzahl erreicht ist
 getTwitterData = function (keyword, count, callback){  
   var twitterElements = {"data" : []};
   var c = count;
@@ -59,6 +63,8 @@ getTwitterData = function (keyword, count, callback){
   
 }
 
+//ein Twitter Search API Aufruf 
+//gefundenes Element wird zur Transformation weitergegeben
 requestTweets = function(keyword, count, callback){
   var tweets = [];
   var c = count;

@@ -23,9 +23,16 @@ getLongLivedAccessToken = function(access_token, callback){
               "client_secret=" + APP_SECRET + "&" + 
               "grant_type=fb_exchange_token&" +
               "fb_exchange_token=" + access_token + "";
+    var options = {      
+      pool:     { maxSockets:  Infinity },
+      headers:  { connection:  "keep-alive" }
+    };
    
-    graph.get(path, function(err, res) {
-       if(err){ console.log(err); callback({logged_in: false, err: err}); }
+    graph
+    .setOptions(options)
+    .get(path, function(err, res) {
+       if(res == null){ console.log(err); callback({logged_in: false, err: "Cannot login to Facebook!"}); return;}
+       if(err){ console.log(res); console.log(err); callback({logged_in: false, err: err}); return;}
        console.log('Facebook authentication successfull');       
        setToken(res.access_token);
        graph.setAppSecret(APP_SECRET);    
@@ -58,12 +65,12 @@ getFacebookData = function(search_word, count, callback){
   });
 }
 
-getFBPages = function(search_word, count, callback){
+getFBPages = function(search_word, c, callback){
   var facebookFeedEntries  = {"data" : []};
   var resultData = null;
+  var count = Math.floor(c/10);
   var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&locale=en_US';
-  var options = {
-      timeout: 5000,
+  var options = {      
       pool:     { maxSockets:  Infinity },
       headers:  { connection:  "keep-alive" }
   };   
@@ -74,9 +81,11 @@ getFBPages = function(search_word, count, callback){
   if(resultData == null){          
      return true;
   } else {
+
     for(var i = 0;i<resultData.length; i++){              
-      facebookFeedEntries.data.push(resultData[i]);           
-      if (facebookFeedEntries.data.length >= count){        
+      if(resultData.length>0) facebookFeedEntries.data.push(resultData[i]);
+      console.log("current length: " +facebookFeedEntries.data.length);           
+      if (facebookFeedEntries.data.length >= c){        
         return false;
       }
     }      
@@ -89,20 +98,25 @@ getFBPages = function(search_word, count, callback){
     .setOptions(options)
     .setAccessToken(token)
     .get(path, function(err, res) {
+    
       if (err) {
-        console.log(err);
+        console.log("ERROR GETTING IDS");
+        console.log(res);
         console.log("path: " + path);        
         callback({'error': err});
       return;
-      };
-      console.log(res.paging);
-      path = res.paging.next;     
+      }
+     
+      path = res.paging.next;
+     
       if(res.paging.next=='undefined' || res.paging.next==undefined) {console.log(res); callback(facebookFeedEntries); return;}         
-       getFBFeedEntries(res.data, function( entries ){        
-         resultData = entries;
-         next(null, entries);
+       getFBFeedEntries(res.data, function( entries ){  
+        console.log("valid entries from feed: " + entries.length);          
+        resultData = entries;
+        next(null, entries);
       });
     }); 
+   
 
   },
   function( err, result ) {    
@@ -114,54 +128,82 @@ getFBPages = function(search_word, count, callback){
 getFBFeedEntries = function(array, callback){
     
     async.times(array.length, function(n, next){
-   
-     getFBFeedEntry( array[n].id, function( err, entry ){ 
+    
+     getFBFeedEntry( array[n].id, function( err, entry ){       
       next( err, entry );
      })
 
     }, function(err, entries) {
-    var array = [];
+    var array = [];    
+    if(entries.length > 0){
     for(var i = 0;i<entries.length;i++){
-      if(entries[i] != null) array.push(entries[i]);
-    }     
+      if(entries[i] != null){
+        for (var j = 0;j<entries[i].length;j++){
+          if(entries[i][j] != null) array.push(entries[i][j]);        
+        }
+      }
+    }   
       callback(array);
+    } else {
+      callback([]);
+    }
     });
 }
 
-getFBFeedEntry = function(page_id, callback){
-  
-  graph.setAccessToken(token)
-       .get('/'+ page_id + '/feed?limit=1', function(err, res) { 
+getFBFeedEntry = function(page_id, callback){   
+  var options = {
+      timeout: 15000,      
+      pool:     { maxSockets:  Infinity },
+      headers:  { connection:  "keep-alive" }
+  }; 
+  graph
+  .setOptions(options)
+  .setAccessToken(token)
+  .get('/'+ page_id + '/feed?limit=10', function(err, res) {
+ 
+  if(res == null){ console.log(err); console.log("res is null"); callback(null, null); return;}  
   if (err) {
+        console.log("ERROR GETTING FEED ENTRIES");
         console.log(err);
-        console.log("ERROR ACCESS_TOKEN " + token);
-        callback({'error': err});
+        console.log("RESPONSE: " + res);
+        //callback({'error': err});
+        callback(null, null);
       return;
-  };  
-  if(res.data.length > 0){
-    var facebookElement = serializer.createMediaElement({
-                                 id: 'facebook',
-                                 data: res.data[0]
-                             });        
-    
-     if (facebookElement != null){
-      getLikes(facebookElement.id, function( likes ){
-       facebookElement.votes.likes = likes;
-       callback(null, facebookElement);   
-      });
-     } else {
-       callback(null, null);
-     }
-   }  else {
-    callback(null, null);
-   }
-    
+  }
+ 
+  async.times(res.data.length, function(n, next){
+   
+    formatFBPosts( res.data[n], function( err, entry ){               
+        next( err, entry );
+    })
+  },
+  function(err, entries) {  
+    callback(null, entries);
+  });
            
   });
 }
+
+formatFBPosts = function(element, callback){ 
+  var facebookElement = serializer.createMediaElement({
+                                 id: 'facebook',
+                                 data: element
+                             });        
+    
+     if (facebookElement != null) {     
+      getLikes(facebookElement.id, function( likes ){
+       facebookElement.votes.likes = likes;
+        callback(null, facebookElement);       
+      });
+     } else {
+      callback(null, null);
+     }
+   
+}
+
 getLikes = function(post_id, callback){
   graph.setAccessToken(token)
-       .get('/' + post_id + '/likes?summary=true', function(err, res) { 
+       .get('/' + post_id + '/likes?summary=true', function(err, res) {       
     callback(res.summary.total_count);
   }); 
 }

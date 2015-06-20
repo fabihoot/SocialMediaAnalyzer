@@ -6,6 +6,7 @@ SocialMediaAnalyzer.Visualization = (function() {
   $panelPosts,
   index = 0,  
 
+ //ruft Initialisierung von Listener und Container auf
 	init = function() {
 		console.log("init Visualization.js");
     initListener();
@@ -18,6 +19,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     
   },
 
+ //Initialisierung der Listener
   initListener = function(){
      $(document).on('onRequestStart', onRequestStarted);
      $(document).on('onRequestFinished', onRequestFinished);
@@ -25,6 +27,7 @@ SocialMediaAnalyzer.Visualization = (function() {
      $(document).on('onCheckRequest', onRequestFinishedId);            
   },
 
+ //Benachrichtigung, dass die Anzahl der gecrawlten Daten zu gering ist
   notifySmallDataset = function(source){
     $.Notify({
       caption: 'Dataset too small',
@@ -39,6 +42,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     });
   },
 
+//Entfernung aller Visualisierungskomponenten
   clearVisualizations = function(){
     $("#vote-chart-container").empty();
     $("#sentiment-chart-container").empty();
@@ -54,6 +58,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     $("#content-reddit").empty();
   },  
   
+  //wenn Request abgeschlossen, Anzeige des Accordions
   onShowPanels = function(event){
     event.preventDefault();      
     $panelGeneral.removeClass('hidden').addClass('magictime spaceInLeft');
@@ -62,6 +67,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     showCarousel(); 
   },
 
+  //Initialisierung des Carousels mit den Graphen
   showCarousel = function(){
     $('.carousel').carousel({
             auto: false,
@@ -72,6 +78,7 @@ SocialMediaAnalyzer.Visualization = (function() {
         });
   },
 
+  //wenn ein Request gestartet werden werden infos und Ladeanzeigen geändert
   onRequestStarted = function(event){
    event.preventDefault();   
     $('#preloader-facebook').removeClass('hidden');
@@ -88,25 +95,30 @@ SocialMediaAnalyzer.Visualization = (function() {
     $("#info-search").addClass('magictime vanishIn');
   },
 
+  //wenn Request beendet ist wird Accordion angezeigt
   onRequestFinished = function(event){
     event.preventDefault();
     $('#accordion-container').removeClass('hidden'); 
   },
 
+  //Hilfsmethode für Login Erfolg
   onRequestFinishedId = function(event, id){
     event.preventDefault();
     showLoginSuccess(id); 
   },
 
+  //abhängig von der ID werden Preloader als beendet angezeigt
   showLoginSuccess = function(id){    
     $('#preloader-'+ id).addClass('hidden');
     $('#preloader-ok-'+ id).removeClass('hidden');   
   },
 
+  //Freischalten des Suchfeldes
   enableSearch = function(){
     $('#input-keyword').removeAttr('disabled');
   }, 
 
+  //Methode zur Erstellung des Vote Bar Charts
 	createVoteBarChart = function(data){
 
     var dataset = data.allVotes;
@@ -116,7 +128,8 @@ SocialMediaAnalyzer.Visualization = (function() {
     var duration = 2000;
     var xScale = d3.scale.linear().domain([0, dataset.length]).range([0, width]);
     var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height-50]);     
-                
+     
+    //Anlegen des Zeichenfeldes           
     var chart = d3.select("#vote-chart-container")
                 .data(dataset) 
                  .append("svg:svg")
@@ -125,6 +138,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                  .attr("class", "place-right")
                  .attr("style", "margin-right:100px"); 
   
+    //Zeichnen der einzelnen Säulen
     var bars = chart.selectAll("rect")
           .data(dataset) 
         .enter().append("svg:rect")
@@ -144,6 +158,7 @@ SocialMediaAnalyzer.Visualization = (function() {
             .delay(1500)
             .ease("linear");
 
+    //Erstellen der Tooltips
     var tip = d3.tip()                
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
@@ -168,6 +183,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     chart.selectAll('rect').on('mouseover', tip.show)
                            .on('mouseout', tip.hide);
      
+    //Text für die Säulen festlegen 
     chart.selectAll("text")
               .data(dataset)
             .enter().append("svg:text")
@@ -186,6 +202,7 @@ SocialMediaAnalyzer.Visualization = (function() {
               .text(function(d) { return d; })
               .attr("fill", "white");
 
+    //Anhängen der Bilder an die Säulen
     chart.selectAll("image")
               .data(dataset)
             .enter().append("svg:image")
@@ -202,6 +219,7 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
 
+    //Anpassen des Beschreibungstextes
     var allVotes = data.sumVotes;
     var likes = data.fbVotes.likes;
     var shares = data.fbVotes.shares;
@@ -218,14 +236,17 @@ SocialMediaAnalyzer.Visualization = (function() {
 
 	},
 
+  //Methode zur Erstellung des Sentiment Charts
   createSentimentChart = function(dataset){
     var width = 260;
     var height = 220;
     var radius = 100, 
     innerR = 80;
     
+    //Festlegen der beiden Farben
     var color = d3.scale.linear().domain([0, 1]).range(["#00C333", "#FF1E00"]);   
     
+    //Erstellen des Zeichenfeldes
     var svg = d3.select("#sentiment-chart-container").selectAll("svg")
                   .data(dataset)
                 .enter().append("svg:svg")
@@ -234,6 +255,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .append("svg:g")                 
                  .attr("transform", "translate(" + radius * 1.1 + "," + radius * 1.1 + ")")
 
+    //Beschriftung in der Mitte des Ringes erstellen
     var textTop = svg.append("text")
         .attr("id", function(d,i){ return "sent-text-top-" + d.source })
         .attr("dy", ".35em")
@@ -248,11 +270,13 @@ SocialMediaAnalyzer.Visualization = (function() {
         .attr("class", "textBottom")
         .text(function(d){ return d.score })
         .attr("y", 10);            
-                
+    
+    //Festlegen der Größe der Kreisbögen      
     var arc = d3.svg.arc()
         .innerRadius(innerR)
         .outerRadius(radius);
     
+    //Festlegen der Größe der Kreisbögen bei MouseOver
     var arcOver = d3.svg.arc()
         .innerRadius(innerR + 5)
         .outerRadius(radius + 5);
@@ -261,13 +285,14 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .value(function(d) { return d; });
    
   
+    //Zeichnen der Kreisbögen
     var arcs = svg.selectAll("g.slice")
         .data(function(d) { return pie(d.value); })
         .enter()
             .append("svg:g")                
                 .attr("class", "slice")
         .on("mouseover", function(d,i ) {
-                    
+                    //Anzeige der Werte bei MausOver auf ein bestimmtes Segment
                     d3.select(this).select("path").transition()
                         .duration(200)
                         .attr("d", arcOver)
@@ -296,10 +321,13 @@ SocialMediaAnalyzer.Visualization = (function() {
                 textBottom.text(function(d){ return d.score });
         });  
 
+    //Farbe für die Kreisbögen bestimmen
     arcs.append("svg:path")        
         .attr("fill", function(d, i) { return color(i); } )
         .attr("d", arc);                
 
+
+    //Anpassen des Beschreibungstextes
     var maxPos = dataset[0].score;
     var maxNeg = dataset[0].score;
 
@@ -325,6 +353,7 @@ SocialMediaAnalyzer.Visualization = (function() {
      
   },
 
+  //Methode zur Erstellung des Token Bar Charts
   createTokenChart = function(data){
     var dataset = data.avgTokens;
     var barWidth = 75;
@@ -333,6 +362,8 @@ SocialMediaAnalyzer.Visualization = (function() {
     var duration = 2000;
     var xScale = d3.scale.linear().domain([0, dataset.length]).range([0, width]);
     var yScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) { return d; })]).rangeRound([0, height-50]);
+
+    //Anlegen des Zeichenfeldes
     var chart = d3.select("#token-chart-container")
                 .append("svg:svg")
                 .attr("width", width)
@@ -340,6 +371,7 @@ SocialMediaAnalyzer.Visualization = (function() {
                 .attr("class", "place-right")
                 .attr("style", "margin-right:100px");
 
+    //Zeichnen der einzelnen Säulen
     var bars = chart.selectAll("rect")
           .data(dataset) 
         .enter().append("svg:rect")
@@ -355,6 +387,7 @@ SocialMediaAnalyzer.Visualization = (function() {
             .delay(1500)
             .ease("linear");
 
+    //Erstellen der Tooltips
     var tip = d3.tip()                
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
@@ -369,6 +402,8 @@ SocialMediaAnalyzer.Visualization = (function() {
 
     chart.selectAll('rect').on('mouseover', tip.show)
                            .on('mouseout', tip.hide);
+
+    //Text für die Säulen festlegen 
     chart.selectAll("text")
               .data(dataset)
             .enter().append("svg:text")
@@ -387,6 +422,7 @@ SocialMediaAnalyzer.Visualization = (function() {
               .text(function(d) { return d; })
               .attr("fill", "white");
 
+    //Anhängen der Bilder an die Säulen          
     chart.selectAll("image")
               .data(dataset)
             .enter().append("svg:image")
@@ -403,6 +439,7 @@ SocialMediaAnalyzer.Visualization = (function() {
               .attr("height", "40px")
               .attr("xlink:href", function(d,i){ return imgSource[i]; });
 
+    //Anpassen des Beschreibungstextes          
     var average = 0;    
     for(var i = 0;i<dataset.length;i++){
       average = average + dataset[i];
@@ -428,6 +465,8 @@ SocialMediaAnalyzer.Visualization = (function() {
     var frequencies = dataset[i].frequencies;
     var max =  Math.max.apply(Math, dataset[i].frequencies);
     index = i;
+
+    //Erstellen einer Word Cloud für jeden Eintrag im Datenset
     d3.layout.cloud().size([width, height])
         .words(data.map(function(d, i) {
          var frequency = frequencies[i];           
@@ -440,6 +479,7 @@ SocialMediaAnalyzer.Visualization = (function() {
         .on("end", drawWords)
         .start();
 
+    //Erstellen eines Tooltips für jedes Wort
     var tip = d3.tip()                
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
@@ -448,18 +488,24 @@ SocialMediaAnalyzer.Visualization = (function() {
                 });    
     var text = d3.select("#wordcloud-" + source[i]).select('g').selectAll('text').call(tip);     
     
+    //Anheften des Tooltips
     text.on('mouseover', tip.show)
          .on('mouseout', tip.hide); 
+
+    //Anpassen des Beschreibungstextes          
     var maxWord = data[frequencies.indexOf(max)];
     $("#text-token-most-" + source[i]).html(maxWord);
     $("#text-token-occurence-" + source[i]).html(max);   
     }
   },
 
+
+  //Methode zum Zeichnen der Wordcloud
   drawWords = function (words) {
     var width = 300, height = 200;
     var source = ['all', 'facebook', 'twitter', 'reddit'];    
    
+    //Erstellen des Zeichenfeldes der Word Cloud
     d3.select("div#wordcloud-" + source[index]).append("svg")
           .attr("width", width)
           .attr("height", height)
@@ -480,6 +526,7 @@ SocialMediaAnalyzer.Visualization = (function() {
 
   },
 
+  //Methode zur Erstellung des Content Charts
   createContentChart = function(data){
   var width = 220,
   height = 220, 
@@ -489,10 +536,12 @@ SocialMediaAnalyzer.Visualization = (function() {
   var source = ['facebook', 'twitter', 'reddit', 'all'];
 
   for (var i = 0;i<data.length;i++){
-   var dataset = data[i]; 
-   var total = d3.sum(dataset.value);
-    
-   var vis = d3.select("#content-"+ source[i])
+
+  var dataset = data[i]; 
+  var total = d3.sum(dataset.value);
+  
+  //Erstellen eines Zeichenfeldes für jeden Eintrag im Datenset
+  var vis = d3.select("#content-"+ source[i])
         .append("svg:svg")
         .data(dataset.value)
             .attr("width", width)
@@ -500,40 +549,44 @@ SocialMediaAnalyzer.Visualization = (function() {
             .attr("class", "place-right")
         .append("svg:g")
             .attr("transform", "translate(" + radius * 1.1 + "," + radius * 1.1 + ")")
-    
-   var textTop = vis.append("text")
+  
+  //Beschriftung in der Mitte des Ringes erstellen   
+  var textTop = vis.append("text")
         .attr("dy", ".35em")
         .attr("id", "text-top-"+ dataset.source)
         .style("text-anchor", "middle")
         .attr("class", "textTop")        
         .text( "total" )
         .attr("y", -10),
-   textBottom = vis.append("text")
+  textBottom = vis.append("text")
         .attr("dy", ".35em")
         .attr("id", "text-bottom-"+ dataset.source)
         .style("text-anchor", "middle")
         .attr("class", "textBottom")
         .text(dataset.total)
         .attr("y", 10);
-    
-   var arc = d3.svg.arc()
+  
+  //Festlegen der Größe der Kreisbögen   
+  var arc = d3.svg.arc()
         .innerRadius(innerR)
         .outerRadius(radius);
-    
-   var arcOver = d3.svg.arc()
+  
+  //Festlegen der Größe der Kreisbögen bei MouseOVer  
+  var arcOver = d3.svg.arc()
         .innerRadius(innerR + 5)
         .outerRadius(radius + 5);
      
-   var pie = d3.layout.pie()
+  var pie = d3.layout.pie()
         .value(function(d) {  return d; });
-     
-   var arcs = vis.selectAll("g.slice")
+  
+  //Zeichnen der Kreisbögen   
+  var arcs = vis.selectAll("g.slice")
           .data(pie(dataset.value))        
         .enter()
             .append("svg:g")                
                 .attr("class", "slice")
                 .on("mouseover", function(d) {
-                    
+                   //Anzeige der Werte bei MausOver auf ein bestimmtes Segment 
                    var txtTop = d3.select(d3.select(this.parentNode).selectAll('text')[0][0]);
                    var txtBottom = d3.select(d3.select(this.parentNode).selectAll('text')[0][1]);
                   
@@ -579,39 +632,45 @@ SocialMediaAnalyzer.Visualization = (function() {
                 txtBottom.text(currentTotal);
             });
 
+    //Einfärben der Segmente
     arcs.append("svg:path")
         .attr("fill", function(d, i) { return color(i); } )
         .attr("d", arc);
     }    
-          var legend = d3.select("#content-description").append("svg")
-              .attr("class", "legend padding20")              
-              .attr("width", radius)
-              .attr("height", radius * 2)
-              .selectAll("g")
-              .data(data[0].type)
-              .enter().append("g")
-              .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-          
-          legend.append("rect")
-              .attr("width", 18)
-              .attr("height", 18)
-              .style("fill", function(d, i) { return color(i); });
-          
-          legend.append("text")          
-              .attr("x", 24)
-              .attr("y", 9)
-              .attr("dy", ".35em")
-              .text(function(d) { return d; });      
+
+    //Erstellen einer Legende
+    var legend = d3.select("#content-description").append("svg")
+        .attr("class", "legend padding20")              
+        .attr("width", radius)
+        .attr("height", radius * 2)
+        .selectAll("g")
+        .data(data[0].type)
+        .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+    
+    legend.append("rect")
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d, i) { return color(i); });
+    
+    legend.append("text")          
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .text(function(d) { return d; });      
   },
 
+  //Hilfsmethode zur Erstellung der Kacheln 
   createTiles = function(data, container){   
     addTiles(data, container);      
   },
 
+  //Methode zur Erstellung der Kacheln
   addTiles = function(data, container){
     var maxVal = getMaxValue(data);
     var minVal = getMinValue(data);
 
+    //Erstellung einer Kachel für jeden Eintrag
     for (var i = 0; i<data.length;i++){
       var source = data[i].source;
       var text = data[i].text;
@@ -624,6 +683,7 @@ SocialMediaAnalyzer.Visualization = (function() {
       var username = data[i].username;
       var hashtagCount = data[i].lang.hashtags.length;
      
+      //HTML-Struktur für ein Tile
       var $tile = '<div class="tile shadow bg-tile-'+ source + '" data-role="tile" id="tile-'+ source +'-'+ i + '" href="'+ url +'">' + 
                    '<div class="tile-content slide-right-2">' + 
                     '<div class="slide slide-height-top">' + 
@@ -643,17 +703,21 @@ SocialMediaAnalyzer.Visualization = (function() {
                  '</div>';
       $( container ).append($tile);
       
+      //Elemente auf der Vorderseite
       var $txtContainer = $('#tile-text-entry-'+ data[i].source +'-'+ i);
       var $imgContainer = $('#tile-img-entry-'+ data[i].source +'-'+ i);
       var $sentimentContainer = $('#tile-sentiment-entry-'+ data[i].source +'-'+ i);
 
+      //Elemente auf der Rückseite
       var $thumbnailContainer = $('#tile-img-thumb-'+ source +'-'+ i);
       var $txtLengthContainer = $('#tile-text-length-'+ data[i].source +'-'+ i);
       var $hashtagContainer = $('#tile-hashtags-'+ data[i].source +'-'+ i);
       var hashtagClick = false;
 
       var $tileLink = $('#tile-'+ data[i].source +'-'+ i);
-      $tileLink.click(function(){        
+      //Clicklistener für die gesamte Kachel
+      $tileLink.click(function(){   
+
         if(hashtagClick) {hashtagClick = false; return;}
         var url = $(this).attr("href");            
         var win = window.open(url);
@@ -664,13 +728,18 @@ SocialMediaAnalyzer.Visualization = (function() {
         }
         hashtagClick = false
       });
+
+      //Clicklistener für den HashtagLink
       $hashtagContainer.click(function(){        
         hashtagClick = true;
       });
       
+      //Abkürzen des Textes wenn 60 Zeichen überschritten werden
       if(text.length > 60){
         text = text.substring(0,60) + ' [...]';
       }
+
+      //Anzeige der Daten 
       $txtContainer.html("<b>" + username +"</b></br>" +text);
 
       $txtLengthContainer.html("Length: <b>" + textLength + "</b><br/>" +
@@ -678,18 +747,21 @@ SocialMediaAnalyzer.Visualization = (function() {
 
       
       $hashtagContainer.html("Hashtags: <b>" + hashtagCount + "</b><br/>");
+      
       if(hashtagCount >= 1){
         data[i].lang.hashtags.forEach(function(tag){
-          $hashtagContainer.append("<a target='_blank' href='https://twitter.com/search?q=#"+ tag + "'>#"+ tag+"</a><br/>");
+          $hashtagContainer.append("<a target='_blank' href='https://twitter.com/search?q="+ tag + "'>#"+ tag+"</a><br/>");
         });
       }
-      
+
+      //Setzen der Farbe abhängig vom Sentiment
       var color = getColor(score, maxVal, minVal);
       $sentimentContainer.css('background', color);
+
+      //Setzen des Bildes abhängig vom Typ
       if(type == 'image'){
         $imgContainer.attr("src", "/images/image-icon.png"); 
-        $thumbnailContainer.bind('error', function(e){
-            //error has been thrown
+        $thumbnailContainer.bind('error', function(e){            
             $(this).attr('src','/images/no-image-icon.png');
         }).attr('src', thumbnail);
       } else if (type == 'link') { 
@@ -706,11 +778,13 @@ SocialMediaAnalyzer.Visualization = (function() {
     }    
   },
 
+  //Hilfsmethode zur Farbbestimmung des Sentiments (Übergang von grün zu rot)
   getColor = function(score, maxVal, minVal){
-   var colors = d3.scale.linear().domain([minVal,0 ,maxVal]).range(["#FF1E00",'#EEEEEE' ,"#00C333"]);
+   var colors = d3.scale.linear().domain([minVal, 0, maxVal]).range(["#FF1E00",'#EEEEEE' ,"#00C333"]);
    return colors(score);
   },
 
+  //Hilfsmethode zur Bestimmung des Maximalwert der Sentiments
   getMaxValue = function(data){
     var compValues = [];
     data.forEach(function(entry){
@@ -719,6 +793,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     return Math.max.apply(Math,compValues);
   },
 
+  //Hilfsmethode zur Bestimmung des Minimalwerts der Sentiments
   getMinValue = function(data){
     var compValues = [];
     data.forEach(function(entry){

@@ -1,6 +1,5 @@
 var SocialMediaAnalyzer = {
-	init: function() {
-		console.log("init SocialMediaAnalyzer");
+	init: function() {		
 		SocialMediaAnalyzer.MainController.init();
 	}
 

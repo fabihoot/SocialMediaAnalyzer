@@ -5,15 +5,19 @@ var async = require('async');
 var graph = require('fbgraph');
 var utils = require('../models/utils');
 
+//Initialisierung wenn Login angefordert wird
 init = function(access_token, callback){ 
   getLongLivedAccessToken(access_token, function(data){
     callback(data);
   });
 }
+
+//Hilfsmethode zum setzen des langlebigen Access Tokens
 setToken = function(t){
   token = t;
 }
 
+//Anforderung des langlebigen Access Tokens
 getLongLivedAccessToken = function(access_token, callback){
   getAppData(function(appData){
     var APP_ID = appData[0];
@@ -42,6 +46,8 @@ getLongLivedAccessToken = function(access_token, callback){
   });
   
 }
+
+//Abfrage der Konfigurationsvariablen aus der Datei config.json
 getAppData = function(callback){
   async.parallel([
     function(next){    
@@ -59,12 +65,14 @@ getAppData = function(callback){
   });
 }
 
+//Ausführen eines Requests
 getFacebookData = function(search_word, count, callback){
   getFBPages(search_word, count, function(result){    
     callback(result);
   });
 }
 
+//Abfrage der FB Seiten nach ihren IDs 
 getFBPages = function(search_word, c, callback){
   var facebookFeedEntries  = {"data" : []};
   var resultData = null;
@@ -110,7 +118,7 @@ getFBPages = function(search_word, c, callback){
       path = res.paging.next;
      
       if(res.paging.next=='undefined' || res.paging.next==undefined) {console.log(res); callback(facebookFeedEntries); return;}         
-       getFBFeedEntries(res.data, function( entries ){  
+       getFBFeed(res.data, function( entries ){  
         console.log("valid entries from feed: " + entries.length);          
         resultData = entries;
         next(null, entries);
@@ -125,7 +133,8 @@ getFBPages = function(search_word, c, callback){
 
 }
 
-getFBFeedEntries = function(array, callback){
+//Abfrage eines Feeds einer Seite 
+getFBFeed = function(array, callback){
     
     async.times(array.length, function(n, next){
     
@@ -150,6 +159,7 @@ getFBFeedEntries = function(array, callback){
     });
 }
 
+//Abfrage von 10 Feedeinträgen auf einer Seite
 getFBFeedEntry = function(page_id, callback){   
   var options = {
       timeout: 15000,      
@@ -165,8 +175,7 @@ getFBFeedEntry = function(page_id, callback){
   if (err) {
         console.log("ERROR GETTING FEED ENTRIES");
         console.log(err);
-        console.log("RESPONSE: " + res);
-        //callback({'error': err});
+        console.log("RESPONSE: " + res);        
         callback(null, null);
       return;
   }
@@ -184,6 +193,7 @@ getFBFeedEntry = function(page_id, callback){
   });
 }
 
+//Transformierung eines Facebook Feed Eintrages in gemeinsames Element
 formatFBPosts = function(element, callback){ 
   var facebookElement = serializer.createMediaElement({
                                  id: 'facebook',
@@ -201,6 +211,7 @@ formatFBPosts = function(element, callback){
    
 }
 
+//Separate Abfrage von Likes des Beitrages
 getLikes = function(post_id, callback){
   graph.setAccessToken(token)
        .get('/' + post_id + '/likes?summary=true', function(err, res) {       

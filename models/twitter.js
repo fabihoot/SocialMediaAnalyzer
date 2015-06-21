@@ -1,7 +1,7 @@
 var Twit = require('twit');
 var id = "twitter";  
 var T = null;
-var serializer = require('./serializer');
+var serializer = require('./mapper');
 var async = require('async');
 var utils = require('../models/utils');
 

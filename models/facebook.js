@@ -1,5 +1,5 @@
 var token = '';
-var serializer = require('./serializer');       
+var serializer = require('./mapper');       
 var https = require('https');
 var async = require('async');
 var graph = require('fbgraph');

@@ -76,7 +76,7 @@ getFacebookData = function(search_word, count, callback){
 getFBPages = function(search_word, c, callback){
   var facebookFeedEntries  = {"data" : []};
   var resultData = null;
-  var count = Math.floor(c/10);
+  var count = Math.floor(c/10);  
   var path = '/search?q=' + search_word + '&type=page&limit='+ count + '&locale=en_US';
   var options = {      
       pool:     { maxSockets:  Infinity },
@@ -109,13 +109,12 @@ getFBPages = function(search_word, c, callback){
     
       if (err) {
         console.log("ERROR GETTING IDS");
-        console.log(res);
-        console.log("path: " + path);        
-        callback({'error': err});
+        console.log(res);               
+        callback(facebookFeedEntries);
       return;
       }
      
-      path = res.paging.next;
+      path = res.paging.next;     
      
       if(res.paging.next=='undefined' || res.paging.next==undefined) {console.log(res); callback(facebookFeedEntries); return;}         
        getFBFeed(res.data, function( entries ){  
@@ -214,8 +213,12 @@ formatFBPosts = function(element, callback){
 //Separate Abfrage von Likes des Beitrages
 getLikes = function(post_id, callback){
   graph.setAccessToken(token)
-       .get('/' + post_id + '/likes?summary=true', function(err, res) {       
-    callback(res.summary.total_count);
+       .get('/' + post_id + '/likes?summary=true', function(err, res) {
+       if(res != null){
+          callback(res.summary.total_count);        
+       } else {
+        callback(0);
+       }      
   }); 
 }
 exports.getFacebookData = getFacebookData;

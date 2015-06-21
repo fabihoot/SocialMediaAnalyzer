@@ -126,7 +126,7 @@ countLogins = 0,
  checkDataSetLength = function(count){
   var allData = [facebookData, twitterData, redditData];
   allData.forEach(function(entry){
-    if(entry.length<count) SocialMediaAnalyzer.Visualization.notifySmallDataset(entry[1].source)
+    if(entry.length<count) SocialMediaAnalyzer.Visualization.notifySmallDataset(entry[0].source)
   });
  }
 

@@ -52,16 +52,15 @@ countLogins = 0,
   $inputSave = $( '#input-file' );
  
   $inputSave.click(function(event){    
-       var pom = document.createElement('a');
-       var filename = 'elements.json';
-       var obj = {facebook: facebookData, twitter: twitterData, reddit: redditData};
-       var result = JSON.stringify(obj, null , '\t');
-       var result = JSON.stringify(obj, null , '\n');
-        pom.setAttribute('href', 'data:application/json;charset=utf-8,'+ result);
-        pom.setAttribute('download', filename);
-        pom.click();    
-     });
-   },
+    var pom = document.createElement('a');
+    var filename = 'elements.json';
+    var obj = {facebook: facebookData, twitter: twitterData, reddit: redditData};
+    
+    pom.setAttribute('href', 'data:plain/text,' + JSON.stringify(obj, null, 4));
+    pom.setAttribute('download', filename);
+    pom.click();    
+   });
+  },
   
  //Reset bei erneuter Suche
  reset = function(){

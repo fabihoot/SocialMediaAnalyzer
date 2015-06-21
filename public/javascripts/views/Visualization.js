@@ -457,7 +457,7 @@ SocialMediaAnalyzer.Visualization = (function() {
     var width = 300;
     var height = 200;
     var fill = d3.scale.category20();   
-    var source = ['all', 'facebook', 'twitter', 'reddit'];
+    var source = ['facebook', 'twitter', 'reddit'];
 
     for(var i=0;i<dataset.length;i++){
 
@@ -503,12 +503,13 @@ SocialMediaAnalyzer.Visualization = (function() {
   //Methode zum Zeichnen der Wordcloud
   drawWords = function (words) {
     var width = 300, height = 200;
-    var source = ['all', 'facebook', 'twitter', 'reddit'];    
+    var source = ['facebook', 'twitter', 'reddit'];    
    
     //Erstellen des Zeichenfeldes der Word Cloud
     d3.select("div#wordcloud-" + source[index]).append("svg")
           .attr("width", width)
           .attr("height", height)
+          .attr("class", "block-shadow")
           .attr("style", "margin-left:-100px;")
         .append("g")
           .attr("transform", "translate("+ width / 2 +","+ height / 2+")")
@@ -533,9 +534,9 @@ SocialMediaAnalyzer.Visualization = (function() {
   radius = 100, 
   innerR= 40,
   color = d3.scale.category10();
-  var source = ['facebook', 'twitter', 'reddit', 'all'];
+  var source = ['facebook', 'twitter', 'reddit'];
 
-  for (var i = 0;i<data.length;i++){
+  for (var i = 0;i<source.length;i++){
 
   var dataset = data[i]; 
   var total = d3.sum(dataset.value);
@@ -596,9 +597,8 @@ SocialMediaAnalyzer.Visualization = (function() {
                     var index = 1;
                    }else if(txtTop.attr("id") == "text-top-reddit"){
                     var index = 2;
-                   }else if(txtTop.attr("id") == "text-top-all"){
-                    var index = 3;
-                   }                   
+                   }
+
                    var type = data[index].type[data[index].value.indexOf(d.value)];                   
                    d3.select(this).select("path").transition()
                         .duration(200)
@@ -623,9 +623,8 @@ SocialMediaAnalyzer.Visualization = (function() {
                     var index = 1;
                    }else if(txtBottom.attr("id") == "text-bottom-reddit"){
                     var index = 2;
-                   }else if(txtBottom.attr("id") == "text-bottom-all"){
-                    var index = 3;
                    }
+
                 var currentTotal = data[index].total; 
                 txtTop.text( "total" )
                     .attr("y", -10);
@@ -657,7 +656,15 @@ SocialMediaAnalyzer.Visualization = (function() {
         .attr("x", 24)
         .attr("y", 9)
         .attr("dy", ".35em")
-        .text(function(d) { return d; });      
+        .text(function(d) { return d; });   
+
+        
+    //Anpassen des Beschreibungstextes    
+    var maxCount = Math.max.apply(Math, data[3].value);          
+    var maxType =  data[3].type[data[3].value.indexOf(maxCount)];
+
+    $("#text-content-most-type").html(maxType);
+    $("#text-content-most-count").html(maxCount);     
   },
 
   //Hilfsmethode zur Erstellung der Kacheln 

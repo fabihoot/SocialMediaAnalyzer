@@ -197,9 +197,7 @@
                 <div id="wordcloud-chart-row" class="cell colspan6 padding20 row cells2">                  
                   <div id="wordcloud-container" class="cell grid">
                     <div class="row cells4 content-padding">
-                      <div class="cell"> <img src="/images/sum-icon.png" style="width:40%;padding-right:15px;"></div>
-                      <div id="wordcloud-all" class="cell">                         
-                      </div>
+                      <div class="cell"></div>
                       <div class="cell"> <img src="/images/facebook-banner.png" style="width:50%;"></img></div>
                       <div id="wordcloud-facebook" class="cell">                        
                       </div>
@@ -218,8 +216,7 @@
                     <hr class="bg-orange">
                     <div class="content">
                       This is the graphical representation of all tokens used in the posts containing your search term. The larger the words the more often they are used
-                      across the social media platforms. The tokens are filtered by the stopwordlist, excluding words like 'I', 'a' or 'the'. In this case the most used 
-                      word across all platforms was <b><text id="text-token-most-all"></text></b> which occured <b><text id="text-token-occurence-all"></text></b> times.
+                      across the social media platforms. The tokens are filtered by the stopwordlist, excluding words like 'I', 'a' or 'the'. 
                       On facebook the most used word was <b><text id="text-token-most-facebook"></text></b> with <b><text id="text-token-occurence-facebook"></text></b> occurences, twitter users favorite word was <b><text id="text-token-most-twitter"></text></b> which was used <b><text id="text-token-occurence-twitter"></text></b> times and redditors prefered the word <b><text id="text-token-most-reddit"></text></b> with a number of <b><text id="text-token-occurence-reddit"></text></b> times.
                     </div>
                   </div> 
@@ -236,7 +233,7 @@
                     <div class="content">
                      The maximum length of a posts is very diffrent between the three networks. The least amount of characters can be used on Twitter with 140 characters
                      maximum per post. On reddit posts the limit is up to 10.000 characters. Facebook offers you to use more than six times as many characters: 63,206 characters are possible in a single post. The average length of the posts for your query was <b><text id="text-post-length-average"></text></b> tokens.
-                     Concerning all collected posts the post with the most tokens had different <b><text id="text-post-most-tokens"></text></b> tokens. The shortest post
+                     Concerning all collected posts the post with the most tokens had <b><text id="text-post-most-tokens"></text></b> different tokens. The shortest post
                      had only <b><text id="text-post-least-tokens"></text></b> tokens. 
                     </div>
                   </div>  
@@ -246,9 +243,8 @@
                  <div id="content-chart-row" class="cell colspan6 padding20 row cells2">                   
                    <div id="content-chart-container" class="cell grid condensed">
                     <div class="row cells4 content-padding">
-                      <div class="cell"> <img src="/images/sum-icon.png" style="width:40%; float:right; padding-right:15px;"></div>
-                      <div id="content-all" class="cell">
-                      </div>
+                      <div class="cell"></div>
+                      
                       <div class="cell"> <img src="/images/facebook-banner.png" style="width:50%; float:right;"></img></div>
                       <div id="content-facebook" class="cell">
                       </div>
@@ -266,7 +262,7 @@
                     <h5 class="no-margin-top">Content Distribution</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                      A feature that all three Social Media Platforms share is the possiblity to create content in various forms. This application distinguishes between text, images, links and videos. 
+                      A feature that all three Social Media Platforms share is the possiblity to create content in various forms. This application distinguishes between text, images, links and videos. The most used type of content across all plattforms was <b><text id="text-content-most-type"></text></b> with a total occurence of <b><text id="text-content-most-count"></text></b>.
                     </div>
                   </div> 
                  </div>
@@ -280,7 +276,7 @@
                       This export option allows you to download the collected data so you can use the collection for further research.
                       The data is stored in JSON. Below you can see the sample structure of a post element.
                     </div>
-                      <code class="row padding10">
+                      <code id="elment-json" class="row padding10">
                           element = {
                                             "id":     "",
                                             "text":     "",

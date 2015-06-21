@@ -56,10 +56,10 @@ countLogins = 0,
        var filename = 'elements.json';
        var obj = {facebook: facebookData, twitter: twitterData, reddit: redditData};
        var result = JSON.stringify(obj, null , '\t');
+       var result = JSON.stringify(obj, null , '\n');
         pom.setAttribute('href', 'data:application/json;charset=utf-8,'+ result);
         pom.setAttribute('download', filename);
-        pom.click();
-     console.log("save");
+        pom.click();    
      });
    },
   
@@ -230,7 +230,7 @@ countLogins = 0,
 
 //Zusammenstellen der notwendigen Daten für die Word Cloud
  createCloudVisualization = function(){
-  var words = [];
+  
   var wordsFB = [];
   var wordsTwit = [];
   var wordsRddt = [];
@@ -239,19 +239,19 @@ countLogins = 0,
      entry.forEach(function(element){
       var source = element.source;     
       element.lang.tokensStopword.forEach(function(token){
-        words.push(token.toLowerCase());
+       
         if(source == 'facebook') wordsFB.push(token.toLowerCase());
         if(source == 'twitter') wordsTwit.push(token.toLowerCase());        
         if(source == 'reddit') wordsRddt.push(token.toLowerCase());
       });
      });         
   });
-  var calcFrequnciesAll = sortTokens(words);
+  
   var calcFrequnciesFB = sortTokens(wordsFB);
   var calcFrequnciesTwit = sortTokens(wordsTwit);
   var calcFrequnciesRddt = sortTokens(wordsRddt);
 
-  SocialMediaAnalyzer.Visualization.createCloudChart([calcFrequnciesAll, calcFrequnciesFB, calcFrequnciesTwit, calcFrequnciesRddt]);   
+  SocialMediaAnalyzer.Visualization.createCloudChart([calcFrequnciesFB, calcFrequnciesTwit, calcFrequnciesRddt]);   
  },
 
 //Zusammenstellen der notwendigen Daten für die Content Analyse

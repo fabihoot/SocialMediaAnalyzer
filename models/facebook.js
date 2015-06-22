@@ -81,7 +81,8 @@ getFBPages = function(search_word, c, callback){
   var options = {      
       pool:     { maxSockets:  Infinity },
       headers:  { connection:  "keep-alive" }
-  };   
+  };
+  var noMorePages = false;   
     
   async.whilst(
   function() {
@@ -92,11 +93,12 @@ getFBPages = function(search_word, c, callback){
 
     for(var i = 0;i<resultData.length; i++){              
       if(resultData.length>0) facebookFeedEntries.data.push(resultData[i]);
-      console.log("current length: " +facebookFeedEntries.data.length);           
+      console.log("current length: " +facebookFeedEntries.data.length);
       if (facebookFeedEntries.data.length >= c){        
         return false;
       }
     }      
+    if(noMorePages) { return false;}          
     return true;    
   }
 
@@ -116,7 +118,7 @@ getFBPages = function(search_word, c, callback){
      
       path = res.paging.next;     
      
-      if(res.paging.next=='undefined' || res.paging.next==undefined) {console.log(res); callback(facebookFeedEntries); return;}         
+      if(res.paging.next=='undefined' || res.paging.next==undefined){ noMorePages = true;  }          
        getFBFeed(res.data, function( entries ){  
         console.log("valid entries from feed: " + entries.length);          
         resultData = entries;

@@ -7,21 +7,21 @@
   },
   "main" : "bin/www",
   "dependencies": {
-    "async": "*",
+    "async": "0.9.0",
     "body-parser": "~1.12.1",
     "cookie-parser": "~1.3.4",
     "debug": "~2.1.3",
     "ejs": "~2.3.1",
     "express": "~4.12.2",
-    "fbgraph": "*",
-    "languagedetect": "*",
+    "fbgraph": "0.3.0",
+    "languagedetect": "1.1.1",
     "morgan": "~1.5.2",
-    "natural": "*",
-    "sentiment": "*",
-    "Sentimental": "*",
+    "natural": "0.2.1",
+    "sentiment": "1.0.2",
+    "Sentimental": "1.0.1",
     "serve-favicon": "~2.2.0",
     "snoocore": "3.0.2",
-    "stopwords": "*",
-    "twit": "*"
+    "stopwords": "0.0.4",
+    "twit": "1.1.20"
   }
 }

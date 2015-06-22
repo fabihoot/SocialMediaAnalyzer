@@ -4,6 +4,7 @@ var tokenizer = new natural.WordTokenizer();
 var analyze = require('Sentimental').analyze;
 var lngDetector = new (require('languagedetect'));
 var stopwordsEng = require('stopwords').english;
+var stopwordsWeb = require('./stopwords-web.js').web;
 
 
 //Analyse eines Post Elements
@@ -81,11 +82,13 @@ getHashtags = function(str){
 }
 
 //stoppwort-bereinigte Tokenliste erstellen
-getTokensAfterStopword = function(tokens){
-	var stopwordTokens = [];
-	
+getTokensAfterStopword = function(tokens){	
+	var stopwordTokens = [];	
 	tokens.forEach(function(token){		
 		if(!(stopwordsEng.indexOf(token.toLowerCase()) > -1)){			
+		 stopwordTokens.push(token);
+		}
+		if(!(stopwordsWeb.indexOf(token.toLowerCase()) > -1)){			
 		 stopwordTokens.push(token);
 		}
 	});	

@@ -41,7 +41,7 @@
       <div class="cell align-center">
           <div class="input-control modern text iconic padding10 full-size">
               <input type="text" id="input-keyword" disabled>
-              <span class="label">Please enter a search term we should analyze!</span>
+              <span class="label">Please enter a search term!</span>
               <span class="informer">Press Enter to start your search</span>
               <span class="placeholder" id="search-placeholder">Keyword</span>
               <span class="icon mif-search"></span>                   
@@ -92,7 +92,7 @@
           Login data for the networks Twitter and Reddit are provided by the author. The current state
           of the Facebook API requires that you login with your own Facebook Account. You can find
           the Login Button at the top of this page. The author assures that the account data is only used
-          for the intended purposes, described in the Help section.
+          for the intended purposes.
         </div>
       </div>
 
@@ -100,7 +100,7 @@
         <h5 class="no-margin-top">Search</h5>
         <hr class="bg-orange">
         <div class="content">
-          Some APIs (espacially the Facebook API) tend to use a very long time to deliver the requested data.
+          Some APIs (especially the Facebook API) tend to use a very long time to deliver the requested data.
           Also the server side processing may take additional time. On the right you can check the status
           of the current search.
         </div>
@@ -148,7 +148,7 @@
                       The three social Networks offer different mechanisms to rate the content posted by their users. Theres not much
                       exisiting research compairing these mechanisms among themselves. Your search term returned <b><text id="text-votes-overall"></text></b>
                       ratings over the three networks. In the Social Network Facebook it reached a number of <b><text id="text-fb-likes"></text></b> likes and 
-                      <b><text id="text-fb-shares"></text></b> shares. The users of the Microblogging plattform Twitter used the retweet feature <b><text id="text-twit-retweet"></text></b> times and set <b><text id="text-twit-favorites"></text></b> times as favorite posts concerning your search term. With the recent changes of the Reddit API its not possible to tell you the exact values of Up or Downvotes but the overall score of the posts were <b><text id="text-rddt-score"></text></b>. Please consume these values with caution, as stated above, because there is not enough existing research in compairing these values!
+                      <b><text id="text-fb-shares"></text></b> shares. The users of the Microblogging plattform Twitter used the retweet feature <b><text id="text-twit-retweet"></text></b> times and set <b><text id="text-twit-favorites"></text></b> times as favorite posts concerning your query term. With the recent changes of the Reddit API its not possible to tell you the exact values of Up or Downvotes but the overall score of the posts were <b><text id="text-rddt-score"></text></b>. Please consume these values with caution, as stated above, because there is not enough existing research in compairing these values!
                     </div>
                   </div>              
                 </div>
@@ -216,7 +216,7 @@
                     <hr class="bg-orange">
                     <div class="content">
                       This is the graphical representation of all tokens used in the posts containing your search term. The larger the words the more often they are used
-                      across the social media platforms. The tokens are filtered by the stopwordlist, excluding words like 'I', 'a' or 'the'. 
+                      across the social media platforms. The tokens are filtered by a stopwordlist, excluding words like 'I', 'a' or 'the'. 
                       On facebook the most used word was <b><text id="text-token-most-facebook"></text></b> with <b><text id="text-token-occurence-facebook"></text></b> occurences, twitter users favorite word was <b><text id="text-token-most-twitter"></text></b> which was used <b><text id="text-token-occurence-twitter"></text></b> times and redditors prefered the word <b><text id="text-token-most-reddit"></text></b> with a number of <b><text id="text-token-occurence-reddit"></text></b> times.
                     </div>
                   </div> 
@@ -231,8 +231,7 @@
                     <h5 class="no-margin-top">Token Analysis</h5>
                     <hr class="bg-orange">
                     <div class="content">
-                     The maximum length of a posts is very diffrent between the three networks. The least amount of characters can be used on Twitter with 140 characters
-                     maximum per post. On reddit posts the limit is up to 10.000 characters. Facebook offers you to use more than six times as many characters: 63,206 characters are possible in a single post. The average length of the posts for your query was <b><text id="text-post-length-average"></text></b> tokens.
+                     The maximum possible length of a posts is very diffrent between the three networks. The least amount of characters can be used on Twitter with 140 characters maximum per post. On reddit posts the limit is up to 10.000 characters. Facebook offers you to use more than six times as many characters: 63,206 characters are possible in a single post. The average length of the posts for your query was <b><text id="text-post-length-average"></text></b> tokens.
                      Concerning all collected posts the post with the most tokens had <b><text id="text-post-most-tokens"></text></b> different tokens. The shortest post
                      had only <b><text id="text-post-least-tokens"></text></b> tokens. 
                     </div>

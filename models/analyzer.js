@@ -85,12 +85,9 @@ getHashtags = function(str){
 getTokensAfterStopword = function(tokens){	
 	var stopwordTokens = [];	
 	tokens.forEach(function(token){		
-		if(!(stopwordsEng.indexOf(token.toLowerCase()) > -1)){			
+		if(!(stopwordsEng.indexOf(token.toLowerCase()) > -1) && !(stopwordsWeb.indexOf(token.toLowerCase()) > -1)){			
 		 stopwordTokens.push(token);
-		}
-		if(!(stopwordsWeb.indexOf(token.toLowerCase()) > -1)){			
-		 stopwordTokens.push(token);
-		}
+		}		
 	});	
 	return stopwordTokens;
 }

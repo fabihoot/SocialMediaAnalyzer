@@ -55,8 +55,8 @@ countLogins = 0,
     var pom = document.createElement('a');
     var filename = 'elements.json';
     var obj = {facebook: facebookData, twitter: twitterData, reddit: redditData};
-    
-    pom.setAttribute('href', 'data:plain/text,' + JSON.stringify(obj, null, 4));
+    var result = JSON.stringify(obj, null, 4);
+    pom.setAttribute('href', 'data:application/json,' + encodeURIComponent(result));
     pom.setAttribute('download', filename);
     pom.click();    
    });

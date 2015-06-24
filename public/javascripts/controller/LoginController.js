@@ -8,6 +8,9 @@ SocialMediaAnalyzer.LoginController = (function() {
         $.post('/request-id/', function(data){          
 		      fbAsyncInit(data);
         });
+        FB.Event.subscribe('auth.login', function(response) {
+        statusChangeCallback(response);
+        });
 		}
     initTwitter();		
     initReddit();
@@ -53,9 +56,9 @@ SocialMediaAnalyzer.LoginController = (function() {
 //Callback Methode für den Facebook Login
 //User muss zuerst App authorisieren und Zugriff auf seine Daten gewähren
 //erst dann kann ein Login der App mit den erworbenen Daten erfolgen
-  statusChangeCallback = function(response) {   	 	
-  		if (response.status === 'connected') {
-  		 
+  statusChangeCallback = function(response) {   
+  console.log(response);	 	
+  		if (response.status === 'connected') {  		 
   		  $.post('/facebook-login/', { token: response.authResponse.accessToken}, function(res){
          if(res.err){
            console.log(res);
@@ -70,13 +73,12 @@ SocialMediaAnalyzer.LoginController = (function() {
   		    'into this app.';
   		} else {
   		  
-  		  document.getElementById('status').innerHTML = 'Please log ' +
-  		    'into Facebook.';
   		}
   },	
   
   //Login Status überprüfen
   checkLoginState = function() {
+    console.log("check")
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });

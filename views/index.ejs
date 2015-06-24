@@ -25,7 +25,6 @@
     </ul>
   </div>
 
-
   <div class="grid padding20">
     <div class="row cells1  block-shadow-impact bg-white">
       <div class="row cells5">
@@ -273,8 +272,13 @@
                     <hr class="bg-orange">
                     <div class="content padding10">
                       This export option allows you to download the collected data so you can use the collection for further research.
-                      The data is stored in JSON. Below you can see the sample structure of a post element.
+                      The data is stored in JSON. To the right you can see the sample structure of a post element.
                     </div>
+                    
+                      <button id="input-file" class="button loading-pulse">Download</button>
+                    </div>
+                  <div class="cell margin20" style="overflow-y: scroll; height:300px;" >
+                    <pre>
                       <code id="elment-json" class="row padding10">
                           element = {
                                             "id":     "",
@@ -310,12 +314,12 @@
                                             }
                                           }
                       </code>
-                      <button id="input-file" class="button loading-pulse">Download</button>
-                    </div>
-
+                    </pre>
+                  </div> 
 
                     
-                  </div>                   
+                  </div>
+                                    
                 </div>
 
             </div>

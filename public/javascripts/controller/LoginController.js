@@ -57,7 +57,7 @@ SocialMediaAnalyzer.LoginController = (function() {
 //User muss zuerst App authorisieren und Zugriff auf seine Daten gewähren
 //erst dann kann ein Login der App mit den erworbenen Daten erfolgen
   statusChangeCallback = function(response) {   
-  console.log(response);	 	
+  	
   		if (response.status === 'connected') {  		 
   		  $.post('/facebook-login/', { token: response.authResponse.accessToken}, function(res){
          if(res.err){
@@ -78,7 +78,6 @@ SocialMediaAnalyzer.LoginController = (function() {
   
   //Login Status überprüfen
   checkLoginState = function() {
-    console.log("check")
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
